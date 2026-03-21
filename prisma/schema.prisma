@@ -1,0 +1,209 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ═══════════════════════════════════════════
+// ENUMS
+// ═══════════════════════════════════════════
+
+enum UserRole {
+  PROFESSIONAL
+  CLIENT
+  ADMIN
+}
+
+enum ProfileStatus {
+  PENDING
+  APPROVED
+  SUSPENDED
+  REJECTED
+}
+
+enum SubscriptionTier {
+  FREE
+  STANDARD
+  PREMIUM
+}
+
+enum SponsorTier {
+  PREMIUM
+  STANDARD
+}
+
+// ═══════════════════════════════════════════
+// MODELS
+// ═══════════════════════════════════════════
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  phone        String?
+  role         UserRole @default(PROFESSIONAL)
+
+  profile      Profile?
+  reviews      Review[] @relation("ReviewAuthor")
+
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  deletedAt    DateTime?
+
+  @@index([email])
+  @@index([role])
+  @@index([isActive])
+}
+
+model Profile {
+  id              String          @id @default(cuid())
+  userId          String          @unique
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  slug            String          @unique
+  headline        String?
+  bio             String?
+  categoryId      String
+  category        ServiceCategory @relation(fields: [categoryId], references: [id])
+
+  city            String
+  province        String          @default("Córdoba")
+  neighborhood    String?
+  latitude        Float?
+  longitude       Float?
+
+  whatsapp        String?
+  yearsExperience Int?
+  matricula       String?
+  availability    String?
+
+  tier            SubscriptionTier @default(FREE)
+  averageRating   Float           @default(0)
+  totalReviews    Int             @default(0)
+  totalViews      Int             @default(0)
+  totalContacts   Int             @default(0)
+
+  status          ProfileStatus   @default(PENDING)
+  approvedAt      DateTime?
+  approvedBy      String?
+
+  photos          WorkPhoto[]
+  reviews         Review[]        @relation("ReviewTarget")
+
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([categoryId])
+  @@index([city])
+  @@index([status])
+  @@index([tier])
+  @@index([slug])
+  @@index([city, categoryId])
+  @@index([status, city, categoryId])
+  @@index([averageRating(sort: Desc)])
+}
+
+model ServiceCategory {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  slug        String    @unique
+  icon        String?
+  description String?
+  isActive    Boolean   @default(true)
+  sortOrder   Int       @default(0)
+
+  profiles    Profile[]
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([slug])
+  @@index([isActive, sortOrder])
+}
+
+model WorkPhoto {
+  id           String   @id @default(cuid())
+  profileId    String
+  profile      Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  url          String
+  thumbnailUrl String?
+  caption      String?
+  sortOrder    Int      @default(0)
+
+  createdAt    DateTime @default(now())
+
+  @@index([profileId])
+  @@index([profileId, sortOrder])
+}
+
+model Review {
+  id          String   @id @default(cuid())
+  profileId   String
+  profile     Profile  @relation("ReviewTarget", fields: [profileId], references: [id], onDelete: Cascade)
+  authorId    String
+  author      User     @relation("ReviewAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+
+  rating      Int
+  comment     String?
+  response    String?
+
+  isVerified  Boolean  @default(false)
+  isVisible   Boolean  @default(true)
+
+  respondedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime?
+
+  @@unique([profileId, authorId])
+  @@index([profileId, isVisible])
+  @@index([authorId])
+  @@index([createdAt(sort: Desc)])
+}
+
+model Sponsor {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  tier        SponsorTier
+  logoUrl     String?
+  websiteUrl  String?
+  phone       String?
+  whatsapp    String?
+  description String?
+
+  city        String
+  province    String      @default("Córdoba")
+  address     String?
+
+  isActive    Boolean     @default(true)
+  startsAt    DateTime    @default(now())
+  endsAt      DateTime?
+
+  totalViews  Int         @default(0)
+  totalClicks Int         @default(0)
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([tier, isActive])
+  @@index([city, isActive])
+}
+
+model ProfileEvent {
+  id        String   @id @default(cuid())
+  profileId String
+  eventType String
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([profileId, eventType])
+  @@index([createdAt])
+  @@index([profileId, createdAt])
+}
