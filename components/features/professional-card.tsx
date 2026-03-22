@@ -15,15 +15,16 @@ type Props = {
     category: { name: string; slug: string; icon: string | null };
     photos: { url: string }[];
   };
+  basePath?: string;
 };
 
-export function ProfessionalCard({ profile }: Props) {
+export function ProfessionalCard({ profile, basePath = "/app" }: Props) {
   const isPremium = profile.tier === "PREMIUM";
   const isStandard = profile.tier === "STANDARD";
 
   return (
     <Link
-      href={`/profesional/${profile.slug}`}
+      href={`${basePath}/profesional/${profile.slug}`}
       className={`block rounded-2xl overflow-hidden bg-white transition-all duration-200 hover:-translate-y-1 hover:shadow-xl ${
         isPremium ? "border-2 border-brand-gold" : "border border-gray-200"
       }`}
