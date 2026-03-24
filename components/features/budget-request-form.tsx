@@ -12,6 +12,7 @@ export function BudgetRequestForm({ onClose }: { onClose: () => void }) {
   const [error, setError] = useState("");
   const [notifiedCount, setNotifiedCount] = useState(0);
   const [waLinks, setWaLinks] = useState<{ name: string; waLink: string }[]>([]);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [form, setForm] = useState({
     categoryId: "",
     clientName: "",
@@ -38,6 +39,10 @@ export function BudgetRequestForm({ onClose }: { onClose: () => void }) {
     }
     if (form.description.length < 10) {
       setError("Describí con más detalle qué necesitás (mínimo 10 caracteres)");
+      return;
+    }
+    if (!acceptedTerms) {
+      setError("Debés aceptar los términos y condiciones para continuar");
       return;
     }
 
@@ -71,12 +76,9 @@ export function BudgetRequestForm({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
-      {/* Backdrop */}
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
 
-      {/* Modal */}
       <div className="relative w-full max-w-[430px] max-h-[90vh] bg-white rounded-t-3xl sm:rounded-3xl overflow-hidden animate-slide-up">
-        {/* Header */}
         <div className="sticky top-0 bg-white border-b border-gray-100 px-5 py-4 flex items-center justify-between z-10">
           <h2 className="text-lg font-black text-[#1A1D2E]">
             {step === "success" ? "¡Listo!" : "Pedí tu presupuesto"}
@@ -87,7 +89,6 @@ export function BudgetRequestForm({ onClose }: { onClose: () => void }) {
         </div>
 
         <div className="px-5 py-4 overflow-y-auto" style={{ maxHeight: "calc(90vh - 60px)" }}>
-          {/* ── FORM STEP ── */}
           {step === "form" && (
             <div className="space-y-4">
               <p className="text-sm text-gray-500 leading-relaxed">
@@ -158,6 +159,26 @@ export function BudgetRequestForm({ onClose }: { onClose: () => void }) {
                 />
               </div>
 
+              <label className="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={acceptedTerms}
+                  onChange={(e) => setAcceptedTerms(e.target.checked)}
+                  className="mt-0.5 w-5 h-5 rounded border-gray-300 accent-[#F8C927] shrink-0"
+                />
+                <span className="text-xs text-gray-500 leading-relaxed">
+                  Acepto los{" "}
+                  <a href="/terminos" target="_blank" className="text-[#5C80BC] font-semibold underline">
+                    Términos y Condiciones
+                  </a>{" "}
+                  y la{" "}
+                  <a href="/privacidad" target="_blank" className="text-[#5C80BC] font-semibold underline">
+                    Política de Privacidad
+                  </a>
+                  . Entiendo que mis datos de contacto serán compartidos con los profesionales de la categoría elegida.
+                </span>
+              </label>
+
               <button
                 onClick={handleSubmit}
                 className="w-full py-4 rounded-2xl bg-[#F8C927] text-[#1A1D2E] font-extrabold text-[15px] shadow-lg shadow-[#F8C927]/20 active:scale-[0.98] transition-transform mt-2"
@@ -171,7 +192,6 @@ export function BudgetRequestForm({ onClose }: { onClose: () => void }) {
             </div>
           )}
 
-          {/* ── SENDING STEP ── */}
           {step === "sending" && (
             <div className="flex flex-col items-center justify-center py-12">
               <div className="w-12 h-12 border-4 border-[#F8C927] border-t-transparent rounded-full animate-spin mb-4" />
@@ -180,7 +200,6 @@ export function BudgetRequestForm({ onClose }: { onClose: () => void }) {
             </div>
           )}
 
-          {/* ── SUCCESS STEP ── */}
           {step === "success" && (
             <div className="space-y-5 pb-4">
               <div className="text-center py-4">
@@ -194,7 +213,6 @@ export function BudgetRequestForm({ onClose }: { onClose: () => void }) {
                 </p>
               </div>
 
-              {/* WhatsApp links to contact pros directly */}
               {waLinks.length > 0 && (
                 <div>
                   <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">
@@ -202,7 +220,7 @@ export function BudgetRequestForm({ onClose }: { onClose: () => void }) {
                   </p>
                   <div className="space-y-2">
                     {waLinks.slice(0, 5).map((pro) => (
-                      <a
+                      
                         key={pro.name}
                         href={pro.waLink}
                         target="_blank"

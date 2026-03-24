@@ -10,7 +10,12 @@ type Category = { id: string; name: string; slug: string; icon: string | null };
 export default function RegisterPage() {
   const router = useRouter();
   const [categories, setCategories] = useState<Category[]>([]);
-  const [form, setForm] = useState({ name: "", email: "", password: "", phone: "", categoryId: "", city: "Villa María" });
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [form, setForm] = useState({
+    name: "", email: "", password: "", phone: "",
+    dni: "", birthDate: "",
+    categoryId: "", city: "Villa María",
+  });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -21,6 +26,12 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    if (!acceptedTerms) {
+      setError("Debés aceptar los términos y condiciones para continuar");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -34,7 +45,7 @@ export default function RegisterPage() {
         setError(data.error || "Error al registrar");
         return;
       }
-      router.push("/dashboard");
+      router.push("/app/dashboard");
       router.refresh();
     } catch {
       setError("Error de conexión");
@@ -52,9 +63,8 @@ export default function RegisterPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-yellow-50 to-gray-50 pt-20 pb-10 px-5">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
-            <div className="w-14 h-14 rounded-2xl bg-brand-yellow inline-flex items-center justify-center text-2xl font-black text-brand-black shadow-lg shadow-brand-yellow/20 mb-4">
-              Go
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-dark.svg" alt="OficiosGo!" className="h-12 w-auto mx-auto mb-4" />
             <h1 className="text-3xl font-black text-brand-black">Crear cuenta</h1>
             <p className="text-gray-500 mt-2">Registrate como profesional y empezá a recibir clientes</p>
           </div>
@@ -67,27 +77,45 @@ export default function RegisterPage() {
             )}
 
             <div>
-              <label className="block text-sm font-semibold text-brand-black mb-1.5">Nombre completo</label>
+              <label className="block text-sm font-semibold text-brand-black mb-1.5">Nombre completo *</label>
               <input value={form.name} onChange={set("name")} required placeholder="Juan Pérez"
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm outline-none focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/20" />
             </div>
+
             <div>
-              <label className="block text-sm font-semibold text-brand-black mb-1.5">Email</label>
+              <label className="block text-sm font-semibold text-brand-black mb-1.5">DNI *</label>
+              <input value={form.dni} onChange={set("dni")} required placeholder="12345678" maxLength={8} inputMode="numeric"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm outline-none focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/20" />
+              <p className="text-[11px] text-gray-400 mt-1">Sin puntos ni espacios · Se verifica con constancia de CUIL</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-brand-black mb-1.5">Fecha de nacimiento *</label>
+              <input type="date" value={form.birthDate} onChange={set("birthDate")} required max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split("T")[0]}
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm outline-none focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/20" />
+              <p className="text-[11px] text-gray-400 mt-1">Debés ser mayor de 18 años</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-brand-black mb-1.5">Email *</label>
               <input type="email" value={form.email} onChange={set("email")} required placeholder="tu@email.com"
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm outline-none focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/20" />
             </div>
+
             <div>
-              <label className="block text-sm font-semibold text-brand-black mb-1.5">Contraseña</label>
+              <label className="block text-sm font-semibold text-brand-black mb-1.5">Contraseña *</label>
               <input type="password" value={form.password} onChange={set("password")} required placeholder="Mínimo 6 caracteres"
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm outline-none focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/20" />
             </div>
+
             <div>
-              <label className="block text-sm font-semibold text-brand-black mb-1.5">Teléfono</label>
-              <input value={form.phone} onChange={set("phone")} placeholder="3534112233"
+              <label className="block text-sm font-semibold text-brand-black mb-1.5">Teléfono / WhatsApp</label>
+              <input value={form.phone} onChange={set("phone")} placeholder="3534112233" inputMode="numeric"
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm outline-none focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/20" />
             </div>
+
             <div>
-              <label className="block text-sm font-semibold text-brand-black mb-1.5">Oficio</label>
+              <label className="block text-sm font-semibold text-brand-black mb-1.5">Oficio *</label>
               <select value={form.categoryId} onChange={set("categoryId")} required
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm outline-none focus:border-brand-yellow bg-white">
                 <option value="">Seleccioná tu oficio</option>
@@ -96,11 +124,32 @@ export default function RegisterPage() {
                 ))}
               </select>
             </div>
+
             <div>
-              <label className="block text-sm font-semibold text-brand-black mb-1.5">Ciudad</label>
+              <label className="block text-sm font-semibold text-brand-black mb-1.5">Ciudad *</label>
               <input value={form.city} onChange={set("city")} required
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm outline-none focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/20" />
             </div>
+
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={acceptedTerms}
+                onChange={(e) => setAcceptedTerms(e.target.checked)}
+                className="mt-0.5 w-5 h-5 rounded border-gray-300 accent-[#F8C927] shrink-0"
+              />
+              <span className="text-xs text-gray-500 leading-relaxed">
+                Acepto los{" "}
+                <a href="/terminos" target="_blank" className="text-[#5C80BC] font-semibold underline">
+                  Términos y Condiciones
+                </a>{" "}
+                y la{" "}
+                <a href="/privacidad" target="_blank" className="text-[#5C80BC] font-semibold underline">
+                  Política de Privacidad
+                </a>
+                . Autorizo la verificación de mi identidad mediante DNI y constancia de CUIL.
+              </span>
+            </label>
 
             <button type="submit" disabled={loading}
               className="w-full py-3.5 rounded-xl bg-brand-black text-brand-yellow font-bold text-[15px] hover:bg-gray-800 transition-colors disabled:opacity-60">
