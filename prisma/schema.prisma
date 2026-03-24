@@ -35,6 +35,20 @@ enum SponsorTier {
   STANDARD
 }
 
+enum BudgetRequestStatus {
+  PENDING
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum BudgetResponseStatus {
+  PENDING
+  SENT
+  ACCEPTED
+  REJECTED
+}
+
 // ═══════════════════════════════════════════
 // MODELS
 // ═══════════════════════════════════════════
@@ -118,6 +132,7 @@ model ServiceCategory {
   sortOrder   Int       @default(0)
 
   profiles    Profile[]
+  budgetRequests BudgetRequest[]
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -206,4 +221,47 @@ model ProfileEvent {
   @@index([profileId, eventType])
   @@index([createdAt])
   @@index([profileId, createdAt])
+}
+
+model BudgetRequest {
+  id          String   @id @default(cuid())
+  categoryId  String
+  category    ServiceCategory @relation(fields: [categoryId], references: [id])
+
+  clientName  String
+  clientPhone String
+  clientEmail String?
+  description String
+  city        String   @default("Villa María")
+  province    String   @default("Córdoba")
+
+  status      BudgetRequestStatus @default(PENDING)
+  notifiedCount Int    @default(0)
+
+  responses   BudgetResponse[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([categoryId, status])
+  @@index([status])
+  @@index([createdAt(sort: Desc)])
+}
+
+model BudgetResponse {
+  id              String        @id @default(cuid())
+  budgetRequestId String
+  budgetRequest   BudgetRequest @relation(fields: [budgetRequestId], references: [id], onDelete: Cascade)
+  profileId       String
+  
+  message         String?
+  amount          Decimal?      @db.Decimal(10, 2)
+  status          BudgetResponseStatus @default(PENDING)
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@unique([budgetRequestId, profileId])
+  @@index([profileId])
+  @@index([budgetRequestId])
 }

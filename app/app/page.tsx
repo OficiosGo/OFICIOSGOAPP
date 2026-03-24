@@ -3,6 +3,7 @@ import { categoryRepository } from "@/server/repositories/category.repository";
 import { searchService } from "@/server/services/search.service";
 import { sponsorRepository } from "@/server/repositories/sponsor.repository";
 import { professionalRepository } from "@/server/repositories/professional.repository";
+import { HomeCTAs } from "@/components/features/home-ctas";
 
 export const revalidate = 60;
 
@@ -37,6 +38,9 @@ export default async function HomePage() {
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
           <span className="text-sm text-gray-400 font-medium">¿Qué necesitás hoy?</span>
         </Link>
+
+        {/* CTA Buttons */}
+        <HomeCTAs />
 
         {/* Category grid 2x2 */}
         <div className="relative z-10 grid grid-cols-2 gap-3 mt-5">

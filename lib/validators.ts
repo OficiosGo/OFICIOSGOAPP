@@ -48,3 +48,13 @@ export type RegisterInput = z.infer<typeof registerSchema>;
 export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
 export type ReviewInput = z.infer<typeof reviewSchema>;
 export type SearchInput = z.infer<typeof searchSchema>;
+
+export const budgetRequestSchema = z.object({
+  categoryId: z.string().cuid("Categoría inválida"),
+  clientName: z.string().min(2, "Mínimo 2 caracteres").max(100),
+  clientPhone: z.string().min(8, "Teléfono inválido").max(15),
+  clientEmail: z.string().email("Email inválido").optional().or(z.literal("")),
+  description: z.string().min(10, "Describí con más detalle qué necesitás").max(1000),
+});
+
+export type BudgetRequestInput = z.infer<typeof budgetRequestSchema>;
