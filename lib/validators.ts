@@ -10,6 +10,8 @@ export const registerSchema = z.object({
   email: z.string().email("Email inválido"),
   password: z.string().min(6, "Mínimo 6 caracteres"),
   phone: z.string().regex(/^\d{10,13}$/, "Teléfono inválido").optional(),
+  dni: z.string().min(7, "DNI inválido").max(8, "DNI inválido").regex(/^\d+$/, "Solo números"),
+  birthDate: z.string().min(1, "Fecha de nacimiento requerida"),
   categoryId: z.string().cuid("Categoría inválida"),
   city: z.string().min(2, "Ciudad requerida"),
 });

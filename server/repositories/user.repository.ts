@@ -20,6 +20,8 @@ export const userRepository = {
     passwordHash: string;
     name: string;
     phone?: string;
+    dni?: string;
+    birthDate?: Date;
     role?: "PROFESSIONAL" | "CLIENT" | "ADMIN";
   }) {
     return db.user.create({ data });

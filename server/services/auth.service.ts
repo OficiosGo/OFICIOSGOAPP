@@ -4,6 +4,7 @@ import { professionalRepository } from "@/server/repositories/professional.repos
 import { signToken } from "@/server/auth/jwt";
 import { AppError } from "@/lib/errors";
 import { slugify } from "@/lib/utils";
+import { db } from "@/db/client";
 import type { LoginInput, RegisterInput } from "@/lib/validators";
 
 export const authService = {
@@ -43,6 +44,12 @@ export const authService = {
       throw AppError.conflict("Ya existe una cuenta con ese email");
     }
 
+    // Check duplicate DNI
+    const existingDni = await db.user.findUnique({ where: { dni: input.dni } });
+    if (existingDni) {
+      throw AppError.conflict("Ya existe una cuenta con ese DNI");
+    }
+
     const passwordHash = await bcrypt.hash(input.password, 12);
 
     const user = await userRepository.create({
@@ -50,6 +57,8 @@ export const authService = {
       passwordHash,
       name: input.name,
       phone: input.phone,
+      dni: input.dni,
+      birthDate: new Date(input.birthDate),
       role: "PROFESSIONAL",
     });
 

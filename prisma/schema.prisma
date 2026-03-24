@@ -59,6 +59,8 @@ model User {
   passwordHash String
   name         String
   phone        String?
+  dni          String?  @unique
+  birthDate    DateTime?
   role         UserRole @default(PROFESSIONAL)
 
   profile      Profile?
