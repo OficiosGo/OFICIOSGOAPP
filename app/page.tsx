@@ -4,6 +4,7 @@ import { professionalRepository } from "@/server/repositories/professional.repos
 import { sponsorRepository } from "@/server/repositories/sponsor.repository";
 import { searchService } from "@/server/services/search.service";
 import { Footer } from "@/components/ui/footer";
+import { LandingNavbar } from "@/components/ui/landing-navbar";
 
 export const revalidate = 60;
 
@@ -22,22 +23,7 @@ export default async function LandingPage() {
   return (
     <div className="bg-white">
       {/* ═══ NAVBAR ═══ */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-transparent backdrop-blur-none transition-all duration-300" id="landing-nav">
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
-          <div className="flex items-center gap-2">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo-white.svg" alt="OficiosGo!" className="h-11" />
-          </div>
-          <div className="flex items-center gap-3">
-            <Link href="/app" className="hidden sm:inline-flex px-5 py-2 rounded-lg bg-white/10 border border-white/15 text-white text-sm font-bold backdrop-blur-sm hover:bg-white/20 transition-all">
-              Ver App
-            </Link>
-            <Link href="/app" className="px-5 py-2 rounded-lg bg-[#F8C927] text-[#1A1D2E] text-sm font-extrabold shadow-lg shadow-[#F8C927]/30 hover:scale-[1.03] transition-transform">
-              Descargar
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <LandingNavbar />
 
       {/* ═══ HERO WITH FLOATING PHONE ═══ */}
       <section className="relative min-h-screen overflow-hidden flex items-center" style={{ background: "linear-gradient(155deg, #1A1D2E 0%, #0D0F1A 50%, #252839 100%)" }}>
@@ -111,7 +97,7 @@ export default async function LandingPage() {
                 <div style={{ background: "linear-gradient(180deg, #1A1D2E, #252839)" }} className="rounded-b-[14px] p-3 pb-4">
                   <div className="flex justify-between items-center">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/logo-white.svg" alt="OficiosGo!" className="h-5" />
+                    <img src="/logo-white.svg" alt="OficiosGo!" className="h-4 w-auto" />
                     <div className="w-5 h-5 rounded-full bg-white/10" />
                   </div>
                   <div className="mt-2 px-2 py-2 bg-white rounded-lg flex items-center gap-1.5">
