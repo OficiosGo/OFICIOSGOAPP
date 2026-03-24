@@ -1,12 +1,14 @@
-const CACHE_NAME = "oficiosgo-v1";
-const OFFLINE_URL = "/offline";
+const CACHE_NAME = "oficiosgo-v2";
 
 const PRECACHE = [
   "/app",
   "/app/buscar",
   "/manifest.json",
+  "/logo-white.svg",
+  "/logo-dark.svg",
 ];
 
+// Install: cache core assets
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE))
@@ -14,6 +16,7 @@ self.addEventListener("install", (event) => {
   self.skipWaiting();
 });
 
+// Activate: clean old caches
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
@@ -23,31 +26,45 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
+// Fetch: network-first for API, stale-while-revalidate for pages
 self.addEventListener("fetch", (event) => {
-  if (event.request.method !== "GET") return;
+  const { request } = event;
 
-  // API calls: network first
-  if (event.request.url.includes("/api/")) {
+  // Skip non-GET requests
+  if (request.method !== "GET") return;
+
+  // Skip chrome-extension and other non-http
+  if (!request.url.startsWith("http")) return;
+
+  // API calls: network first, fallback to cache
+  if (request.url.includes("/api/")) {
     event.respondWith(
-      fetch(event.request)
+      fetch(request)
         .then((response) => {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+          }
           return response;
         })
-        .catch(() => caches.match(event.request))
+        .catch(() => caches.match(request))
     );
     return;
   }
 
-  // Pages/assets: stale-while-revalidate
+  // Pages and assets: stale-while-revalidate
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      const fetchPromise = fetch(event.request).then((response) => {
-        const clone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-        return response;
-      });
+    caches.match(request).then((cached) => {
+      const fetchPromise = fetch(request)
+        .then((response) => {
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+          }
+          return response;
+        })
+        .catch(() => cached);
+
       return cached || fetchPromise;
     })
   );

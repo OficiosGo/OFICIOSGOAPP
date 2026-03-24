@@ -1,4 +1,5 @@
 {
+  "id": "/app",
   "name": "OficiosGo! — Profesionales de oficios",
   "short_name": "OficiosGo!",
   "description": "Encontrá electricistas, plomeros, carpinteros y más en Villa María",
@@ -7,7 +8,7 @@
   "background_color": "#1A1D2E",
   "theme_color": "#F8C927",
   "orientation": "portrait",
-  "scope": "/app",
+  "scope": "/",
   "icons": [
     {
       "src": "/icons/icon-192.png",
