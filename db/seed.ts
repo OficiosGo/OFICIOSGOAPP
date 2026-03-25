@@ -20,13 +20,14 @@ async function main() {
     { name: "Limpieza", slug: "limpieza", icon: "🧹", sortOrder: 10 },
     { name: "Cerrajería", slug: "cerrajeria", icon: "🔑", sortOrder: 11 },
     { name: "Niñeras", slug: "nineras", icon: "👶", sortOrder: 12 },
-    { name: "Comisionistas", slug: "comisionistas", icon: "📦", sortOrder: 13 },
-    { name: "Fleteros", slug: "fleteros", icon: "🚚", sortOrder: 14 },
-    { name: "Transporte Escolar", slug: "transporte-escolar", icon: "🚌", sortOrder: 15 },
-    { name: "Cadetes", slug: "cadetes", icon: "🏍️", sortOrder: 16 },
-    { name: "Transporte Privado", slug: "transporte-privado", icon: "🚗", sortOrder: 17 },
-    { name: "Vehículos", slug: "vehiculos", icon: "🔩", sortOrder: 18 },
-    { name: "Reparación de Electrodomésticos", slug: "reparacion-electrodomesticos", icon: "🔌", sortOrder: 19 },
+    { name: "Transporte", slug: "transporte", icon: "🚛", sortOrder: 13 },
+    { name: "Comisionistas", slug: "comisionistas", icon: "📦", sortOrder: 14 },
+    { name: "Fleteros", slug: "fleteros", icon: "🚚", sortOrder: 15 },
+    { name: "Transporte Escolar", slug: "transporte-escolar", icon: "🚌", sortOrder: 16 },
+    { name: "Cadetes", slug: "cadetes", icon: "🏍️", sortOrder: 17 },
+    { name: "Transporte Privado", slug: "transporte-privado", icon: "🚗", sortOrder: 18 },
+    { name: "Vehículos", slug: "vehiculos", icon: "🔩", sortOrder: 19 },
+    { name: "Reparación de Electrodomésticos", slug: "reparacion-electrodomesticos", icon: "🔌", sortOrder: 20 },
   ];
 
   for (const cat of categoriesData) {
@@ -66,8 +67,8 @@ async function main() {
   console.log("  Credenciales:");
   console.log("  Admin: admin@oficiosgo.com / admin123");
   console.log("═══════════════════════════════════════════");
-  console.log("  15 categorías creadas");
-  console.log("  Sin profesionales demo — listo para producción");
+  console.log("  20 categorías creadas");
+  console.log("  Listo para producción");
   console.log("═══════════════════════════════════════════\n");
 }
 
