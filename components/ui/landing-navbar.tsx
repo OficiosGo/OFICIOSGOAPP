@@ -25,18 +25,15 @@ export function LandingNavbar() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo-white.svg" alt="OficiosGo!" className="h-10 w-auto" />
         </Link>
-        <div className="flex items-center gap-3">
-          <Link
-            href="/app"
-            className="hidden sm:inline-flex px-5 py-2 rounded-lg bg-white/10 border border-white/15 text-white text-sm font-bold backdrop-blur-sm hover:bg-white/20 transition-all"
-          >
+        <div className="flex items-center gap-2 sm:gap-3">
+          <Link href="/login" className="px-3 sm:px-4 py-2 rounded-lg text-white/70 text-sm font-semibold hover:text-white transition-colors">
+            Iniciar sesión
+          </Link>
+          <Link href="/app" className="px-4 sm:px-5 py-2 rounded-lg bg-white/10 border border-white/15 text-white text-sm font-bold hover:bg-white/20 transition-all">
             Ver App
           </Link>
-          <Link
-            href="/app"
-            className="px-5 py-2 rounded-lg bg-[#F8C927] text-[#1A1D2E] text-sm font-extrabold shadow-lg shadow-[#F8C927]/30 hover:scale-[1.03] transition-transform"
-          >
-            Descargar
+          <Link href="/registro" className="hidden sm:inline-flex px-5 py-2 rounded-lg bg-[#F8C927] text-[#1A1D2E] text-sm font-extrabold shadow-lg shadow-[#F8C927]/30 hover:scale-[1.03] transition-transform">
+            Registrate
           </Link>
         </div>
       </div>
