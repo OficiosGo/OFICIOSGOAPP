@@ -15,14 +15,18 @@ async function main() {
     { name: "Construcción", slug: "construccion", icon: "🧱", sortOrder: 5 },
     { name: "Pintor", slug: "pintor", icon: "🎨", sortOrder: 6 },
     { name: "Herrero", slug: "herrero", icon: "⚒️", sortOrder: 7 },
-    { name: "Aire Acondicionado", slug: "aire-acondicionado", icon: "❄️", sortOrder: 8 },
+    { name: "Refrigeración", slug: "refrigeracion", icon: "❄️", sortOrder: 8 },
     { name: "Jardinería", slug: "jardineria", icon: "🌿", sortOrder: 9 },
     { name: "Limpieza", slug: "limpieza", icon: "🧹", sortOrder: 10 },
     { name: "Cerrajería", slug: "cerrajeria", icon: "🔑", sortOrder: 11 },
     { name: "Niñeras", slug: "nineras", icon: "👶", sortOrder: 12 },
-    { name: "Fletes", slug: "fletes", icon: "🚚", sortOrder: 13 },
-    { name: "Vehículos", slug: "vehiculos", icon: "🚗", sortOrder: 14 },
-    { name: "Electrodomésticos", slug: "electrodomesticos", icon: "🔌", sortOrder: 15 },
+    { name: "Comisionistas", slug: "comisionistas", icon: "📦", sortOrder: 13 },
+    { name: "Fleteros", slug: "fleteros", icon: "🚚", sortOrder: 14 },
+    { name: "Transporte Escolar", slug: "transporte-escolar", icon: "🚌", sortOrder: 15 },
+    { name: "Cadetes", slug: "cadetes", icon: "🏍️", sortOrder: 16 },
+    { name: "Transporte Privado", slug: "transporte-privado", icon: "🚗", sortOrder: 17 },
+    { name: "Vehículos", slug: "vehiculos", icon: "🔩", sortOrder: 18 },
+    { name: "Reparación de Electrodomésticos", slug: "reparacion-electrodomesticos", icon: "🔌", sortOrder: 19 },
   ];
 
   for (const cat of categoriesData) {
