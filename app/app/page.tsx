@@ -233,7 +233,7 @@ export default async function HomePage() {
           </>
         )}
 
-        <a href="https://wa.me/5493534127410?text=Hola%2C%20quiero%20publicitar%20mi%20negocio%20en%20OficiosGo!" target="_blank" rel="noopener noreferrer" className="block rounded-2xl overflow-hidden">
+        <a href="https://wa.me/5493535698990?text=Hola%2C%20quiero%20publicitar%20mi%20negocio%20en%20OficiosGo!" target="_blank" rel="noopener noreferrer" className="block rounded-2xl overflow-hidden">
           <div className="relative p-5 pb-4" style={{ background: "linear-gradient(135deg, #0F1120 0%, #1A1D2E 50%, #252839 100%)" }}>
             <div className="absolute top-0 right-0 w-32 h-32 rounded-full" style={{ background: "radial-gradient(circle, rgba(248,201,39,0.15), transparent 70%)", filter: "blur(20px)" }} />
             <div className="relative z-10">

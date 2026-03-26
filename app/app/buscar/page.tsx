@@ -351,7 +351,7 @@ export default async function SearchPage({ searchParams }: Props) {
                   Ver todos los oficios
                 </Link>
                 <a
-                  href="https://wa.me/5493534127410?text=Hola%2C%20necesito%20un%20profesional%20de%20este%20oficio%20en%20Villa%20Mar%C3%ADa"
+                  href="https://wa.me/5493535698990?text=Hola%2C%20necesito%20un%20profesional%20de%20este%20oficio%20en%20Villa%20Mar%C3%ADa"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="py-3 rounded-xl bg-[#25D366] text-white text-sm font-extrabold text-center flex items-center justify-center gap-2"

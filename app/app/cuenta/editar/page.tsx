@@ -108,7 +108,7 @@ export default function EditarPerfilPage() {
 
           <div>
             <label className={labelStyle}>WhatsApp</label>
-            <input value={form.whatsapp} onChange={set("whatsapp")} placeholder="5493534112233" inputMode="numeric" className={inputStyle} />
+            <input value={form.whatsapp} onChange={set("whatsapp")} placeholder="5493535698990" inputMode="numeric" className={inputStyle} />
             <p className="text-[11px] text-gray-400 mt-1">Con codigo de area y pais (54)</p>
           </div>
 

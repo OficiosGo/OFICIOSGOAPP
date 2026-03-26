@@ -680,7 +680,7 @@ export default async function LandingPage() {
           {/* CTA Ser Sponsor */}
           <div className="mt-10 text-center px-5">
             <a
-              href="https://wa.me/5493534127410?text=Hola%2C%20quiero%20ser%20sponsor%20en%20OficiosGo!"
+              href="https://wa.me/5493535698990?text=Hola%2C%20quiero%20ser%20sponsor%20en%20OficiosGo!"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl text-sm font-bold transition-all hover:scale-[1.02] active:scale-[0.98]"

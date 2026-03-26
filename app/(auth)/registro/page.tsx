@@ -184,7 +184,7 @@ export default function RegisterPage() {
             </div>
             <div>
               <label style={labelStyle}>Teléfono / WhatsApp *</label>
-              <input value={form.phone} onChange={set("phone")} placeholder="3534112233" inputMode="numeric" style={inputStyle} />
+              <input value={form.phone} onChange={set("phone")} placeholder="5493535698990" inputMode="numeric" style={inputStyle} />
               <p style={{ fontSize: 11, color: "#9CA3AF", marginTop: 4 }}>Los clientes te contactarán por este número</p>
             </div>
           </div>
