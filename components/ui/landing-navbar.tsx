@@ -32,7 +32,7 @@ export function LandingNavbar() {
           <img
             src="/logo-white.svg"
             alt="OficiosGo!"
-            className="h-7 sm:h-9 w-auto"
+            className="h-9 sm:h-12 w-auto"
           />
         </Link>
 
