@@ -58,16 +58,16 @@ export default function RegisterPage() {
 
   const validateStep1 = () => {
     if (!form.name || form.name.length < 2) { setError("Ingresa tu nombre completo"); return false; }
-    if (!form.dni || form.dni.length < 7 || !/^\d+$/.test(form.dni)) { setError("DNI invalido — solo numeros, sin puntos"); return false; }
+    if (!form.dni || form.dni.length < 7 || !/^\d+$/.test(form.dni)) { setError("DNI inválido — solo números, sin puntos"); return false; }
     if (!form.birthDay || !form.birthMonth || !form.birthYear) { setError("Completa tu fecha de nacimiento"); return false; }
     return true;
   };
 
   const validateStep2 = () => {
-    if (!form.email || !/\S+@\S+\.\S+/.test(form.email)) { setError("Email invalido"); return false; }
-    if (!form.password || form.password.length < 6) { setError("La contrasena debe tener al menos 6 caracteres"); return false; }
-    if (form.password !== confirmPassword) { setError("Las contrasenas no coinciden"); return false; }
-    if (!form.phone || form.phone.length < 8) { setError("Ingresa un telefono valido"); return false; }
+    if (!form.email || !/\S+@\S+\.\S+/.test(form.email)) { setError("Email inválido"); return false; }
+    if (!form.password || form.password.length < 6) { setError("La contraseña debe tener al menos 6 caracteres"); return false; }
+    if (form.password !== confirmPassword) { setError("Las contraseñas no coinciden"); return false; }
+    if (!form.phone || form.phone.length < 8) { setError("Ingresa un teléfono valido"); return false; }
     return true;
   };
 
@@ -79,7 +79,7 @@ export default function RegisterPage() {
 
   const handleSubmit = async () => {
     setError("");
-    if (!form.categoryId) { setError("Selecciona tu oficio"); return; }
+    if (!form.categoryId) { setError("Seleccioná tu oficio"); return; }
     if (!acceptedTerms) { setError("Debes aceptar los terminos y condiciones"); return; }
     setLoading(true);
     try {
@@ -92,7 +92,7 @@ export default function RegisterPage() {
       if (!res.ok) { setError(data.error || "Error al registrar"); return; }
       router.push("/app/dashboard");
       router.refresh();
-    } catch { setError("Error de conexion"); }
+    } catch { setError("Error de conexión"); }
     finally { setLoading(false); }
   };
 
@@ -123,10 +123,10 @@ export default function RegisterPage() {
 
       <div style={{ margin: "0 16px", background: "#fff", borderRadius: 24, padding: "28px 24px", boxShadow: "0 8px 32px rgba(0,0,0,0.08)", minHeight: 400 }}>
         <h1 style={{ fontSize: 22, fontWeight: 900, color: "#1A1D2E", marginBottom: 4 }}>
-          {step === 1 ? "Quien sos?" : step === 2 ? "Tu cuenta" : "Que haces?"}
+          {step === 1 ? "¿Quién sos?" : step === 2 ? "Tu cuenta" : "¿Qué hacés?"}
         </h1>
         <p style={{ fontSize: 13, color: "#9CA3AF", marginBottom: 20 }}>
-          {step === 1 ? "Necesitamos verificar tu identidad" : step === 2 ? "Datos para ingresar y que te contacten" : "Elegi tu oficio y empeza a recibir clientes"}
+          {step === 1 ? "Necesitamos verificar tu identidad" : step === 2 ? "Datos para ingresar y que te contacten" : "Elegí tu oficio y empeza a recibir clientes"}
         </p>
 
         {error && (
@@ -162,7 +162,7 @@ export default function RegisterPage() {
                   {years.map((y) => <option key={y} value={String(y)}>{y}</option>)}
                 </select>
               </div>
-              <p style={{ fontSize: 11, color: "#9CA3AF", marginTop: 4 }}>Debes ser mayor de 18 anos</p>
+              <p style={{ fontSize: 11, color: "#9CA3AF", marginTop: 4 }}>Debés ser mayor de 18 años</p>
             </div>
           </div>
         )}
@@ -174,18 +174,18 @@ export default function RegisterPage() {
               <input type="email" value={form.email} onChange={set("email")} placeholder="tu@email.com" style={inputStyle} />
             </div>
             <div>
-              <label style={labelStyle}>Contrasena *</label>
+              <label style={labelStyle}>Contraseña *</label>
               <div style={{ position: "relative" }}>
-                <input type={showPw ? "text" : "password"} value={form.password} onChange={set("password")} placeholder="Minimo 6 caracteres" style={{ ...inputStyle, paddingRight: 48 }} />
+                <input type={showPw ? "text" : "password"} value={form.password} onChange={set("password")} placeholder="Mínimo 6 caracteres" style={{ ...inputStyle, paddingRight: 48 }} />
                 <button type="button" onClick={() => setShowPw(!showPw)} style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", padding: 6, color: "#9CA3AF", display: "flex", alignItems: "center" }}>
                   <EyeIcon open={showPw} />
                 </button>
               </div>
             </div>
             <div>
-              <label style={labelStyle}>Repeti la contrasena *</label>
+              <label style={labelStyle}>Repetí la contraseña *</label>
               <div style={{ position: "relative" }}>
-                <input type={showConfirmPw ? "text" : "password"} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Repeti tu contrasena" style={{ ...inputStyle, paddingRight: 48 }} />
+                <input type={showConfirmPw ? "text" : "password"} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Repetí tu contraseña" style={{ ...inputStyle, paddingRight: 48 }} />
                 <button type="button" onClick={() => setShowConfirmPw(!showConfirmPw)} style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", padding: 6, color: "#9CA3AF", display: "flex", alignItems: "center" }}>
                   <EyeIcon open={showConfirmPw} />
                 </button>
@@ -194,7 +194,7 @@ export default function RegisterPage() {
             <div>
               <label style={labelStyle}>Telefono / WhatsApp *</label>
               <input value={form.phone} onChange={set("phone")} placeholder="5493535698990" inputMode="numeric" style={inputStyle} />
-              <p style={{ fontSize: 11, color: "#9CA3AF", marginTop: 4 }}>Los clientes te contactaran por este numero</p>
+              <p style={{ fontSize: 11, color: "#9CA3AF", marginTop: 4 }}>Los clientes te contactaran por este número</p>
             </div>
           </div>
         )}
@@ -204,7 +204,7 @@ export default function RegisterPage() {
             <div>
               <label style={labelStyle}>Oficio *</label>
               <select value={form.categoryId} onChange={set("categoryId")} style={selectStyle}>
-                <option value="">Selecciona tu oficio</option>
+                <option value="">Seleccioná tu oficio</option>
                 {categories.map((c) => <option key={c.id} value={c.id}>{c.icon} {c.name}</option>)}
               </select>
             </div>
@@ -231,7 +231,7 @@ export default function RegisterPage() {
                 <a href="/terminos" target="_blank" style={{ color: "#5C80BC", fontWeight: 600, textDecoration: "underline" }}>Terminos y Condiciones</a>{" "}
                 y la{" "}
                 <a href="/privacidad" target="_blank" style={{ color: "#5C80BC", fontWeight: 600, textDecoration: "underline" }}>Politica de Privacidad</a>{" "}
-                de OficiosGo!. Comprendo y acepto que la plataforma actua unicamente como un nexo de conexion y no se responsabiliza por la ejecucion, calidad o seguridad de los servicios contratados, ni por el comportamiento de los usuarios.
+                de OficiosGo!. Comprendo y acepto que la plataforma actua unicamente como un nexo de conexión y no se responsabiliza por la ejecucion, calidad o seguridad de los servicios contratados, ni por el comportamiento de los usuarios.
               </span>
             </label>
           </div>
@@ -257,7 +257,7 @@ export default function RegisterPage() {
 
       <div style={{ textAlign: "center", padding: "20px 0 32px" }}>
         <span style={{ fontSize: 13, color: "#9CA3AF" }}>Ya tenes cuenta? </span>
-        <Link href="/login" style={{ fontSize: 13, fontWeight: 700, color: "#5C80BC", textDecoration: "none" }}>Inicia sesion</Link>
+        <Link href="/login" style={{ fontSize: 13, fontWeight: 700, color: "#5C80BC", textDecoration: "none" }}>Iniciá sesión</Link>
       </div>
     </div>
   );

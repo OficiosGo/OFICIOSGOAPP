@@ -42,7 +42,7 @@ export default function LoginPage() {
       if (!res.ok) { setError(data.error || "Email o contrasena incorrectos"); return; }
       router.push("/app/dashboard");
       router.refresh();
-    } catch { setError("Error de conexion"); }
+    } catch { setError("Error de conexión"); }
     finally { setLoading(false); }
   };
 
@@ -53,8 +53,8 @@ export default function LoginPage() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo-white.svg" alt="OficiosGo!" className="h-12 w-auto mx-auto mb-5" />
         </Link>
-        <h1 className="text-2xl font-black text-white">Iniciar sesion</h1>
-        <p className="text-sm text-gray-400 mt-1">Accede a tu panel de profesional</p>
+        <h1 className="text-2xl font-black text-white">Iniciar sesión</h1>
+        <p className="text-sm text-gray-400 mt-1">Accedé a tu panel de profesional</p>
       </div>
 
       <div className="flex-1 bg-[#F5F5F7] rounded-t-[28px] px-6 pt-8 pb-10">
@@ -68,7 +68,7 @@ export default function LoginPage() {
               className="w-full px-4 py-3.5 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#F8C927] focus:ring-2 focus:ring-[#F8C927]/20 bg-white" />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-[#1A1D2E] mb-1.5">Contrasena</label>
+            <label className="block text-sm font-semibold text-[#1A1D2E] mb-1.5">Contraseña</label>
             <div className="relative">
               <input type={showPw ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} required placeholder="••••••••"
                 className="w-full px-4 py-3.5 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#F8C927] focus:ring-2 focus:ring-[#F8C927]/20 bg-white pr-12" />
