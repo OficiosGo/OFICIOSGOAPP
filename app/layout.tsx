@@ -4,18 +4,19 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "OficiosGo! - Plomeros, Electricistas y Mas en Villa Maria, Cordoba",
-    template: "%s | OficiosGo! Villa Maria",
+    default: "OficiosGo! — Profesionales de oficios en Villa María, Córdoba",
+    template: "%s | OficiosGo! Villa María",
   },
   description:
-    "Encontra plomeros, electricistas, pintores y carpinteros verificados en Villa Maria, Cordoba. Resenas reales de vecinos. Descarga la app gratis y contactalos hoy.",
+    "Encontrá electricistas, plomeros, pintores, carpinteros y más profesionales verificados en Villa María, Córdoba. Reseñas reales. Contacto directo por WhatsApp.",
   keywords: [
-    "plomero villa maria",
-    "electricista villa maria cordoba",
-    "pintor villa maria cordoba",
-    "carpintero villa maria",
-    "servicios del hogar villa maria",
-    "profesionales oficios villa maria",
+    "plomero villa maría",
+    "electricista villa maría córdoba",
+    "pintor villa maría",
+    "carpintero villa maría",
+    "servicios del hogar villa maría",
+    "profesionales oficios villa maría",
+    "contratar plomero córdoba",
   ],
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   alternates: { canonical: "/" },
@@ -24,15 +25,13 @@ export const metadata: Metadata = {
     locale: "es_AR",
     url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
     siteName: "OficiosGo!",
-    title: "OficiosGo! - Profesionales de oficios verificados en Villa Maria",
-    description: "Plomeros, electricistas, pintores y mas. Verificados, con resenas reales. App gratis para Villa Maria, Cordoba.",
-    images: [{ url: "/icons/icon-512.png", width: 512, height: 512, alt: "OficiosGo!" }],
+    title: "OficiosGo! — Profesionales de oficios verificados en Villa María",
+    description: "Electricistas, plomeros, pintores y más. Verificados, con reseñas reales. App gratis para Villa María, Córdoba.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "OficiosGo! - Profesionales de oficios en Villa Maria",
-    description: "Encontra plomeros, electricistas, pintores verificados en Villa Maria, Cordoba.",
-    images: ["/icons/icon-512.png"],
+    title: "OficiosGo! — Profesionales de oficios en Villa María",
+    description: "Encontrá profesionales verificados en Villa María, Córdoba.",
   },
   manifest: "/manifest.json",
   appleWebApp: {
@@ -64,12 +63,12 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   name: "OficiosGo!",
-  description: "Plataforma de profesionales de oficios verificados en Villa Maria, Cordoba, Argentina.",
+  description: "Plataforma de profesionales de oficios verificados en Villa María, Córdoba, Argentina.",
   url: process.env.NEXT_PUBLIC_APP_URL || "https://oficiosgo.com",
   logo: `${process.env.NEXT_PUBLIC_APP_URL || "https://oficiosgo.com"}/icons/icon-512.png`,
-  address: { "@type": "PostalAddress", addressLocality: "Villa Maria", addressRegion: "Cordoba", addressCountry: "AR" },
-  areaServed: { "@type": "City", name: "Villa Maria" },
-  serviceType: ["Plomeria", "Electricidad", "Pintura", "Carpinteria", "Limpieza"],
+  address: { "@type": "PostalAddress", addressLocality: "Villa María", addressRegion: "Córdoba", addressCountry: "AR" },
+  areaServed: { "@type": "City", name: "Villa María" },
+  serviceType: ["Plomería", "Electricidad", "Pintura", "Carpintería", "Limpieza", "Gasista", "Herrería", "Cerrajería"],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
