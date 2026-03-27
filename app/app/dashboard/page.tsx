@@ -68,7 +68,7 @@ export default async function DashboardPage() {
     { label: "Visitas", value: profile.totalViews, recent: recentViews, icon: "👁️", bg: "bg-blue-50" },
     { label: "Contactos", value: profile.totalContacts, recent: recentContacts, icon: "📞", bg: "bg-emerald-50" },
     { label: "Rating", value: profile.averageRating.toFixed(1), recent: null, icon: "⭐", bg: "bg-yellow-50" },
-    { label: "Resenas", value: profile.totalReviews, recent: null, icon: "💬", bg: "bg-violet-50" },
+    { label: "Opiniones", value: profile.totalReviews, recent: null, icon: "💬", bg: "bg-violet-50" },
   ];
 
   return (
@@ -175,11 +175,11 @@ export default async function DashboardPage() {
 
         {/* ── Reviews ── */}
         <div className="p-4 rounded-2xl bg-white border border-gray-100 shadow-sm">
-          <h2 className="text-[14px] font-extrabold text-[#1A1D2E] mb-3">Ultimas resenas</h2>
+          <h2 className="text-[14px] font-extrabold text-[#1A1D2E] mb-3">Ultimas opiniones</h2>
           {recentReviews.length === 0 ? (
             <div className="text-center py-6">
               <span className="text-3xl">💬</span>
-              <p className="text-sm font-semibold text-gray-700 mt-2">Sin resenas todavia</p>
+              <p className="text-sm font-semibold text-gray-700 mt-2">Sin opiniones todavia</p>
               <p className="text-xs text-gray-400 mt-1">Pedile a tus clientes que te dejen una</p>
             </div>
           ) : (
@@ -204,7 +204,7 @@ export default async function DashboardPage() {
             {[
               { label: "Editar perfil", emoji: "✏️", href: "/app/cuenta/editar", desc: "Datos y descripcion" },
               { label: "Mis fotos", emoji: "📸", href: "/app/cuenta/fotos", desc: "Mostra tu trabajo" },
-              { label: "Mis resenas", emoji: "💬", href: "/app/cuenta/resenas", desc: "Responde clientes" },
+              { label: "Mis opiniones", emoji: "💬", href: "/app/cuenta/opiniones", desc: "Responde clientes" },
               { label: "Mi perfil", emoji: "👁️", href: `/app/profesional/${profile.slug}`, desc: "Lo que ven los clientes" },
             ].map((a) => (
               <Link key={a.label} href={a.href} className="flex items-start gap-2.5 p-3.5 rounded-xl bg-white border border-gray-100 shadow-sm active:scale-[0.97] transition-transform">

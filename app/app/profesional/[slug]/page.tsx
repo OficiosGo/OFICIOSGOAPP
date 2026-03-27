@@ -20,10 +20,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `${name} — ${cat} en ${city} | OficiosGo`,
-    description: `${name}, ${cat.toLowerCase()} en ${city}. ${rating} de rating, ${profile.totalReviews} resenas verificadas. Contactalo hoy por WhatsApp.`,
+    description: `${name}, ${cat.toLowerCase()} en ${city}. ${rating} de rating, ${profile.totalReviews} opiniones verificadas. Contactalo hoy por WhatsApp.`,
     openGraph: {
       title: `${name} — ${cat} en ${city}`,
-      description: `${rating} · ${profile.totalReviews} resenas · ${city}`,
+      description: `${rating} · ${profile.totalReviews} opiniones · ${city}`,
       images: profile.photos[0] ? [{ url: profile.photos[0].url }] : [],
     },
   };
@@ -172,7 +172,7 @@ export default async function ProfilePage({ params }: Props) {
       {profile.reviews.length > 0 && (
         <section className="mx-4 mt-3 p-4 rounded-2xl bg-white border border-gray-100 shadow-sm">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-[14px] font-extrabold text-[#1A1D2E]">Resenas</h2>
+            <h2 className="text-[14px] font-extrabold text-[#1A1D2E]">Opiniones</h2>
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#FFFBEA] border border-[#F8C927]/30">
               <span className="text-[#F8C927] text-base leading-none">★</span>
               <span className="text-sm font-black text-[#1A1D2E]">{profile.averageRating.toFixed(1)}</span>

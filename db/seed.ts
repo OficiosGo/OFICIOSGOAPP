@@ -131,7 +131,7 @@ async function main() {
       bio: pro.bio,
       categoryId: categoryMap[pro.categorySlug],
       city: pro.city,
-      province: "Cordoba",
+      province: "Córdoba",
       neighborhood: pro.neighborhood,
       whatsapp: pro.whatsapp,
       yearsExperience: pro.yearsExperience,

@@ -35,7 +35,7 @@ export default async function AdminPage() {
     { label: "Suspendidos", value: suspended.total, icon: "🚫" },
     { label: "Clientes", value: totalClients, icon: "👥" },
     { label: "Usuarios total", value: totalUsers, icon: "📊" },
-    { label: "Resenas", value: totalReviews, icon: "⭐" },
+    { label: "Opiniones", value: totalReviews, icon: "⭐" },
     { label: "Presupuestos", value: totalBudgets, icon: "📋" },
     { label: "Interacciones", value: totalEvents, icon: "📈" },
   ];

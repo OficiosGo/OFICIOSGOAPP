@@ -20,7 +20,7 @@ export function Footer() {
             <img src="/logo-white.svg" alt="OficiosGo!" className="h-9" />
           </Link>
           <p className="text-sm text-gray-400 leading-relaxed">
-            Encontra profesionales de oficios en Villa Maria, Cordoba. Verificados, con resenas reales y disponibilidad inmediata.
+            Encontra profesionales de oficios en Villa Maria, Córdoba. Verificados, con opiniones reales y disponibilidad inmediata.
           </p>
           <Link href="/app/buscar" className="inline-block text-center text-sm font-semibold bg-[#F5A623] text-black rounded-lg px-4 py-2.5 hover:bg-[#e09612] transition-colors w-fit">
             Buscar profesional ahora
@@ -69,7 +69,7 @@ export function Footer() {
           <div className="flex flex-col gap-1.5 text-sm text-gray-400">
             <span className="flex items-center gap-2">
               <svg className="w-3.5 h-3.5 text-[#F5A623] shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-              Villa Maria, Cordoba
+              Villa Maria, Córdoba
             </span>
             <a href="mailto:info@oficiosgo.com" className="flex items-center gap-2 hover:text-white transition-colors">
               <svg className="w-3.5 h-3.5 text-[#F5A623] shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
@@ -84,7 +84,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-white/10 pt-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
-        <span>© {new Date().getFullYear()} OficiosGo! — Hecho en Villa Maria, Cordoba</span>
+        <span>© {new Date().getFullYear()} OficiosGo! — Hecho en Villa Maria, Córdoba</span>
         <div className="flex gap-4">
           <Link href="/terminos" className="hover:text-gray-300 transition-colors">Terminos</Link>
           <Link href="/privacidad" className="hover:text-gray-300 transition-colors">Privacidad</Link>

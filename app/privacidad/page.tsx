@@ -39,7 +39,7 @@ export default function PrivacidadPage() {
               <ul className="list-disc pl-6 space-y-1 mt-2">
                 <li>Validar la identidad del profesional para la emisión del Carnet Identificatorio</li>
                 <li>Permitir el contacto directo entre Cliente y Profesional para la prestación del servicio</li>
-                <li>Mantener el sistema de reseñas y reputación basado en experiencias reales</li>
+                <li>Mantener el sistema de opiniones y reputación basado en experiencias reales</li>
                 <li>Enviar notificaciones de seguridad o actualizaciones del servicio</li>
               </ul>
             </section>

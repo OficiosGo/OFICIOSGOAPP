@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     template: "%s | OficiosGo! Villa María",
   },
   description:
-    "Encontrá electricistas, plomeros, pintores, carpinteros y más profesionales verificados en Villa María, Córdoba. Reseñas reales. Contacto directo por WhatsApp.",
+    "Encontrá electricistas, plomeros, pintores, carpinteros y más profesionales verificados en Villa María, Córdoba. Opiniones reales. Contacto directo por WhatsApp.",
   keywords: [
     "plomero villa maría",
     "electricista villa maría córdoba",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
     siteName: "OficiosGo!",
     title: "OficiosGo! — Profesionales de oficios verificados en Villa María",
-    description: "Electricistas, plomeros, pintores y más. Verificados, con reseñas reales. App gratis para Villa María, Córdoba.",
+    description: "Electricistas, plomeros, pintores y más. Verificados, con opiniones reales. App gratis para Villa María, Córdoba.",
   },
   twitter: {
     card: "summary_large_image",

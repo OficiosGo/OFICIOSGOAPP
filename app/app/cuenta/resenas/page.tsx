@@ -5,7 +5,7 @@ import { professionalRepository } from "@/server/repositories/professional.repos
 import { db } from "@/db/client";
 import { formatDate } from "@/lib/utils";
 
-export default async function ResenasPage() {
+export default async function OpinionesPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
   const profile = await professionalRepository.getByUserId(user.id);
@@ -24,7 +24,7 @@ export default async function ResenasPage() {
           <Link href="/app/cuenta" className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round"><path d="m15 18-6-6 6-6"/></svg>
           </Link>
-          <h1 className="text-lg font-black text-[#F8C927]">Mis resenas</h1>
+          <h1 className="text-lg font-black text-[#F8C927]">Mis opiniones</h1>
         </div>
       </div>
 
@@ -42,7 +42,7 @@ export default async function ResenasPage() {
             </div>
           </div>
           <div className="flex-1">
-            <div className="text-sm font-bold text-[#1A1D2E]">{reviews.length} resena{reviews.length !== 1 ? "s" : ""}</div>
+            <div className="text-sm font-bold text-[#1A1D2E]">{reviews.length} opinión{reviews.length !== 1 ? "s" : ""}</div>
             <div className="text-xs text-gray-400">de clientes verificados</div>
           </div>
         </div>
@@ -50,8 +50,8 @@ export default async function ResenasPage() {
         {reviews.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-5xl mb-4">⭐</div>
-            <h3 className="text-lg font-bold text-[#1A1D2E] mb-2">Todavia no tenes resenas</h3>
-            <p className="text-sm text-gray-400">Cuando un cliente te deje una resena, va a aparecer aca</p>
+            <h3 className="text-lg font-bold text-[#1A1D2E] mb-2">Todavia no tenes opiniones</h3>
+            <p className="text-sm text-gray-400">Cuando un cliente te deje una opinión, va a aparecer aca</p>
           </div>
         ) : (
           <div className="space-y-3">

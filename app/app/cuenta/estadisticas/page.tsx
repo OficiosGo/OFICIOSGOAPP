@@ -26,7 +26,7 @@ export default async function EstadisticasPage() {
     { label: "Visitas totales", value: profile.totalViews, recent: recentViews, icon: "👁️", bg: "bg-blue-50" },
     { label: "Contactos totales", value: profile.totalContacts, recent: recentContacts, icon: "📞", bg: "bg-green-50" },
     { label: "Rating promedio", value: profile.averageRating.toFixed(1), recent: null, icon: "⭐", bg: "bg-yellow-50" },
-    { label: "Resenas totales", value: profile.totalReviews, recent: null, icon: "💬", bg: "bg-purple-50" },
+    { label: "Opiniones totales", value: profile.totalReviews, recent: null, icon: "💬", bg: "bg-purple-50" },
   ];
 
   const conversionRate = profile.totalViews > 0 ? ((profile.totalContacts / profile.totalViews) * 100).toFixed(1) : "0";
@@ -73,7 +73,7 @@ export default async function EstadisticasPage() {
           <div className="space-y-1.5 text-xs text-gray-600">
             <p>• Completa tu biografia con detalle de tus servicios</p>
             <p>• Subi fotos de tus mejores trabajos</p>
-            <p>• Pedile a tus clientes que te dejen una resena</p>
+            <p>• Pedile a tus clientes que te dejen una opinión</p>
             <p>• Activa el plan Premium para aparecer primero</p>
           </div>
         </div>

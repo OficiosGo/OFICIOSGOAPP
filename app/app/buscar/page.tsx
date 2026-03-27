@@ -23,12 +23,12 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   if (selected) {
     return {
       title: `${selected.name} en Villa Maria | OficiosGo`,
-      description: `Encontra ${selected.name.toLowerCase()} verificados en Villa Maria, Cordoba. Resenas reales, contacto directo.`,
+      description: `Encontra ${selected.name.toLowerCase()} verificados en Villa Maria, Córdoba. Opiniones reales, contacto directo.`,
     };
   }
   return {
     title: "Buscar profesionales en Villa Maria | OficiosGo",
-    description: "Busca plomeros, electricistas, pintores y mas en Villa Maria, Cordoba.",
+    description: "Busca plomeros, electricistas, pintores y mas en Villa Maria, Córdoba.",
   };
 }
 

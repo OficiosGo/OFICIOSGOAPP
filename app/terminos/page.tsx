@@ -45,8 +45,8 @@ export default function TerminosPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-[#1A1D2E] mt-8 mb-3">5. Verificación de Identidad y Reseñas</h2>
-              <p>El sistema de carnet y reseñas de OficiosGo! se basa en información proporcionada por terceros y experiencias previas de otros usuarios. Si bien La Plataforma realiza esfuerzos por validar la identidad, esto no constituye una certificación de infalibilidad ni una garantía de buen desempeño futuro.</p>
+              <h2 className="text-xl font-bold text-[#1A1D2E] mt-8 mb-3">5. Verificación de Identidad y Opiniones</h2>
+              <p>El sistema de carnet y opiniones de OficiosGo! se basa en información proporcionada por terceros y experiencias previas de otros usuarios. Si bien La Plataforma realiza esfuerzos por validar la identidad, esto no constituye una certificación de infalibilidad ni una garantía de buen desempeño futuro.</p>
             </section>
 
           </div>

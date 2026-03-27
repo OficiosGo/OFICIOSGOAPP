@@ -102,7 +102,7 @@ export default async function LandingPage() {
               Terminá con las recomendaciones de dudosa reputación.
               Encontrá plomeros, electricistas, pintores y más —{" "}
               <strong className="text-gray-300 font-semibold">
-                verificados, con reseñas reales y disponibles ahora.
+                verificados, con opiniones reales y disponibles ahora.
               </strong>
             </p>
 
@@ -134,7 +134,7 @@ export default async function LandingPage() {
                   <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
                   <line x1="12" y1="18" x2="12.01" y2="18" />
                 </svg>
-                Descargar gratis
+                Descargar la APP Gratis
               </Link>
 
               <Link
@@ -362,7 +362,7 @@ export default async function LandingPage() {
             {
               n: "2",
               icon: "⭐",
-              title: "Leé reseñas reales",
+              title: "Leé opiniones reales",
               desc: "Calificaciones verificadas de vecinos. Ves fotos de trabajos anteriores antes de llamar.",
             },
             {
@@ -513,7 +513,7 @@ export default async function LandingPage() {
                             {pro.averageRating.toFixed(1)}
                           </span>
                           <span className="text-[11px] text-gray-400">
-                            ({pro.totalReviews} reseñas)
+                            ({pro.totalReviews} opiniones)
                           </span>
                         </div>
                       </div>

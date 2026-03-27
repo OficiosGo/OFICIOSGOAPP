@@ -81,11 +81,11 @@ export default async function CuentaPage() {
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2"><path d="m9 18 6-6-6-6"/></svg>
             </Link>
 
-            <Link href="/app/cuenta/resenas" className="flex items-center gap-3 px-4 py-4 rounded-2xl bg-white border border-gray-200 text-sm font-semibold text-[#1A1D2E]">
+            <Link href="/app/cuenta/opiniones" className="flex items-center gap-3 px-4 py-4 rounded-2xl bg-white border border-gray-200 text-sm font-semibold text-[#1A1D2E]">
               <span className="text-lg">⭐</span>
               <div className="flex-1">
-                <div>Mis resenas</div>
-                <div className="text-[11px] text-gray-400 font-normal mt-0.5">{profile.totalReviews} resena{profile.totalReviews !== 1 ? "s" : ""} - {profile.averageRating.toFixed(1)} promedio</div>
+                <div>Mis opiniones</div>
+                <div className="text-[11px] text-gray-400 font-normal mt-0.5">{profile.totalReviews} opinión{profile.totalReviews !== 1 ? "s" : ""} - {profile.averageRating.toFixed(1)} promedio</div>
               </div>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2"><path d="m9 18 6-6-6-6"/></svg>
             </Link>
@@ -112,7 +112,7 @@ export default async function CuentaPage() {
               <span className="text-lg">📋</span>
               <div className="flex-1">
                 <div>Panel de control</div>
-                <div className="text-[11px] text-gray-500 font-normal mt-0.5">Presupuestos, metricas y resenas</div>
+                <div className="text-[11px] text-gray-500 font-normal mt-0.5">Presupuestos, metricas y opiniones</div>
               </div>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F8C927" strokeWidth="2"><path d="m9 18 6-6-6-6"/></svg>
             </Link>

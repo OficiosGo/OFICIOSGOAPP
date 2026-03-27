@@ -60,7 +60,7 @@ export function ReviewForm({ profileId, professionalName }: Props) {
     return (
       <div className="p-5 rounded-2xl bg-green-50 border border-green-100 text-center">
         <div className="text-3xl mb-2">✅</div>
-        <p className="text-sm font-bold text-green-700">Gracias por tu resena</p>
+        <p className="text-sm font-bold text-green-700">Gracias por tu opinión</p>
         <p className="text-xs text-green-600 mt-1">Tu opinion ayuda a otros vecinos de Villa Maria</p>
       </div>
     );
@@ -73,7 +73,7 @@ export function ReviewForm({ profileId, professionalName }: Props) {
         className="flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl bg-white border-2 border-dashed border-[#F8C927] text-[#1A1D2E] text-sm font-bold active:scale-[0.98] transition-transform"
       >
         <span className="text-lg">⭐</span>
-        Dejar una resena a {professionalName}
+        Dejar una opinión a {professionalName}
       </button>
     );
   }
@@ -81,7 +81,7 @@ export function ReviewForm({ profileId, professionalName }: Props) {
   return (
     <div className="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-[15px] font-black text-[#1A1D2E]">Tu resena</h3>
+        <h3 className="text-[15px] font-black text-[#1A1D2E]">Tu opinión</h3>
         <button onClick={() => setOpen(false)} className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
@@ -122,7 +122,7 @@ export function ReviewForm({ profileId, professionalName }: Props) {
       {!isLoggedIn && (
         <div className="space-y-3 mb-4">
           <div className="p-3 rounded-xl bg-gray-50 border border-gray-100">
-            <p className="text-[11px] text-gray-400 mb-2">Para verificar tu resena:</p>
+            <p className="text-[11px] text-gray-400 mb-2">Para verificar tu opinión:</p>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -145,7 +145,7 @@ export function ReviewForm({ profileId, professionalName }: Props) {
         disabled={loading || rating === 0}
         className="w-full py-3.5 rounded-xl bg-[#F8C927] text-[#1A1D2E] font-extrabold text-sm disabled:opacity-50 active:scale-[0.98] transition-transform"
       >
-        {loading ? "Enviando..." : "Publicar resena"}
+        {loading ? "Enviando..." : "Publicar opinión"}
       </button>
     </div>
   );
