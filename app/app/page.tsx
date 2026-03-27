@@ -4,7 +4,6 @@ import { searchService } from "@/server/services/search.service";
 import { sponsorRepository } from "@/server/repositories/sponsor.repository";
 import { professionalRepository } from "@/server/repositories/professional.repository";
 import { HomeCTAs } from "@/components/features/home-ctas";
-import { InstallButton } from "@/components/pwa/install-button";
 
 export const revalidate = 60;
 
@@ -47,12 +46,9 @@ export default async function HomePage() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/logo-white.svg" alt="OficiosGo!" className="h-10 w-auto" />
           </Link>
-          <div className="flex items-center gap-2">
-            <InstallButton variant="small" />
-            <Link href="/app/cuenta" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="8" r="4"/><path d="M5.5 21a7.5 7.5 0 0 1 13 0"/></svg>
-            </Link>
-          </div>
+          <Link href="/app/cuenta" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="8" r="4"/><path d="M5.5 21a7.5 7.5 0 0 1 13 0"/></svg>
+          </Link>
         </div>
 
         <p className="relative z-10 text-[13px] text-gray-400 mb-2 font-medium">Que problema resolvemos hoy?</p>
