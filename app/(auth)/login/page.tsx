@@ -35,8 +35,6 @@ export default function LoginPage() {
     finally { setLoading(false); }
   };
 
-  const whatsappUrl = "https://wa.me/+5493535698990?text=Hola%2C%20me%20olvid%C3%A9%20mi%20contrase%C3%B1a%20en%20OficiosGo.%20Mi%20email%20es%3A%20";
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1A1D2E] to-[#252839] flex flex-col">
       <div className="pt-12 pb-8 text-center px-6">
@@ -71,9 +69,9 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="block text-center text-sm text-[#5C80BC] font-semibold mt-4">
+        <Link href="/forgot-password" className="block text-center text-sm text-[#5C80BC] font-semibold mt-4">
           {"¿Olvidaste tu contraseña?"}
-        </a>
+        </Link>
 
         <div className="mt-6 pt-6 border-t border-gray-200">
           <p className="text-center text-sm text-gray-500">

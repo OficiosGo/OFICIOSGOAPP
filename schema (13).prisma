@@ -54,14 +54,16 @@ enum BudgetResponseStatus {
 // ═══════════════════════════════════════════
 
 model User {
-  id           String    @id @default(cuid())
-  email        String    @unique
-  passwordHash String
-  name         String
-  phone        String?
-  dni          String?   @unique
-  birthDate    DateTime?
-  role         UserRole  @default(PROFESSIONAL)
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String
+  name          String
+  phone         String?
+  dni           String?   @unique
+  birthDate     DateTime?
+  role          UserRole  @default(PROFESSIONAL)
+  resetToken    String?   @unique
+  resetTokenExp DateTime?
 
   profile   Profile?
   reviews   Review[] @relation("ReviewAuthor")

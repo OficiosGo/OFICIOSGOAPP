@@ -5,7 +5,7 @@ import { AUTH_COOKIE_NAME } from "@/lib/constants";
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!);
 
-const AUTH_ROUTES = ["/app/login", "/login", "/registro"];
+const AUTH_ROUTES = ["/app/login", "/login", "/registro", "/forgot-password", "/reset-password"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -18,22 +18,24 @@ export async function middleware(request: NextRequest) {
       const { payload } = await jwtVerify(token, JWT_SECRET);
       user = { id: payload.sub as string, role: payload.role as string };
     } catch {
-      // Token expired or invalid — clear it and redirect if on protected route
       if (pathname.startsWith("/app/dashboard") || pathname.startsWith("/app/cuenta/editar") || pathname.startsWith("/admin")) {
         const response = NextResponse.redirect(new URL("/login", request.url));
         response.cookies.delete(AUTH_COOKIE_NAME);
         return response;
       }
-      // For non-protected routes, just clear cookie and continue
       const response = NextResponse.next();
       response.cookies.delete(AUTH_COOKIE_NAME);
       return response;
     }
   }
 
-  // Logged in user going to auth pages — redirect based on role
+  // Logged in user going to auth pages
   if (user && AUTH_ROUTES.some((r) => pathname.startsWith(r))) {
-    // Admin can access /registro to create professionals manually
+    // Allow forgot/reset even when logged in
+    if (pathname.startsWith("/forgot-password") || pathname.startsWith("/reset-password")) {
+      return NextResponse.next();
+    }
+    // Admin can access /registro
     if (pathname === "/registro" && user.role === "ADMIN") {
       return NextResponse.next();
     }
@@ -43,7 +45,6 @@ export async function middleware(request: NextRequest) {
     if (user.role === "PROFESSIONAL") {
       return NextResponse.redirect(new URL("/app/dashboard", request.url));
     }
-    // Clients go to home
     return NextResponse.redirect(new URL("/app", request.url));
   }
 
@@ -63,7 +64,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // /app/cuenta sub-pages — need auth
-  if (pathname.startsWith("/app/cuenta/editar") || pathname.startsWith("/app/cuenta/fotos") || pathname.startsWith("/app/cuenta/resenas") || pathname.startsWith("/app/cuenta/estadisticas")) {
+  if (pathname.startsWith("/app/cuenta/editar") || pathname.startsWith("/app/cuenta/fotos") || pathname.startsWith("/app/cuenta/opiniones") || pathname.startsWith("/app/cuenta/estadisticas")) {
     if (!user) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
@@ -87,11 +88,13 @@ export const config = {
     "/app/dashboard/:path*",
     "/app/cuenta/editar",
     "/app/cuenta/fotos",
-    "/app/cuenta/resenas",
+    "/app/cuenta/opiniones",
     "/app/cuenta/estadisticas",
     "/admin/:path*",
     "/login",
     "/registro",
     "/app/login",
+    "/forgot-password",
+    "/reset-password",
   ],
 };
