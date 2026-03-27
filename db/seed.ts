@@ -76,7 +76,7 @@ async function main() {
     phone: "5493535698990",
     slug: "carlos-mendez-electricista",
     headline: "Electricista matriculado - instalaciones y reparaciones",
-    bio: "Mas de 12 anos trabajando en instalaciones electricas domiciliarias e industriales en Villa Maria y zona. Matriculado ante el Colegio de Tecnicos. Trabajo con garantia escrita.",
+    bio: "Mas de 12 años trabajando en instalaciones electricas domiciliarias e industriales en Villa Maria y zona. Matriculado ante el Colegio de Tecnicos. Trabajo con garantia escrita.",
     categorySlug: "electricista",
     city: "Villa Maria",
     neighborhood: "Centro",

@@ -132,7 +132,7 @@ export default async function ProfilePage({ params }: Props) {
               <span className="flex items-center gap-1 text-[11px] text-red-600 bg-red-50 px-2.5 py-1.5 rounded-lg font-bold border border-red-100">🚨 Urgencias 24hs</span>
             )}
             {profile.yearsExperience && (
-              <span className="flex items-center gap-1 text-[11px] text-gray-500 bg-gray-50 px-2.5 py-1.5 rounded-lg">🔨 {profile.yearsExperience} anos exp.</span>
+              <span className="flex items-center gap-1 text-[11px] text-gray-500 bg-gray-50 px-2.5 py-1.5 rounded-lg">🔨 {profile.yearsExperience} años exp.</span>
             )}
             {profile.availability && (
               <span className="flex items-center gap-1 text-[11px] text-gray-500 bg-gray-50 px-2.5 py-1.5 rounded-lg">🕐 {profile.availability}</span>

@@ -97,7 +97,7 @@ export default function EditarPerfilPage() {
         <div className="space-y-4">
           <div>
             <label className={labelStyle}>Titular / Descripcion corta</label>
-            <input value={form.headline} onChange={set("headline")} placeholder="Ej: Electricista matriculado - 12 anos de experiencia" className={inputStyle} />
+            <input value={form.headline} onChange={set("headline")} placeholder="Ej: Electricista matriculado - 12 años de experiencia" className={inputStyle} />
             <p className="text-[11px] text-gray-400 mt-1">{form.headline.length}/120</p>
           </div>
 
@@ -114,7 +114,7 @@ export default function EditarPerfilPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className={labelStyle}>Anos de experiencia</label>
+              <label className={labelStyle}>Años de experiencia</label>
               <input type="number" value={form.yearsExperience} onChange={set("yearsExperience")} className={inputStyle} />
             </div>
             <div>

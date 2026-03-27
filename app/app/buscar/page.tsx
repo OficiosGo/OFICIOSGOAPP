@@ -159,7 +159,7 @@ export default async function SearchPage({ searchParams }: Props) {
                         )}
                       </div>
                       <div className="text-[12px] text-gray-500 mt-0.5 truncate">
-                        {pro.category.name}{pro.city ? ` · ${pro.city}` : ""}{pro.yearsExperience ? ` · ${pro.yearsExperience} anos` : ""}
+                        {pro.category.name}{pro.city ? ` · ${pro.city}` : ""}{pro.yearsExperience ? ` · ${pro.yearsExperience} años` : ""}
                       </div>
                       <div className="flex items-center gap-2 mt-1 flex-wrap">
                         <div className="flex items-center gap-1">

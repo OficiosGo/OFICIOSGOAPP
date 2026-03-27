@@ -158,7 +158,7 @@ export default function RegisterPage() {
                   {months.map((m, i) => <option key={m} value={String(i + 1)}>{m}</option>)}
                 </select>
                 <select value={form.birthYear} onChange={set("birthYear")} style={{ ...selectStyle, flex: "0 0 30%" }}>
-                  <option value="">Ano</option>
+                  <option value="">Año</option>
                   {years.map((y) => <option key={y} value={String(y)}>{y}</option>)}
                 </select>
               </div>
