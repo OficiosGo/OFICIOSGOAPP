@@ -6,6 +6,7 @@ import { db } from "@/db/client";
 import { ApproveButton } from "./approve-button";
 import { SuspendButton } from "./suspend-button";
 import { AddSponsorForm, DeleteSponsorButton, TierSelect } from "./admin-forms";
+import { AnalyticsPanel } from "./analytics-panel";
 
 export const metadata = { title: "Admin - OficiosGo" };
 
@@ -81,6 +82,8 @@ export default async function AdminPage() {
             ))}
           </div>
         </section>
+
+        <AnalyticsPanel />
 
         <section>
           <div className="flex items-center gap-2 mb-3">
