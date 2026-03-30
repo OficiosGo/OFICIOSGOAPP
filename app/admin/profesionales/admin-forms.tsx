@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { createSponsor, deleteSponsor, changeTier } from "@/server/actions/admin.actions";
+import { createSponsor, deleteSponsor, changeTier, deleteProfessional } from "@/server/actions/admin.actions";
 
 export function AddSponsorForm() {
   const router = useRouter();
@@ -61,8 +61,6 @@ export function AddSponsorForm() {
       <form action={handleSubmit} className="space-y-3">
         <input name="name" required placeholder="Nombre del negocio" className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm outline-none focus:border-[#F8C927]" />
         <input name="description" required placeholder="Descripción corta" className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm outline-none focus:border-[#F8C927]" />
-
-        {/* Logo upload */}
         <div>
           <label className="block text-[12px] font-semibold text-[#1A1D2E] mb-1.5">Logo del negocio</label>
           <div className="flex items-center gap-3">
@@ -87,7 +85,6 @@ export function AddSponsorForm() {
           <input ref={fileRef} type="file" accept="image/png,image/jpeg,image/webp" onChange={handleFile} className="hidden" />
           <input type="hidden" name="logoUrl" value={logoData} />
         </div>
-
         <div className="grid grid-cols-2 gap-2">
           <input name="phone" placeholder="Teléfono" className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm outline-none focus:border-[#F8C927]" />
           <input name="whatsapp" placeholder="WhatsApp (54...)" className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm outline-none focus:border-[#F8C927]" />
@@ -140,5 +137,28 @@ export function TierSelect({ profileId, currentTier }: { profileId: string; curr
       <option value="STANDARD">Standard</option>
       <option value="PREMIUM">★ Premium</option>
     </select>
+  );
+}
+
+export function DeleteProfessionalButton({ profileId }: { profileId: string }) {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const handleDelete = async () => {
+    if (!confirm("¿Eliminar este profesional? Se borra la cuenta, perfil, opiniones y fotos. Esta acción no se puede deshacer.")) return;
+    setLoading(true);
+    const result = await deleteProfessional(profileId);
+    if (result.success) {
+      router.refresh();
+    } else {
+      alert(result.error);
+    }
+    setLoading(false);
+  };
+
+  return (
+    <button onClick={handleDelete} disabled={loading} className="flex-1 py-2 rounded-lg bg-red-500 text-white text-[11px] font-bold active:scale-[0.97] transition-transform disabled:opacity-50">
+      {loading ? "..." : "🗑 Eliminar"}
+    </button>
   );
 }

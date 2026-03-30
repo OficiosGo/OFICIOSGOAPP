@@ -23,8 +23,7 @@ export async function createSponsor(formData: FormData): Promise<Result<void>> {
 
     await db.sponsor.create({
       data: {
-        name,
-        slug,
+        name, slug,
         phone: phone || null,
         whatsapp: whatsapp || null,
         description,
@@ -63,20 +62,31 @@ export async function deleteSponsor(sponsorId: string): Promise<Result<void>> {
 export async function changeTier(profileId: string, tier: string): Promise<Result<void>> {
   try {
     await requireAdmin();
-
     if (!["FREE", "STANDARD", "PREMIUM"].includes(tier)) {
       return { success: false, error: "Tier inválido", code: "VALIDATION" };
     }
-
     await db.profile.update({
       where: { id: profileId },
       data: { tier: tier as any },
     });
-
     revalidatePath("/admin/profesionales");
     return { success: true, data: undefined };
   } catch (error) {
     console.error("changeTier error:", error);
     return { success: false, error: "Error al cambiar el plan", code: "INTERNAL" };
+  }
+}
+
+export async function deleteProfessional(profileId: string): Promise<Result<void>> {
+  try {
+    await requireAdmin();
+    const profile = await db.profile.findUnique({ where: { id: profileId }, select: { userId: true } });
+    if (!profile) return { success: false, error: "Profesional no encontrado", code: "NOT_FOUND" };
+    await db.user.delete({ where: { id: profile.userId } });
+    revalidatePath("/admin/profesionales");
+    return { success: true, data: undefined };
+  } catch (error) {
+    console.error("deleteProfessional error:", error);
+    return { success: false, error: "Error al eliminar", code: "INTERNAL" };
   }
 }

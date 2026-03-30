@@ -5,7 +5,7 @@ import { professionalRepository } from "@/server/repositories/professional.repos
 import { db } from "@/db/client";
 import { ApproveButton } from "./approve-button";
 import { SuspendButton } from "./suspend-button";
-import { AddSponsorForm, DeleteSponsorButton, TierSelect } from "./admin-forms";
+import { AddSponsorForm, DeleteSponsorButton, TierSelect, DeleteProfessionalButton } from "./admin-forms";
 import { AnalyticsPanel } from "./analytics-panel";
 
 export const metadata = { title: "Admin - OficiosGo" };
@@ -176,6 +176,7 @@ export default async function AdminPage() {
                   <div className="flex gap-2 p-4 pt-2 border-t border-gray-100">
                     <ApproveButton profileId={p.id} />
                     <SuspendButton profileId={p.id} />
+                    <DeleteProfessionalButton profileId={p.id} />
                     <a href={`https://wa.me/54${p.user.phone || ""}?text=${encodeURIComponent(`Hola ${p.user.name}, soy admin de OficiosGo. Necesito que completes algunos datos de tu perfil.`)}`} target="_blank" rel="noopener noreferrer" className="flex-1 py-2 rounded-lg bg-[#25D366]/10 border border-[#25D366]/30 text-center text-[11px] font-bold text-[#25D366] active:scale-[0.97] transition-transform">
                       WhatsApp
                     </a>
@@ -207,6 +208,7 @@ export default async function AdminPage() {
                 <div className="flex gap-2 mt-3">
                   <Link href={`/app/profesional/${p.slug}`} className="flex-1 py-2 rounded-lg bg-gray-50 border border-gray-200 text-center text-[11px] font-bold text-[#1A1D2E]">Ver perfil</Link>
                   <SuspendButton profileId={p.id} />
+                  <DeleteProfessionalButton profileId={p.id} />
                 </div>
               </div>
             ))}
@@ -233,6 +235,7 @@ export default async function AdminPage() {
                   </div>
                   <div className="flex gap-2 mt-3">
                     <ApproveButton profileId={p.id} />
+                    <DeleteProfessionalButton profileId={p.id} />
                   </div>
                 </div>
               ))}
