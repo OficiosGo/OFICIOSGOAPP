@@ -31,7 +31,7 @@ export async function sendResetEmail(email: string, token: string) {
         </p>
         <hr style="border: none; border-top: 1px solid #E5E7EB; margin: 24px 0;" />
         <p style="color: #9CA3AF; font-size: 11px; text-align: center;">
-          OficiosGo! — Profesionales de oficios en Villa María, Córdoba
+          OficiosGo! — Profesionales de oficios en Villa María y Villa Nueva, Córdoba
         </p>
       </div>
     `,

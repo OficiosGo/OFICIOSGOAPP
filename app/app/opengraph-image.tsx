@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "OficiosGo! - Profesionales de oficios en Villa María";
+export const alt = "OficiosGo! - Profesionales de oficios en Villa María y Villa Nueva";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

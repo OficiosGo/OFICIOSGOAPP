@@ -96,22 +96,89 @@ export default async function AdminPage() {
               <p className="text-sm font-bold text-green-700 mt-2">Sin pendientes</p>
             </div>
           ) : (
-            <div className="bg-white rounded-2xl border-2 border-yellow-200 divide-y divide-gray-100 overflow-hidden">
-              {pending.data.map((p) => (
-                <div key={p.id} className="p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-yellow-100 flex items-center justify-center text-sm font-black text-yellow-700 shrink-0">
-                      {p.user.name.split(" ").map((n: string) => n[0]).join("").slice(0, 2)}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-[14px] font-bold text-[#1A1D2E]">{p.user.name}</div>
-                      <div className="text-[11px] text-gray-400">{p.category.name} · {p.city}</div>
-                      <div className="text-[11px] text-gray-400 mt-1">📧 {p.user.email}</div>
+            <div className="space-y-3">
+              {pending.data.map((p: any) => (
+                <div key={p.id} className="bg-white rounded-2xl border-2 border-yellow-200 overflow-hidden">
+                  <div className="p-4 pb-3">
+                    <div className="flex items-start gap-3">
+                      <div className="w-12 h-12 rounded-xl bg-yellow-100 flex items-center justify-center text-sm font-black text-yellow-700 shrink-0">
+                        {p.user.name.split(" ").map((n: string) => n[0]).join("").slice(0, 2)}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-[15px] font-extrabold text-[#1A1D2E]">{p.user.name}</div>
+                        <div className="text-[12px] text-[#5C80BC] font-semibold">{p.category.icon} {p.category.name}</div>
+                        <div className="text-[10px] text-gray-400 mt-0.5">
+                          Registrado {new Date(p.user.createdAt).toLocaleDateString("es-AR", { day: "numeric", month: "short", year: "numeric" })}
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex gap-2 mt-3">
+                  <div className="px-4 pb-3">
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="p-2.5 rounded-lg bg-gray-50">
+                        <div className="text-[9px] text-gray-400 font-semibold uppercase">Email</div>
+                        <div className="text-[12px] font-semibold text-[#1A1D2E] truncate">{p.user.email}</div>
+                      </div>
+                      <div className="p-2.5 rounded-lg bg-gray-50">
+                        <div className="text-[9px] text-gray-400 font-semibold uppercase">Teléfono</div>
+                        <div className="text-[12px] font-semibold text-[#1A1D2E]">{p.user.phone || "No cargó"}</div>
+                      </div>
+                      <div className="p-2.5 rounded-lg bg-gray-50">
+                        <div className="text-[9px] text-gray-400 font-semibold uppercase">DNI</div>
+                        <div className={`text-[12px] font-semibold ${p.user.dni ? "text-[#1A1D2E]" : "text-red-400"}`}>{p.user.dni || "⚠️ No cargó"}</div>
+                      </div>
+                      <div className="p-2.5 rounded-lg bg-gray-50">
+                        <div className="text-[9px] text-gray-400 font-semibold uppercase">Ciudad</div>
+                        <div className="text-[12px] font-semibold text-[#1A1D2E]">{p.city}</div>
+                      </div>
+                      <div className="p-2.5 rounded-lg bg-gray-50">
+                        <div className="text-[9px] text-gray-400 font-semibold uppercase">Urgencias 24hs</div>
+                        <div className="text-[12px] font-semibold">{p.urgencias24hs ? "🚨 Sí" : "No"}</div>
+                      </div>
+                      <div className="p-2.5 rounded-lg bg-gray-50">
+                        <div className="text-[9px] text-gray-400 font-semibold uppercase">Nacimiento</div>
+                        <div className={`text-[12px] font-semibold ${p.user.birthDate ? "text-[#1A1D2E]" : "text-red-400"}`}>
+                          {p.user.birthDate ? new Date(p.user.birthDate).toLocaleDateString("es-AR") : "⚠️ No cargó"}
+                        </div>
+                      </div>
+                    </div>
+                    {p.bio && (
+                      <div className="mt-2 p-2.5 rounded-lg bg-blue-50">
+                        <div className="text-[9px] text-blue-400 font-semibold uppercase">Descripción</div>
+                        <div className="text-[12px] text-[#1A1D2E] mt-0.5 line-clamp-3">{p.bio}</div>
+                      </div>
+                    )}
+                    {p.photos && p.photos.length > 0 && (
+                      <div className="mt-2">
+                        <div className="text-[9px] text-gray-400 font-semibold uppercase mb-1">Fotos de trabajo</div>
+                        <div className="flex gap-1.5">
+                          {p.photos.map((photo: any, i: number) => (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img key={i} src={photo.url} alt="Trabajo" className="w-16 h-16 rounded-lg object-cover border border-gray-100" />
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {[
+                        { ok: !!p.user.dni, label: "DNI" },
+                        { ok: !!p.user.phone, label: "Teléfono" },
+                        { ok: !!p.user.birthDate, label: "Nacimiento" },
+                        { ok: !!p.bio, label: "Descripción" },
+                        { ok: p.photos && p.photos.length > 0, label: "Fotos" },
+                      ].map((c) => (
+                        <span key={c.label} className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${c.ok ? "bg-green-100 text-green-700" : "bg-red-50 text-red-400"}`}>
+                          {c.ok ? "✓" : "✗"} {c.label}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex gap-2 p-4 pt-2 border-t border-gray-100">
                     <ApproveButton profileId={p.id} />
                     <SuspendButton profileId={p.id} />
+                    <a href={`https://wa.me/54${p.user.phone || ""}?text=${encodeURIComponent(`Hola ${p.user.name}, soy admin de OficiosGo. Necesito que completes algunos datos de tu perfil.`)}`} target="_blank" rel="noopener noreferrer" className="flex-1 py-2 rounded-lg bg-[#25D366]/10 border border-[#25D366]/30 text-center text-[11px] font-bold text-[#25D366] active:scale-[0.97] transition-transform">
+                      WhatsApp
+                    </a>
                   </div>
                 </div>
               ))}
@@ -125,7 +192,7 @@ export default async function AdminPage() {
             <span className="px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-[10px] font-extrabold">{approved.total}</span>
           </div>
           <div className="bg-white rounded-2xl border border-gray-100 divide-y divide-gray-100 overflow-hidden">
-            {approved.data.map((p) => (
+            {approved.data.map((p: any) => (
               <div key={p.id} className="p-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#5C80BC] to-[#7A9263] flex items-center justify-center text-white text-sm font-black shrink-0">
@@ -133,9 +200,9 @@ export default async function AdminPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="text-[14px] font-bold text-[#1A1D2E] truncate">{p.user.name}</div>
-                    <div className="text-[11px] text-gray-400 truncate">{p.category.name} · {p.user.email}</div>
+                    <div className="text-[11px] text-gray-400 truncate">{p.category.icon} {p.category.name} · {p.user.email}</div>
                   </div>
-                  <TierSelect profileId={p.id} currentTier={(p as any).tier || "FREE"} />
+                  <TierSelect profileId={p.id} currentTier={p.tier || "FREE"} />
                 </div>
                 <div className="flex gap-2 mt-3">
                   <Link href={`/app/profesional/${p.slug}`} className="flex-1 py-2 rounded-lg bg-gray-50 border border-gray-200 text-center text-[11px] font-bold text-[#1A1D2E]">Ver perfil</Link>
@@ -153,7 +220,7 @@ export default async function AdminPage() {
               <span className="px-2 py-0.5 rounded-full bg-red-100 text-red-700 text-[10px] font-extrabold">{suspended.total}</span>
             </div>
             <div className="bg-white rounded-2xl border border-red-100 divide-y divide-gray-100 overflow-hidden">
-              {suspended.data.map((p) => (
+              {suspended.data.map((p: any) => (
                 <div key={p.id} className="p-4">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center text-red-600 text-sm font-black shrink-0">

@@ -22,13 +22,13 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const selected = params.category ? categories.find((c) => c.slug === params.category) : null;
   if (selected) {
     return {
-      title: `${selected.name} en Villa Maria | OficiosGo`,
-      description: `Encontra ${selected.name.toLowerCase()} verificados en Villa Maria, Córdoba. Opiniones reales, contacto directo.`,
+      title: `${selected.name} en Villa María y Villa Nueva | OficiosGo`,
+      description: `Encontra ${selected.name.toLowerCase()} verificados en Villa María y Villa Nueva, Córdoba. Opiniones reales, contacto directo.`,
     };
   }
   return {
-    title: "Buscar profesionales en Villa Maria | OficiosGo",
-    description: "Busca plomeros, electricistas, pintores y mas en Villa Maria, Córdoba.",
+    title: "Buscar profesionales en Villa María y Villa Nueva | OficiosGo",
+    description: "Busca plomeros, electricistas, pintores y mas en Villa María y Villa Nueva, Córdoba.",
   };
 }
 

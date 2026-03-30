@@ -9,7 +9,7 @@ export function SuspendButton({ profileId }: { profileId: string }) {
   const router = useRouter();
 
   const handleSuspend = async () => {
-    if (!confirm("Suspender este profesional? No aparecera en busquedas.")) return;
+    if (!confirm("¿Suspender este profesional?")) return;
     setLoading(true);
     const result = await suspendProfessional(profileId);
     if (result.success) {
@@ -21,11 +21,7 @@ export function SuspendButton({ profileId }: { profileId: string }) {
   };
 
   return (
-    <button
-      onClick={handleSuspend}
-      disabled={loading}
-      className="flex-1 py-2 rounded-lg bg-red-50 border border-red-200 text-center text-[11px] font-bold text-red-600 disabled:opacity-50 active:scale-[0.97] transition-transform"
-    >
+    <button onClick={handleSuspend} disabled={loading} className="flex-1 py-2 rounded-lg bg-red-50 border border-red-200 text-center text-[11px] font-bold text-red-500 active:scale-[0.97] transition-transform disabled:opacity-50">
       {loading ? "..." : "Suspender"}
     </button>
   );

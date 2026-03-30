@@ -20,7 +20,7 @@ export function Footer() {
             <img src="/logo-white.svg" alt="OficiosGo!" className="h-9" />
           </Link>
           <p className="text-sm text-gray-400 leading-relaxed">
-            Encontra profesionales de oficios en Villa Maria, Córdoba. Verificados, con opiniones reales y disponibilidad inmediata.
+            Encontra profesionales de oficios en Villa María y Villa Nueva, Córdoba. Verificados, con opiniones reales y disponibilidad inmediata.
           </p>
           <Link href="/app/buscar" className="inline-block text-center text-sm font-semibold bg-[#F5A623] text-black rounded-lg px-4 py-2.5 hover:bg-[#e09612] transition-colors w-fit">
             Buscar profesional ahora
@@ -37,7 +37,7 @@ export function Footer() {
 
         {/* Oficios */}
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-wider text-[#F5A623] mb-4">Oficios en Villa Maria</h4>
+          <h4 className="text-xs font-bold uppercase tracking-wider text-[#F5A623] mb-4">Oficios en Villa María y Villa Nueva</h4>
           <nav className="flex flex-col gap-2">
             {oficios.map(({ label, href }) => (
               <Link key={label} href={href} className="text-sm text-gray-400 hover:text-white transition-colors">{label}</Link>
@@ -84,7 +84,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-white/10 pt-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
-        <span>© {new Date().getFullYear()} OficiosGo! — Hecho en Villa Maria, Córdoba</span>
+        <span>© {new Date().getFullYear()} OficiosGo! — Hecho en Villa María y Villa Nueva, Córdoba</span>
         <div className="flex gap-4">
           <Link href="/terminos" className="hover:text-gray-300 transition-colors">Terminos</Link>
           <Link href="/privacidad" className="hover:text-gray-300 transition-colors">Privacidad</Link>

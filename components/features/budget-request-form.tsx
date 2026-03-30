@@ -303,7 +303,7 @@ export function BudgetRequestForm({ onClose }: { onClose: () => void }) {
               <div className="w-12 h-12 border-4 border-[#F8C927] border-t-transparent rounded-full animate-spin" />
               <div className="text-center">
                 <p className="text-sm font-bold text-[#1A1D2E]">Buscando los mejores profesionales...</p>
-                <p className="text-xs text-gray-400 mt-1">Estamos notificando a todos los disponibles en Villa María</p>
+                <p className="text-xs text-gray-400 mt-1">Estamos notificando a todos los disponibles en Villa María y Villa Nueva</p>
               </div>
             </div>
           )}

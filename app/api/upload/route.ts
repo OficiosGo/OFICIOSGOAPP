@@ -1,58 +1,43 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
 import { getCurrentUser } from "@/server/auth/session";
 import { db } from "@/db/client";
 
 export async function POST(request: NextRequest) {
   try {
     const user = await getCurrentUser();
-    if (!user) {
-      return NextResponse.json({ error: "No autenticado" }, { status: 401 });
+    if (!user) return NextResponse.json({ error: "No autenticado" }, { status: 401 });
+
+    const contentType = request.headers.get("content-type") || "";
+    let imageData: string;
+
+    if (contentType.includes("application/json")) {
+      const { image } = await request.json();
+      imageData = image;
+    } else {
+      const formData = await request.formData();
+      const file = formData.get("file") as File | null;
+      if (!file) return NextResponse.json({ error: "No se envió archivo" }, { status: 400 });
+
+      const validTypes = ["image/jpeg", "image/png", "image/webp"];
+      if (!validTypes.includes(file.type)) return NextResponse.json({ error: "Solo JPG, PNG o WebP" }, { status: 400 });
+      if (file.size > 2 * 1024 * 1024) return NextResponse.json({ error: "Máximo 2MB" }, { status: 400 });
+
+      const bytes = await file.arrayBuffer();
+      const base64 = Buffer.from(bytes).toString("base64");
+      imageData = `data:${file.type};base64,${base64}`;
     }
 
-    const formData = await request.formData();
-    const file = formData.get("file") as File | null;
+    if (!imageData) return NextResponse.json({ error: "Imagen requerida" }, { status: 422 });
 
-    if (!file) {
-      return NextResponse.json({ error: "No se envió archivo" }, { status: 400 });
-    }
-
-    // Validate file type
-    const validTypes = ["image/jpeg", "image/png", "image/webp"];
-    if (!validTypes.includes(file.type)) {
-      return NextResponse.json({ error: "Solo se permiten imágenes JPG, PNG o WebP" }, { status: 400 });
-    }
-
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      return NextResponse.json({ error: "La imagen no puede superar 5MB" }, { status: 400 });
-    }
-
-    // Generate unique filename
-    const ext = file.name.split(".").pop() || "jpg";
-    const filename = `profile-${user.id}-${Date.now()}.${ext}`;
-
-    // Save to public/uploads directory
-    const uploadDir = join(process.cwd(), "public", "uploads");
-    await mkdir(uploadDir, { recursive: true });
-    const filepath = join(uploadDir, filename);
-
-    const bytes = await file.arrayBuffer();
-    await writeFile(filepath, Buffer.from(bytes));
-
-    const url = `/uploads/${filename}`;
-
-    // Update profile with image URL
     const profile = await db.profile.findUnique({ where: { userId: user.id } });
-    if (profile) {
-      await db.profile.update({
-        where: { id: profile.id },
-        data: { profileImage: url },
-      });
-    }
+    if (!profile) return NextResponse.json({ error: "Perfil no encontrado" }, { status: 404 });
 
-    return NextResponse.json({ data: { url } }, { status: 200 });
+    await db.profile.update({
+      where: { id: profile.id },
+      data: { profileImage: imageData },
+    });
+
+    return NextResponse.json({ data: { url: imageData } });
   } catch (error) {
     console.error("Upload error:", error);
     return NextResponse.json({ error: "Error al subir imagen" }, { status: 500 });

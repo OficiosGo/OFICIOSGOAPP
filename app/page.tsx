@@ -2,9 +2,9 @@
 // SEO METADATA — agregar en layout.tsx o en este mismo archivo si usás App Router
 // ─────────────────────────────────────────────────────────────────────────────
 // export const metadata = {
-//   title: "OficiosGo! – Plomeros, Electricistas y Más en Villa María, Córdoba",
+//   title: "OficiosGo! – Plomeros, Electricistas y Más en Villa María y Villa Nueva, Córdoba",
 //   description:
-//     "Encontrá profesionales de oficios verificados en Villa María: plomeros, electricistas, pintores, carpinteros. Descargá la app gratis y contactalos hoy.",
+//     "Encontrá profesionales de oficios verificados en Villa María y Villa Nueva: plomeros, electricistas, pintores, carpinteros. Descargá la app gratis y contactalos hoy.",
 //   keywords: [
 //     "plomero villa maría", "electricista villa maría córdoba",
 //     "servicios del hogar villa maría", "profesionales oficios córdoba",
@@ -411,7 +411,7 @@ export default async function LandingPage() {
               id="categories-title"
               className="text-2xl sm:text-4xl font-black text-[#0F1120] tracking-tight"
             >
-              Servicios disponibles en Villa María
+              Servicios disponibles en Villa María y Villa Nueva
             </h2>
             <p className="text-gray-500 mt-2 text-sm sm:text-base">
               {categories.length} categorías con profesionales verificados
@@ -568,7 +568,7 @@ export default async function LandingPage() {
               Querés publicitar en OficiosGo?
             </a>
             <p className="text-[11px] text-gray-400 mt-2">
-              Espacios limitados para Villa María y alrededores
+              Espacios limitados para Villa María y Villa Nueva y alrededores
             </p>
           </div>
         </section>
@@ -603,7 +603,7 @@ export default async function LandingPage() {
             <span className="text-[#F8C927]">sin pagar por cada contacto.</span>
           </h2>
           <p className="text-sm sm:text-base text-gray-400 max-w-md mx-auto mb-8 sm:mb-10 leading-relaxed">
-            Creá tu perfil gratis, mostrá fotos de tus trabajos y aparecé en las búsquedas de quienes te necesitan en Villa María.
+            Creá tu perfil gratis, mostrá fotos de tus trabajos y aparecé en las búsquedas de quienes te necesitan en Villa María y Villa Nueva.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <Link

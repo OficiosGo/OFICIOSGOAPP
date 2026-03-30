@@ -4,11 +4,11 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "OficiosGo! — Profesionales de oficios en Villa María, Córdoba",
+    default: "OficiosGo! — Profesionales de oficios en Villa María y Villa Nueva, Córdoba",
     template: "%s | OficiosGo! Villa María",
   },
   description:
-    "Encontrá electricistas, plomeros, pintores, carpinteros y más profesionales verificados en Villa María, Córdoba. Opiniones reales. Contacto directo por WhatsApp.",
+    "Encontrá electricistas, plomeros, pintores, carpinteros y más profesionales verificados en Villa María y Villa Nueva, Córdoba. Opiniones reales. Contacto directo por WhatsApp.",
   keywords: [
     "plomero villa maría",
     "electricista villa maría córdoba",
@@ -25,13 +25,13 @@ export const metadata: Metadata = {
     locale: "es_AR",
     url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
     siteName: "OficiosGo!",
-    title: "OficiosGo! — Profesionales de oficios verificados en Villa María",
-    description: "Electricistas, plomeros, pintores y más. Verificados, con opiniones reales. App gratis para Villa María, Córdoba.",
+    title: "OficiosGo! — Profesionales de oficios verificados en Villa María y Villa Nueva",
+    description: "Electricistas, plomeros, pintores y más. Verificados, con opiniones reales. App gratis para Villa María y Villa Nueva, Córdoba.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "OficiosGo! — Profesionales de oficios en Villa María",
-    description: "Encontrá profesionales verificados en Villa María, Córdoba.",
+    title: "OficiosGo! — Profesionales de oficios en Villa María y Villa Nueva",
+    description: "Encontrá profesionales verificados en Villa María y Villa Nueva, Córdoba.",
   },
   manifest: "/manifest.json",
   appleWebApp: {
@@ -63,7 +63,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   name: "OficiosGo!",
-  description: "Plataforma de profesionales de oficios verificados en Villa María, Córdoba, Argentina.",
+  description: "Plataforma de profesionales de oficios verificados en Villa María y Villa Nueva, Córdoba, Argentina.",
   url: process.env.NEXT_PUBLIC_APP_URL || "https://oficiosgo.com",
   logo: `${process.env.NEXT_PUBLIC_APP_URL || "https://oficiosgo.com"}/icons/icon-512.png`,
   address: { "@type": "PostalAddress", addressLocality: "Villa María", addressRegion: "Córdoba", addressCountry: "AR" },

@@ -7,10 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ═══════════════════════════════════════════
-// ENUMS
-// ═══════════════════════════════════════════
-
 enum UserRole {
   PROFESSIONAL
   CLIENT
@@ -49,27 +45,25 @@ enum BudgetResponseStatus {
   REJECTED
 }
 
-// ═══════════════════════════════════════════
-// MODELS
-// ═══════════════════════════════════════════
-
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String
-  name         String
-  phone        String?
-  dni          String?  @unique
-  birthDate    DateTime?
-  role         UserRole @default(PROFESSIONAL)
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String
+  name          String
+  phone         String?
+  dni           String?   @unique
+  birthDate     DateTime?
+  role          UserRole  @default(PROFESSIONAL)
+  resetToken    String?   @unique
+  resetTokenExp DateTime?
 
-  profile      Profile?
-  reviews      Review[] @relation("ReviewAuthor")
+  profile   Profile?
+  reviews   Review[] @relation("ReviewAuthor")
 
-  isActive     Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  deletedAt    DateTime?
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
   @@index([email])
   @@index([role])
@@ -112,6 +106,7 @@ model Profile {
 
   photos          WorkPhoto[]
   reviews         Review[]        @relation("ReviewTarget")
+  events          ProfileEvent[]
 
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
@@ -135,7 +130,7 @@ model ServiceCategory {
   isActive    Boolean   @default(true)
   sortOrder   Int       @default(0)
 
-  profiles    Profile[]
+  profiles       Profile[]
   budgetRequests BudgetRequest[]
 
   createdAt   DateTime  @default(now())
@@ -218,6 +213,7 @@ model Sponsor {
 model ProfileEvent {
   id        String   @id @default(cuid())
   profileId String
+  profile   Profile? @relation(fields: [profileId], references: [id], onDelete: Cascade)
   eventType String
   metadata  Json?
   createdAt DateTime @default(now())
@@ -257,7 +253,7 @@ model BudgetResponse {
   budgetRequestId String
   budgetRequest   BudgetRequest @relation(fields: [budgetRequestId], references: [id], onDelete: Cascade)
   profileId       String
-  
+
   message         String?
   amount          Decimal?      @db.Decimal(10, 2)
   status          BudgetResponseStatus @default(PENDING)

@@ -44,7 +44,6 @@ export const authService = {
       throw AppError.conflict("Ya existe una cuenta con ese email");
     }
 
-    // Check duplicate DNI
     const existingDni = await db.user.findUnique({ where: { dni: input.dni } });
     if (existingDni) {
       throw AppError.conflict("Ya existe una cuenta con ese DNI");
@@ -62,7 +61,6 @@ export const authService = {
       role: "PROFESSIONAL",
     });
 
-    // Create profile
     const baseSlug = slugify(`${input.name}`);
     const slug = `${baseSlug}-${user.id.slice(-6)}`;
 
@@ -72,6 +70,7 @@ export const authService = {
       categoryId: input.categoryId,
       city: input.city,
       province: "Córdoba",
+      whatsapp: input.phone,
       urgencias24hs: input.urgencias24hs ?? false,
     });
 

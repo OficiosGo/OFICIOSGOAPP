@@ -296,8 +296,9 @@ export const professionalRepository = {
       db.profile.findMany({
         where,
         include: {
-          user: { select: { id: true, name: true, email: true, phone: true } },
-          category: { select: { name: true, slug: true } },
+          user: { select: { id: true, name: true, email: true, phone: true, dni: true, birthDate: true, createdAt: true } },
+          category: { select: { name: true, slug: true, icon: true } },
+          photos: { select: { url: true }, take: 3, orderBy: { sortOrder: "asc" as const } },
         },
         orderBy: { createdAt: "desc" },
         skip: (page - 1) * limit,
