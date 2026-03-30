@@ -31,7 +31,7 @@ export function ReviewForm({ profileId, professionalName }: Props) {
   const handleSubmit = async () => {
     setError("");
     if (rating === 0) { setError("Selecciona una puntuacion"); return; }
-    if (!isLoggedIn && (!name || !phone)) { setError("Completa tu nombre y telefono"); return; }
+    if (!isLoggedIn && (!name || !phone)) { setError("Completa tu nombre y teléfono"); return; }
 
     setLoading(true);
     try {
@@ -50,7 +50,7 @@ export function ReviewForm({ profileId, professionalName }: Props) {
       if (!res.ok) { setError(data.error || "Error al enviar"); return; }
       setSuccess(true);
     } catch {
-      setError("Error de conexion");
+      setError("Error de conexión");
     } finally {
       setLoading(false);
     }
@@ -132,7 +132,7 @@ export function ReviewForm({ profileId, professionalName }: Props) {
             <input
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              placeholder="Tu telefono"
+              placeholder="Tu teléfono"
               type="tel"
               className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm outline-none focus:border-[#F8C927]"
             />

@@ -192,7 +192,7 @@ export default function RegisterPage() {
               </div>
             </div>
             <div>
-              <label style={labelStyle}>Telefono / WhatsApp *</label>
+              <label style={labelStyle}>Teléfono / WhatsApp *</label>
               <input value={form.phone} onChange={set("phone")} placeholder="5493535698990" inputMode="numeric" style={inputStyle} />
               <p style={{ fontSize: 11, color: "#9CA3AF", marginTop: 4 }}>Los clientes te contactaran por este número</p>
             </div>
@@ -220,7 +220,7 @@ export default function RegisterPage() {
               <input type="checkbox" checked={form.urgencias24hs} onChange={(e) => setForm(f => ({ ...f, urgencias24hs: e.target.checked }))} style={{ display: "none" }} />
               <div>
                 <div style={{ fontSize: 14, fontWeight: 700, color: form.urgencias24hs ? "#DC2626" : "#1A1D2E" }}>🚨 Atiendo urgencias 24hs</div>
-                <div style={{ fontSize: 11, color: "#9CA3AF", marginTop: 2 }}>Se muestra destacado en tu perfil y en busquedas</div>
+                <div style={{ fontSize: 11, color: "#9CA3AF", marginTop: 2 }}>Se muestra destacado en tu perfil y en búsquedas</div>
               </div>
             </label>
 
@@ -228,10 +228,10 @@ export default function RegisterPage() {
               <input type="checkbox" checked={acceptedTerms} onChange={(e) => setAcceptedTerms(e.target.checked)} style={{ marginTop: 2, width: 18, height: 18, accentColor: "#F8C927", flexShrink: 0 }} />
               <span style={{ fontSize: 11, color: "#6B7280", lineHeight: 1.6 }}>
                 Al hacer clic en &quot;Crear mi perfil&quot;, declaro que soy mayor de edad y acepto los{" "}
-                <a href="/terminos" target="_blank" style={{ color: "#5C80BC", fontWeight: 600, textDecoration: "underline" }}>Terminos y Condiciones</a>{" "}
+                <a href="/terminos" target="_blank" style={{ color: "#5C80BC", fontWeight: 600, textDecoration: "underline" }}>Términos y Condiciones</a>{" "}
                 y la{" "}
-                <a href="/privacidad" target="_blank" style={{ color: "#5C80BC", fontWeight: 600, textDecoration: "underline" }}>Politica de Privacidad</a>{" "}
-                de OficiosGo!. Comprendo y acepto que la plataforma actua unicamente como un nexo de conexión y no se responsabiliza por la ejecucion, calidad o seguridad de los servicios contratados, ni por el comportamiento de los usuarios.
+                <a href="/privacidad" target="_blank" style={{ color: "#5C80BC", fontWeight: 600, textDecoration: "underline" }}>Política de Privacidad</a>{" "}
+                de OficiosGo!. Comprendo y acepto que la plataforma actúa únicamente como un nexo de conexión y no se responsabiliza por la ejecución, calidad o seguridad de los servicios contratados, ni por el comportamiento de los usuarios.
               </span>
             </label>
           </div>

@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     const parsed = updateProfileSchema.safeParse(raw);
 
     if (!parsed.success) {
-      return NextResponse.json({ error: "Datos invalidos", details: parsed.error.flatten().fieldErrors }, { status: 422 });
+      return NextResponse.json({ error: "Datos inválidos", details: parsed.error.flatten().fieldErrors }, { status: 422 });
     }
 
     await professionalRepository.update(profile.id, parsed.data);

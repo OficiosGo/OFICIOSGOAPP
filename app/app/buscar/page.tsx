@@ -99,7 +99,7 @@ export default async function SearchPage({ searchParams }: Props) {
       {/* ── Categories grid ── */}
       {!hasSearch && (
         <div className="px-4 pt-5 pb-24">
-          <p className="text-[13px] text-gray-400 mb-4 font-medium">{categories.length} categorias disponibles</p>
+          <p className="text-[13px] text-gray-400 mb-4 font-medium">{categories.length} categorías disponibles</p>
           <div className="grid grid-cols-2 gap-3">
             {categories.map((cat) => (
               <Link key={cat.id} href={`/app/buscar?category=${cat.slug}`} className="group relative overflow-hidden rounded-2xl p-5 border border-gray-100 bg-white shadow-sm active:scale-[0.97] transition-transform">
@@ -128,7 +128,7 @@ export default async function SearchPage({ searchParams }: Props) {
             <div className="text-center py-16 px-4">
               <div className="text-5xl mb-4">🔍</div>
               <h2 className="text-[17px] font-black text-[#0F1120] mb-1">Sin resultados</h2>
-              <p className="text-[13px] text-gray-400 mb-6">Todavia no hay profesionales en esta categoria</p>
+              <p className="text-[13px] text-gray-400 mb-6">Todavía no hay profesionales en esta categoría</p>
               <Link href="/app/buscar" className="inline-block py-3 px-6 rounded-xl bg-[#0F1120] text-[#F8C927] text-sm font-extrabold">
                 Ver todos los oficios
               </Link>

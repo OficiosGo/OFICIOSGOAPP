@@ -4,11 +4,11 @@ import { db } from "@/db/client";
 import { z } from "zod";
 
 const publicReviewSchema = z.object({
-  profileId: z.string().cuid("Perfil invalido"),
+  profileId: z.string().cuid("Perfil inválido"),
   rating: z.coerce.number().int().min(1).max(5),
   comment: z.string().max(1000).optional(),
-  authorName: z.string().min(2, "Minimo 2 caracteres").max(100),
-  authorPhone: z.string().min(8, "Telefono invalido").max(15),
+  authorName: z.string().min(2, "Mínimo 2 caracteres").max(100),
+  authorPhone: z.string().min(8, "Teléfono inválido").max(15),
 });
 
 export const POST = withErrorHandling(async (request: NextRequest) => {
@@ -17,7 +17,7 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
 
   if (!parsed.success) {
     return NextResponse.json(
-      { error: "Datos invalidos", code: "VALIDATION", details: parsed.error.flatten().fieldErrors },
+      { error: "Datos inválidos", code: "VALIDATION", details: parsed.error.flatten().fieldErrors },
       { status: 422 }
     );
   }

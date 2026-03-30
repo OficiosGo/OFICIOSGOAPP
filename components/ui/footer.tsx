@@ -42,7 +42,7 @@ export function Footer() {
             {oficios.map(({ label, href }) => (
               <Link key={label} href={href} className="text-sm text-gray-400 hover:text-white transition-colors">{label}</Link>
             ))}
-            <Link href="/app/buscar" className="text-sm text-gray-400 hover:text-white transition-colors">Ver todas las categorias</Link>
+            <Link href="/app/buscar" className="text-sm text-gray-400 hover:text-white transition-colors">Ver todas las categorías</Link>
           </nav>
         </div>
 
@@ -63,8 +63,8 @@ export function Footer() {
         <div>
           <h4 className="text-xs font-bold uppercase tracking-wider text-[#F5A623] mb-4">Empresa</h4>
           <nav className="flex flex-col gap-2 mb-6">
-            <Link href="/terminos" className="text-sm text-gray-400 hover:text-white transition-colors">Terminos de uso</Link>
-            <Link href="/privacidad" className="text-sm text-gray-400 hover:text-white transition-colors">Politica de privacidad</Link>
+            <Link href="/terminos" className="text-sm text-gray-400 hover:text-white transition-colors">Términos de uso</Link>
+            <Link href="/privacidad" className="text-sm text-gray-400 hover:text-white transition-colors">Política de privacidad</Link>
           </nav>
           <div className="flex flex-col gap-1.5 text-sm text-gray-400">
             <span className="flex items-center gap-2">
@@ -86,7 +86,7 @@ export function Footer() {
       <div className="border-t border-white/10 pt-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
         <span>© {new Date().getFullYear()} OficiosGo! — Hecho en Villa María y Villa Nueva, Córdoba</span>
         <div className="flex gap-4">
-          <Link href="/terminos" className="hover:text-gray-300 transition-colors">Terminos</Link>
+          <Link href="/terminos" className="hover:text-gray-300 transition-colors">Términos</Link>
           <Link href="/privacidad" className="hover:text-gray-300 transition-colors">Privacidad</Link>
         </div>
       </div>

@@ -24,7 +24,7 @@ export default async function FotosPage() {
         {profile.photos.length === 0 ? (
           <div className="text-center py-16">
             <div className="text-5xl mb-4">📸</div>
-            <h3 className="text-lg font-bold text-[#1A1D2E] mb-2">Todavia no subiste fotos</h3>
+            <h3 className="text-lg font-bold text-[#1A1D2E] mb-2">Todavía no subiste fotos</h3>
             <p className="text-sm text-gray-400 max-w-[260px] mx-auto mb-6">Las fotos de tus trabajos generan confianza y te ayudan a conseguir mas clientes</p>
             <p className="text-xs text-gray-400 bg-gray-50 rounded-xl p-4 border border-gray-100">Proximamente vas a poder subir fotos de tus trabajos directamente desde aca. Por ahora, contacta al administrador.</p>
           </div>

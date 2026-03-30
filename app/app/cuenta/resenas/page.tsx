@@ -50,7 +50,7 @@ export default async function OpinionesPage() {
         {reviews.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-5xl mb-4">⭐</div>
-            <h3 className="text-lg font-bold text-[#1A1D2E] mb-2">Todavia no tenes opiniones</h3>
+            <h3 className="text-lg font-bold text-[#1A1D2E] mb-2">Todavía no tenés opiniones</h3>
             <p className="text-sm text-gray-400">Cuando un cliente te deje una opinión, va a aparecer aca</p>
           </div>
         ) : (

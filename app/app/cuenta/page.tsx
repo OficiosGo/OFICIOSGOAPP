@@ -67,7 +67,7 @@ export default async function CuentaPage() {
               <span className="text-lg">✏️</span>
               <div className="flex-1">
                 <div>Editar perfil</div>
-                <div className="text-[11px] text-gray-400 font-normal mt-0.5">Descripcion, WhatsApp, disponibilidad</div>
+                <div className="text-[11px] text-gray-400 font-normal mt-0.5">Descripción, WhatsApp, disponibilidad</div>
               </div>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2"><path d="m9 18 6-6-6-6"/></svg>
             </Link>

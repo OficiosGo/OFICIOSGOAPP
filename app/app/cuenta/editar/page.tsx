@@ -63,7 +63,7 @@ export default function EditarPerfilPage() {
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch {
-      setError("Error de conexion");
+      setError("Error de conexión");
     } finally {
       setSaving(false);
     }
@@ -96,7 +96,7 @@ export default function EditarPerfilPage() {
 
         <div className="space-y-4">
           <div>
-            <label className={labelStyle}>Titular / Descripcion corta</label>
+            <label className={labelStyle}>Titular / Descripción corta</label>
             <input value={form.headline} onChange={set("headline")} placeholder="Ej: Electricista matriculado - 12 años de experiencia" className={inputStyle} />
             <p className="text-[11px] text-gray-400 mt-1">{form.headline.length}/120</p>
           </div>
@@ -109,7 +109,7 @@ export default function EditarPerfilPage() {
           <div>
             <label className={labelStyle}>WhatsApp</label>
             <input value={form.whatsapp} onChange={set("whatsapp")} placeholder="5493535698990" inputMode="numeric" className={inputStyle} />
-            <p className="text-[11px] text-gray-400 mt-1">Con codigo de area y pais (54)</p>
+            <p className="text-[11px] text-gray-400 mt-1">Con código de área y pais (54)</p>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
