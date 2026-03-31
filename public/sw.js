@@ -1,4 +1,4 @@
-const CACHE_NAME = "oficiosgo-v3";
+const CACHE_NAME = "oficiosgo-v4";
 
 const PRECACHE = [
   "/app",
