@@ -7,6 +7,7 @@ import { ApproveButton } from "./approve-button";
 import { SuspendButton } from "./suspend-button";
 import { AddSponsorForm, DeleteSponsorButton, TierSelect, DeleteProfessionalButton } from "./admin-forms";
 import { AnalyticsPanel } from "./analytics-panel";
+import { ChangePasswordForm } from "./change-password-form";
 
 export const metadata = { title: "Admin - OficiosGo" };
 
@@ -288,6 +289,7 @@ export default async function AdminPage() {
               <span className="text-lg">➕</span>
               <div className="text-[12px] font-bold text-[#1A1D2E] mt-1">Nuevo profesional</div>
             </Link>
+            <ChangePasswordForm />
           </div>
         </section>
 
