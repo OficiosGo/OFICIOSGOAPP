@@ -151,7 +151,7 @@ export default async function ProfilePage({ params }: Props) {
       {profile.bio && (
         <section className="mx-4 mt-3 p-4 rounded-2xl bg-white border border-gray-100 shadow-sm">
           <h2 className="text-[14px] font-extrabold text-[#1A1D2E] mb-2">Sobre {firstName}</h2>
-          <p className="text-[13px] text-gray-500 leading-relaxed">{profile.bio}</p>
+          <div className="text-[13px] text-gray-500 leading-relaxed whitespace-pre-line">{profile.bio}</div>
         </section>
       )}
 

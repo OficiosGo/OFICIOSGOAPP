@@ -32,7 +32,7 @@ export default function RegisterPage() {
   const [showConfirmPw, setShowConfirmPw] = useState(false);
   const [form, setForm] = useState({
     name: "", dni: "", birthDay: "", birthMonth: "", birthYear: "",
-    email: "", password: "", phone: "", categoryId: "", city: "Villa Maria", urgencias24hs: false,
+    email: "", password: "", phone: "", categoryId: "", additionalCategoryIds: [] as string[], city: "Villa María", urgencias24hs: false,
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -43,6 +43,15 @@ export default function RegisterPage() {
 
   const set = (key: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setForm((f) => ({ ...f, [key]: e.target.value }));
+
+  const toggleAdditional = (id: string) => {
+    setForm((f) => {
+      const current = f.additionalCategoryIds;
+      if (current.includes(id)) return { ...f, additionalCategoryIds: current.filter((x) => x !== id) };
+      if (current.length >= 4) return f;
+      return { ...f, additionalCategoryIds: [...current, id] };
+    });
+  };
 
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
   const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -57,9 +66,9 @@ export default function RegisterPage() {
   };
 
   const validateStep1 = () => {
-    if (!form.name || form.name.length < 2) { setError("Ingresa tu nombre completo"); return false; }
+    if (!form.name || form.name.length < 2) { setError("Ingresá tu nombre completo"); return false; }
     if (!form.dni || form.dni.length < 7 || !/^\d+$/.test(form.dni)) { setError("DNI inválido — solo números, sin puntos"); return false; }
-    if (!form.birthDay || !form.birthMonth || !form.birthYear) { setError("Completa tu fecha de nacimiento"); return false; }
+    if (!form.birthDay || !form.birthMonth || !form.birthYear) { setError("Completá tu fecha de nacimiento"); return false; }
     return true;
   };
 
@@ -67,7 +76,7 @@ export default function RegisterPage() {
     if (!form.email || !/\S+@\S+\.\S+/.test(form.email)) { setError("Email inválido"); return false; }
     if (!form.password || form.password.length < 6) { setError("La contraseña debe tener al menos 6 caracteres"); return false; }
     if (form.password !== confirmPassword) { setError("Las contraseñas no coinciden"); return false; }
-    if (!form.phone || form.phone.length < 8) { setError("Ingresa un teléfono valido"); return false; }
+    if (!form.phone || form.phone.length < 8) { setError("Ingresá un teléfono válido"); return false; }
     return true;
   };
 
@@ -79,8 +88,8 @@ export default function RegisterPage() {
 
   const handleSubmit = async () => {
     setError("");
-    if (!form.categoryId) { setError("Seleccioná tu oficio"); return; }
-    if (!acceptedTerms) { setError("Debes aceptar los terminos y condiciones"); return; }
+    if (!form.categoryId) { setError("Seleccioná tu oficio principal"); return; }
+    if (!acceptedTerms) { setError("Debés aceptar los términos y condiciones"); return; }
     setLoading(true);
     try {
       const res = await fetch("/api/auth/register", {
@@ -126,7 +135,7 @@ export default function RegisterPage() {
           {step === 1 ? "¿Quién sos?" : step === 2 ? "Tu cuenta" : "¿Qué hacés?"}
         </h1>
         <p style={{ fontSize: 13, color: "#9CA3AF", marginBottom: 20 }}>
-          {step === 1 ? "Necesitamos verificar tu identidad" : step === 2 ? "Datos para ingresar y que te contacten" : "Elegí tu oficio y empeza a recibir clientes"}
+          {step === 1 ? "Necesitamos verificar tu identidad" : step === 2 ? "Datos para ingresar y que te contacten" : "Elegí tus oficios y empezá a recibir clientes"}
         </p>
 
         {error && (
@@ -139,7 +148,7 @@ export default function RegisterPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             <div>
               <label style={labelStyle}>Nombre completo *</label>
-              <input value={form.name} onChange={set("name")} placeholder="Juan Perez" style={inputStyle} />
+              <input value={form.name} onChange={set("name")} placeholder="Juan Pérez" style={inputStyle} />
             </div>
             <div>
               <label style={labelStyle}>DNI *</label>
@@ -150,7 +159,7 @@ export default function RegisterPage() {
               <label style={labelStyle}>Fecha de nacimiento *</label>
               <div style={{ display: "flex", gap: 8 }}>
                 <select value={form.birthDay} onChange={set("birthDay")} style={{ ...selectStyle, flex: "0 0 28%" }}>
-                  <option value="">Dia</option>
+                  <option value="">Día</option>
                   {days.map((d) => <option key={d} value={String(d)}>{d}</option>)}
                 </select>
                 <select value={form.birthMonth} onChange={set("birthMonth")} style={{ ...selectStyle, flex: "1 1 auto" }}>
@@ -194,7 +203,7 @@ export default function RegisterPage() {
             <div>
               <label style={labelStyle}>Teléfono / WhatsApp *</label>
               <input value={form.phone} onChange={set("phone")} placeholder="5493535698990" inputMode="numeric" style={inputStyle} />
-              <p style={{ fontSize: 11, color: "#9CA3AF", marginTop: 4 }}>Los clientes te contactaran por este número</p>
+              <p style={{ fontSize: 11, color: "#9CA3AF", marginTop: 4 }}>Los clientes te contactarán por este número</p>
             </div>
           </div>
         )}
@@ -202,12 +211,33 @@ export default function RegisterPage() {
         {step === 3 && (
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             <div>
-              <label style={labelStyle}>Oficio *</label>
+              <label style={labelStyle}>Oficio principal *</label>
               <select value={form.categoryId} onChange={set("categoryId")} style={selectStyle}>
-                <option value="">Seleccioná tu oficio</option>
+                <option value="">Seleccioná tu oficio principal</option>
                 {categories.map((c) => <option key={c.id} value={c.id}>{c.icon} {c.name}</option>)}
               </select>
             </div>
+
+            {form.categoryId && (
+              <div>
+                <label style={labelStyle}>Otros oficios que hacés (opcional, máx. 4)</label>
+                <p style={{ fontSize: 11, color: "#9CA3AF", marginBottom: 8 }}>Tocá para seleccionar</p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                  {categories.filter((c) => c.id !== form.categoryId).map((c) => {
+                    const sel = form.additionalCategoryIds.includes(c.id);
+                    return (
+                      <button key={c.id} type="button" onClick={() => toggleAdditional(c.id)} style={{ padding: "8px 12px", borderRadius: 10, border: sel ? "2px solid #F8C927" : "1px solid #E5E7EB", background: sel ? "#FFFBEA" : "#fff", fontSize: 12, fontWeight: sel ? 700 : 500, color: sel ? "#1A1D2E" : "#6B7280", cursor: "pointer", transition: "all 0.15s" }}>
+                        {c.icon} {c.name} {sel ? "✓" : ""}
+                      </button>
+                    );
+                  })}
+                </div>
+                {form.additionalCategoryIds.length > 0 && (
+                  <p style={{ fontSize: 11, color: "#F8C927", marginTop: 6, fontWeight: 600 }}>{form.additionalCategoryIds.length} oficio{form.additionalCategoryIds.length > 1 ? "s" : ""} adicional{form.additionalCategoryIds.length > 1 ? "es" : ""} seleccionado{form.additionalCategoryIds.length > 1 ? "s" : ""}</p>
+                )}
+              </div>
+            )}
+
             <div>
               <label style={labelStyle}>Ciudad *</label>
               <input value={form.city} onChange={set("city")} style={inputStyle} />
@@ -240,7 +270,7 @@ export default function RegisterPage() {
         <div style={{ display: "flex", gap: 10, marginTop: 24 }}>
           {step > 1 && (
             <button onClick={() => { setError(""); setStep(step - 1); }} style={{ flex: "0 0 auto", padding: "14px 20px", borderRadius: 14, border: "1px solid #E5E7EB", background: "#fff", fontSize: 14, fontWeight: 700, color: "#6B7280", cursor: "pointer" }}>
-              Atras
+              Atrás
             </button>
           )}
           {step < 3 ? (
@@ -256,7 +286,7 @@ export default function RegisterPage() {
       </div>
 
       <div style={{ textAlign: "center", padding: "20px 0 32px" }}>
-        <span style={{ fontSize: 13, color: "#9CA3AF" }}>Ya tenes cuenta? </span>
+        <span style={{ fontSize: 13, color: "#9CA3AF" }}>¿Ya tenés cuenta? </span>
         <Link href="/login" style={{ fontSize: 13, fontWeight: 700, color: "#5C80BC", textDecoration: "none" }}>Iniciá sesión</Link>
       </div>
     </div>

@@ -28,15 +28,25 @@ export default function EditarPerfilPage() {
     fetch("/api/auth/me").then(r => r.json()).then(async (data) => {
       if (!data.data) { router.push("/login"); return; }
       setUserName(data.data.name);
-      const res = await fetch(`/api/professionals/${data.data.id}`);
-      const pData = await res.json();
+
+      // Try fetching by userId first, then by profile id
+      let pData;
+      const res1 = await fetch(`/api/professionals/${data.data.id}`);
+      pData = await res1.json();
+
+      // If not found by userId, the profile might need a different endpoint
+      if (!pData.data && data.data.profile) {
+        const res2 = await fetch(`/api/professionals/${data.data.profile.id}`);
+        pData = await res2.json();
+      }
+
       if (pData.data) {
         const p = pData.data;
         setProfile(p);
         setForm({
           headline: p.headline || "",
           bio: p.bio || "",
-          whatsapp: p.whatsapp || "",
+          whatsapp: p.whatsapp || p.user?.phone || "",
           yearsExperience: p.yearsExperience?.toString() || "",
           city: p.city || "",
           neighborhood: p.neighborhood || "",
@@ -86,7 +96,6 @@ export default function EditarPerfilPage() {
       </div>
 
       <div className="px-4 py-5 pb-24">
-        {/* Photo */}
         <div className="flex justify-center mb-6">
           <ProfilePhotoUpload currentImage={profile?.profileImage} userName={userName} />
         </div>
@@ -102,14 +111,15 @@ export default function EditarPerfilPage() {
           </div>
 
           <div>
-            <label className={labelStyle}>Biografia</label>
-            <textarea value={form.bio} onChange={set("bio")} rows={4} placeholder="Conta sobre tu experiencia, servicios y zona de trabajo..." className={inputStyle + " resize-none"} />
+            <label className={labelStyle}>Descripción de servicios</label>
+            <textarea value={form.bio} onChange={set("bio")} rows={6} placeholder={"Listá tus servicios, uno por línea:\n• Instalaciones eléctricas\n• Reparaciones\n• Mantenimiento"} className={inputStyle + " resize-none"} />
+            <p className="text-[11px] text-gray-400 mt-1">Usá Enter para separar cada servicio en una línea</p>
           </div>
 
           <div>
             <label className={labelStyle}>WhatsApp</label>
             <input value={form.whatsapp} onChange={set("whatsapp")} placeholder="5493535698990" inputMode="numeric" className={inputStyle} />
-            <p className="text-[11px] text-gray-400 mt-1">Con código de área y pais (54)</p>
+            <p className="text-[11px] text-gray-400 mt-1">Con código de área y país (54)</p>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -118,7 +128,7 @@ export default function EditarPerfilPage() {
               <input type="number" value={form.yearsExperience} onChange={set("yearsExperience")} className={inputStyle} />
             </div>
             <div>
-              <label className={labelStyle}>Matricula</label>
+              <label className={labelStyle}>Matrícula</label>
               <input value={form.matricula} onChange={set("matricula")} placeholder="Opcional" className={inputStyle} />
             </div>
           </div>
@@ -136,10 +146,10 @@ export default function EditarPerfilPage() {
 
           <div>
             <label className={labelStyle}>Disponibilidad</label>
-            <input value={form.availability} onChange={set("availability")} placeholder="Ej: Lunes a sabado 8:00-18:00" className={inputStyle} />
+            <input value={form.availability} onChange={set("availability")} placeholder="Ej: Lunes a sábado 8:00-18:00" className={inputStyle} />
           </div>
 
-          <button onClick={handleSave} disabled={saving} className="w-full py-4 rounded-2xl bg-[#F8C927] text-[#1A1D2E] font-extrabold text-[15px] disabled:opacity-60 mt-2">
+          <button onClick={handleSave} disabled={saving} className="w-full py-4 rounded-2xl bg-[#F8C927] text-[#1A1D2E] font-extrabold text-[15px] disabled:opacity-60 mt-2 active:scale-[0.98] transition-transform">
             {saving ? "Guardando..." : "Guardar cambios"}
           </button>
         </div>

@@ -13,10 +13,10 @@ export const registerSchema = z.object({
   dni: z.string().min(7, "DNI inválido").max(8, "DNI inválido").regex(/^\d+$/, "Solo números"),
   birthDate: z.string().min(1, "Fecha de nacimiento requerida"),
   categoryId: z.string().cuid("Categoría inválida"),
+  additionalCategoryIds: z.array(z.string().cuid()).max(4).optional(),
   city: z.string().min(2, "Ciudad requerida"),
   urgencias24hs: z.boolean().default(false),
 });
-
 
 export const updateProfileSchema = z.object({
   headline: z.string().min(10, "Mínimo 10 caracteres").max(120).optional(),

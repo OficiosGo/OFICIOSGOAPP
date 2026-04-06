@@ -64,6 +64,16 @@ export const authService = {
     const baseSlug = slugify(`${input.name}`);
     const slug = `${baseSlug}-${user.id.slice(-6)}`;
 
+    // Get additional category slugs from IDs
+    let additionalCategories: string[] = [];
+    if (input.additionalCategoryIds && input.additionalCategoryIds.length > 0) {
+      const cats = await db.serviceCategory.findMany({
+        where: { id: { in: input.additionalCategoryIds } },
+        select: { slug: true },
+      });
+      additionalCategories = cats.map((c) => c.slug);
+    }
+
     await professionalRepository.create({
       userId: user.id,
       slug,
@@ -72,6 +82,7 @@ export const authService = {
       province: "Córdoba",
       whatsapp: input.phone,
       urgencias24hs: input.urgencias24hs ?? false,
+      additionalCategories,
     });
 
     const token = await signToken({

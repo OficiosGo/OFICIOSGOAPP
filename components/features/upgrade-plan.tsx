@@ -20,8 +20,8 @@ export function UpgradePlan({ currentTier, professionalName }: { currentTier: st
     );
   }
   const plans = [
-    { name: "Standard", price: "$2.990", period: "/mes", current: currentTier === "STANDARD", features: ["Top 10 en búsquedas", "Badge Standard", "Perfil destacado"], popular: false },
-    { name: "Premium", price: "$4.990", period: "/mes", current: false, features: ["Top 3 en búsquedas", "Badge ★ Premium", "3x más contactos", "Prioridad en presupuestos"], popular: true },
+    { name: "Standard", price: "$10.000", period: "/mes", current: currentTier === "STANDARD", features: ["Top 10 en búsquedas", "Badge Standard", "Perfil destacado"], popular: false },
+    { name: "Premium", price: "$20.000", period: "/mes", current: false, features: ["Top 3 en búsquedas", "Badge ★ Premium", "3x más contactos", "Prioridad en presupuestos"], popular: true },
   ];
   return (
     <div className="p-5 rounded-2xl text-white" style={{ background: "linear-gradient(135deg, #0F1120, #1E2035)" }}>

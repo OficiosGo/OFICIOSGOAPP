@@ -333,6 +333,7 @@ export const professionalRepository = {
     whatsapp?: string;
     province?: string;
     urgencias24hs?: boolean;
+    additionalCategories?: string[];
   }) {
     return db.profile.create({ data, include: profileWithRelations });
   },

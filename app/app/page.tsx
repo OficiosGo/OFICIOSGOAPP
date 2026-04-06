@@ -63,7 +63,7 @@ export default async function HomePage() {
 
         <div className="relative z-10 grid grid-cols-2 gap-2.5 mt-4">
           {topCategories.map((cat) => (
-            <Link key={cat.id} href={`/app/buscar?category=${cat.slug}`} className="group relative overflow-hidden flex items-center gap-3 p-3.5 rounded-2xl active:scale-[0.97] transition-transform" style={{ background: "linear-gradient(145deg, #F8C927, #E8B800)" }}>
+            <Link key={cat.id} href={`/app/buscar?category=${cat.slug}`} prefetch={true} className="group relative overflow-hidden flex items-center gap-3 p-3.5 rounded-2xl active:scale-[0.97] transition-transform" style={{ background: "linear-gradient(145deg, #F8C927, #E8B800)", touchAction: "manipulation" }}>
               <div className="absolute -top-3 -right-3 w-14 h-14 rounded-full bg-white/15" />
               <span className="text-2xl drop-shadow-sm shrink-0 relative z-10">{cat.icon}</span>
               <div className="relative z-10 min-w-0">

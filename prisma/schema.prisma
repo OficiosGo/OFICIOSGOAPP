@@ -79,6 +79,7 @@ model Profile {
   headline        String?
   bio             String?
   categoryId      String
+  additionalCategoryIds String[]  @default([])
   category        ServiceCategory @relation(fields: [categoryId], references: [id])
 
   city            String

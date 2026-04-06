@@ -80,7 +80,7 @@ export default async function SearchPage({ searchParams }: Props) {
           </button>
         </form>
 
-        <div className="flex gap-2 mt-3 overflow-x-auto pb-0.5" style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" }}>
+        <div className="flex gap-2 mt-3 overflow-x-auto pb-0.5" style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch", touchAction: "pan-x" }}>
           <Link href="/app/buscar" className={`shrink-0 px-3.5 py-1.5 rounded-full text-[12px] font-bold whitespace-nowrap transition-colors ${!category ? "bg-white text-[#0F1120] shadow-md" : "bg-white/10 text-white/80 border border-white/15"}`}>
             Todos
           </Link>
@@ -102,7 +102,7 @@ export default async function SearchPage({ searchParams }: Props) {
           <p className="text-[13px] text-gray-400 mb-4 font-medium">{categories.length} categorías disponibles</p>
           <div className="grid grid-cols-2 gap-3">
             {categories.map((cat) => (
-              <Link key={cat.id} href={`/app/buscar?category=${cat.slug}`} className="group relative overflow-hidden rounded-2xl p-5 border border-gray-100 bg-white shadow-sm active:scale-[0.97] transition-transform">
+              <Link key={cat.id} href={`/app/buscar?category=${cat.slug}`} prefetch={true} className="group relative overflow-hidden rounded-2xl p-5 border border-gray-100 bg-white shadow-sm active:scale-[0.97] transition-transform" style={{ touchAction: "manipulation" }}>
                 <div className="absolute -top-3 -right-3 w-14 h-14 rounded-full bg-[#F8C927]/10" />
                 <div className="text-3xl mb-2 relative z-10">{cat.icon}</div>
                 <div className="text-[14px] font-extrabold text-[#0F1120] leading-tight relative z-10">{cat.name}</div>
