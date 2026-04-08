@@ -10,32 +10,45 @@ export function AddSponsorForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
-  const [logoData, setLogoData] = useState<string>("");
+  const [logoUrl, setLogoUrl] = useState<string>("");
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 500000) { setError("La imagen no puede pesar más de 500KB"); return; }
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = reader.result as string;
-      setLogoPreview(result);
-      setLogoData(result);
-      setError("");
-    };
-    reader.readAsDataURL(file);
+    if (file.size > 2 * 1024 * 1024) { setError("Máximo 2MB"); return; }
+
+    setError("");
+    setLogoPreview(URL.createObjectURL(file));
+    setLoading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const data = await res.json();
+      if (res.ok && data.data?.url) {
+        setLogoUrl(data.data.url);
+      } else {
+        setError(data.error || "Error al subir logo");
+        setLogoPreview(null);
+      }
+    } catch {
+      setError("Error de conexión");
+      setLogoPreview(null);
+    }
+    setLoading(false);
   };
 
   const handleSubmit = async (formData: FormData) => {
     setError("");
     setLoading(true);
-    if (logoData) formData.set("logoUrl", logoData);
+    if (logoUrl) formData.set("logoUrl", logoUrl);
     const result = await createSponsor(formData);
     if (result.success) {
       setOpen(false);
       setLogoPreview(null);
-      setLogoData("");
+      setLogoUrl("");
       router.refresh();
     } else {
       setError(result.error || "Error");
@@ -55,7 +68,7 @@ export function AddSponsorForm() {
     <div className="p-4 rounded-2xl bg-white border border-gray-200 shadow-sm">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-[14px] font-extrabold text-[#1A1D2E]">Nuevo sponsor</h3>
-        <button onClick={() => { setOpen(false); setLogoPreview(null); setLogoData(""); }} className="text-xs text-gray-400">Cancelar</button>
+        <button onClick={() => { setOpen(false); setLogoPreview(null); setLogoUrl(""); }} className="text-xs text-gray-400">Cancelar</button>
       </div>
       {error && <div className="p-2 rounded-lg bg-red-50 text-red-600 text-xs font-medium mb-3">{error}</div>}
       <form action={handleSubmit} className="space-y-3">
@@ -79,11 +92,11 @@ export function AddSponsorForm() {
               <button type="button" onClick={() => fileRef.current?.click()} className="text-[12px] font-bold text-[#5C80BC]">
                 {logoPreview ? "Cambiar imagen" : "Elegir imagen"}
               </button>
-              <p className="text-[10px] text-gray-400 mt-0.5">PNG o JPG, máximo 500KB</p>
+              <p className="text-[10px] text-gray-400 mt-0.5">PNG o JPG, máximo 2MB</p>
             </div>
           </div>
           <input ref={fileRef} type="file" accept="image/png,image/jpeg,image/webp" onChange={handleFile} className="hidden" />
-          <input type="hidden" name="logoUrl" value={logoData} />
+          <input type="hidden" name="logoUrl" value={logoUrl} />
         </div>
         <div className="grid grid-cols-2 gap-2">
           <input name="phone" placeholder="Teléfono" className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm outline-none focus:border-[#F8C927]" />

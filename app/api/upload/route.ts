@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { put } from "@vercel/blob";
 import { getCurrentUser } from "@/server/auth/session";
 import { db } from "@/db/client";
 
@@ -7,37 +8,36 @@ export async function POST(request: NextRequest) {
     const user = await getCurrentUser();
     if (!user) return NextResponse.json({ error: "No autenticado" }, { status: 401 });
 
-    const contentType = request.headers.get("content-type") || "";
-    let imageData: string;
+    const formData = await request.formData();
+    const file = formData.get("file") as File | null;
+    if (!file) return NextResponse.json({ error: "No se envió archivo" }, { status: 400 });
 
-    if (contentType.includes("application/json")) {
-      const { image } = await request.json();
-      imageData = image;
-    } else {
-      const formData = await request.formData();
-      const file = formData.get("file") as File | null;
-      if (!file) return NextResponse.json({ error: "No se envió archivo" }, { status: 400 });
-
-      const validTypes = ["image/jpeg", "image/png", "image/webp"];
-      if (!validTypes.includes(file.type)) return NextResponse.json({ error: "Solo JPG, PNG o WebP" }, { status: 400 });
-      if (file.size > 2 * 1024 * 1024) return NextResponse.json({ error: "Máximo 2MB" }, { status: 400 });
-
-      const bytes = await file.arrayBuffer();
-      const base64 = Buffer.from(bytes).toString("base64");
-      imageData = `data:${file.type};base64,${base64}`;
+    const validTypes = ["image/jpeg", "image/png", "image/webp"];
+    if (!validTypes.includes(file.type)) {
+      return NextResponse.json({ error: "Solo JPG, PNG o WebP" }, { status: 400 });
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      return NextResponse.json({ error: "Máximo 5MB" }, { status: 400 });
     }
 
-    if (!imageData) return NextResponse.json({ error: "Imagen requerida" }, { status: 422 });
+    const ext = file.name.split(".").pop() || "jpg";
+    const filename = `${user.id}-${Date.now()}.${ext}`;
 
-    const profile = await db.profile.findUnique({ where: { userId: user.id } });
-    if (!profile) return NextResponse.json({ error: "Perfil no encontrado" }, { status: 404 });
-
-    await db.profile.update({
-      where: { id: profile.id },
-      data: { profileImage: imageData },
+    const blob = await put(filename, file, {
+      access: "public",
+      addRandomSuffix: true,
     });
 
-    return NextResponse.json({ data: { url: imageData } });
+    // Update profile if it's a profile photo upload
+    const profile = await db.profile.findUnique({ where: { userId: user.id } });
+    if (profile) {
+      await db.profile.update({
+        where: { id: profile.id },
+        data: { profileImage: blob.url },
+      });
+    }
+
+    return NextResponse.json({ data: { url: blob.url } });
   } catch (error) {
     console.error("Upload error:", error);
     return NextResponse.json({ error: "Error al subir imagen" }, { status: 500 });
