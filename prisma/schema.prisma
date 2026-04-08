@@ -93,6 +93,7 @@ model Profile {
   matricula       String?
   availability    String?
   urgencias24hs   Boolean         @default(false)
+  conGarantia     Boolean         @default(false)
   profileImage    String?
 
   tier            SubscriptionTier @default(FREE)

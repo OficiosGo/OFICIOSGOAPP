@@ -82,6 +82,7 @@ export const authService = {
       province: "Córdoba",
       whatsapp: input.phone,
       urgencias24hs: input.urgencias24hs ?? false,
+      conGarantia: input.conGarantia ?? false,
       additionalCategories,
     });
 

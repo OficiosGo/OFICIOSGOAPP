@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const name = profile.user.name;
   const cat = profile.category.name;
-  const city = profile.city ?? "Villa Maria";
+  const city = profile.city ?? "Villa María";
   const rating = profile.averageRating.toFixed(1);
 
   return {
@@ -57,6 +57,7 @@ export default async function ProfilePage({ params }: Props) {
   const firstName = profile.user.name.split(" ")[0];
   const initials = profile.user.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase();
   const hasUrgencias = (profile as any).urgencias24hs === true;
+  const hasGarantia = (profile as any).conGarantia === true;
   const profileImg = (profile as any).profileImage as string | null;
 
   return (
@@ -77,9 +78,12 @@ export default async function ProfilePage({ params }: Props) {
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round"><path d="m15 18-6-6 6-6" /></svg>
         </Link>
 
-        <div className="absolute top-4 right-4 flex items-center gap-2">
+        <div className="absolute top-4 right-4 flex items-center gap-2 flex-wrap justify-end max-w-[70%]">
           {hasUrgencias && (
             <div className="px-2.5 py-1.5 rounded-xl bg-red-500 text-white text-[10px] font-extrabold uppercase tracking-wide flex items-center gap-1 animate-pulse">🚨 Urgencias 24hs</div>
+          )}
+          {hasGarantia && (
+            <div className="px-2.5 py-1.5 rounded-xl bg-green-500 text-white text-[10px] font-extrabold uppercase tracking-wide flex items-center gap-1">🛡️ Con Garantía</div>
           )}
           {isPremium && (
             <div className="px-2.5 py-1.5 rounded-xl bg-[#F8C927] text-[#1A1D2E] text-[10px] font-extrabold uppercase tracking-wide">★ Premium</div>
@@ -130,6 +134,9 @@ export default async function ProfilePage({ params }: Props) {
           <div className="flex flex-wrap gap-2 mt-3">
             {hasUrgencias && (
               <span className="flex items-center gap-1 text-[11px] text-red-600 bg-red-50 px-2.5 py-1.5 rounded-lg font-bold border border-red-100">🚨 Urgencias 24hs</span>
+            )}
+            {hasGarantia && (
+              <span className="flex items-center gap-1 text-[11px] text-green-700 bg-green-50 px-2.5 py-1.5 rounded-lg font-bold border border-green-100">🛡️ Trabajo con garantía</span>
             )}
             {profile.yearsExperience && (
               <span className="flex items-center gap-1 text-[11px] text-gray-500 bg-gray-50 px-2.5 py-1.5 rounded-lg">🔨 {profile.yearsExperience} años exp.</span>
@@ -208,7 +215,6 @@ export default async function ProfilePage({ params }: Props) {
         </section>
       )}
 
-      {/* ── Leave a review ── */}
       <div className="mx-4 mt-3">
         <ReviewForm profileId={profile.id} professionalName={firstName} />
       </div>

@@ -23,12 +23,12 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   if (selected) {
     return {
       title: `${selected.name} en Villa María y Villa Nueva | OficiosGo`,
-      description: `Encontra ${selected.name.toLowerCase()} verificados en Villa María y Villa Nueva, Córdoba. Opiniones reales, contacto directo.`,
+      description: `Encontrá ${selected.name.toLowerCase()} verificados en Villa María y Villa Nueva, Córdoba. Opiniones reales, contacto directo.`,
     };
   }
   return {
     title: "Buscar profesionales en Villa María y Villa Nueva | OficiosGo",
-    description: "Busca plomeros, electricistas, pintores y mas en Villa María y Villa Nueva, Córdoba.",
+    description: "Buscá plomeros, electricistas, pintores y más en Villa María y Villa Nueva, Córdoba.",
   };
 }
 
@@ -54,7 +54,7 @@ export default async function SearchPage({ searchParams }: Props) {
       <div className="sticky top-0 z-20 px-4 pt-4 pb-4 rounded-b-[24px]" style={{ background: "linear-gradient(175deg, #0F1120 0%, #1E2035 100%)" }}>
         <div className="flex items-center justify-between mb-3 gap-2">
           <h1 className="text-[18px] font-black text-white leading-tight truncate">
-            {selectedCategory ? `${selectedCategory.icon} ${selectedCategory.name}` : query ? `"${query}"` : "Que necesitas?"}
+            {selectedCategory ? `${selectedCategory.icon} ${selectedCategory.name}` : query ? `"${query}"` : "¿Qué necesitás?"}
           </h1>
           {selectedCategory && (
             <Link href="/app/buscar" className="shrink-0 text-[11px] font-bold text-white/60 bg-white/10 px-3 py-1.5 rounded-full whitespace-nowrap active:scale-[0.97] transition-transform">
@@ -88,7 +88,9 @@ export default async function SearchPage({ searchParams }: Props) {
             <Link
               key={cat.id}
               href={`/app/buscar?category=${cat.slug}`}
+              prefetch={true}
               className={`shrink-0 px-3.5 py-1.5 rounded-full text-[12px] font-bold whitespace-nowrap transition-colors ${category === cat.slug ? "bg-white text-[#0F1120] shadow-md" : "bg-white/10 text-white/80 border border-white/15"}`}
+              style={{ touchAction: "manipulation" }}
             >
               {cat.icon} {cat.name}
             </Link>
@@ -169,6 +171,9 @@ export default async function SearchPage({ searchParams }: Props) {
                         </div>
                         {pro.urgencias24hs && (
                           <span className="text-[9px] font-extrabold text-red-500 bg-red-50 px-1.5 py-0.5 rounded-full border border-red-100">🚨 24hs</span>
+                        )}
+                        {pro.conGarantia && (
+                          <span className="text-[9px] font-extrabold text-green-600 bg-green-50 px-1.5 py-0.5 rounded-full border border-green-100">🛡️ Garantía</span>
                         )}
                       </div>
                     </div>

@@ -16,6 +16,7 @@ export const registerSchema = z.object({
   additionalCategoryIds: z.array(z.string().cuid()).max(4).optional(),
   city: z.string().min(2, "Ciudad requerida"),
   urgencias24hs: z.boolean().default(false),
+  conGarantia: z.boolean().default(false),
 });
 
 export const updateProfileSchema = z.object({
@@ -28,6 +29,8 @@ export const updateProfileSchema = z.object({
   neighborhood: z.string().max(100).optional(),
   availability: z.string().max(200).optional(),
   matricula: z.string().max(50).optional(),
+  urgencias24hs: z.coerce.boolean().optional(),
+  conGarantia: z.coerce.boolean().optional(),
 });
 
 export const reviewSchema = z.object({
@@ -42,7 +45,7 @@ export const searchSchema = z.object({
   query: z.string().max(200).optional().nullable(),
   lat: z.coerce.number().min(-90).max(90).optional().nullable(),
   lng: z.coerce.number().min(-180).max(180).optional().nullable(),
-  radius: z.coerce.number().min(1).max(200).default(50), // km
+  radius: z.coerce.number().min(1).max(200).default(50),
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(50).default(20),
 });

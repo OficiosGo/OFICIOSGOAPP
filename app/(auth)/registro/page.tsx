@@ -32,7 +32,7 @@ export default function RegisterPage() {
   const [showConfirmPw, setShowConfirmPw] = useState(false);
   const [form, setForm] = useState({
     name: "", dni: "", birthDay: "", birthMonth: "", birthYear: "",
-    email: "", password: "", phone: "", categoryId: "", additionalCategoryIds: [] as string[], city: "Villa María", urgencias24hs: false,
+    email: "", password: "", phone: "", categoryId: "", additionalCategoryIds: [] as string[], city: "Villa María", urgencias24hs: false, conGarantia: false,
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -251,6 +251,17 @@ export default function RegisterPage() {
               <div>
                 <div style={{ fontSize: 14, fontWeight: 700, color: form.urgencias24hs ? "#DC2626" : "#1A1D2E" }}>🚨 Atiendo urgencias 24hs</div>
                 <div style={{ fontSize: 11, color: "#9CA3AF", marginTop: 2 }}>Se muestra destacado en tu perfil y en búsquedas</div>
+              </div>
+            </label>
+
+            <label style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px", borderRadius: 14, cursor: "pointer", border: form.conGarantia ? "2px solid #10B981" : "1px solid #E5E7EB", background: form.conGarantia ? "#ECFDF5" : "#fff", transition: "all 0.2s" }}>
+              <div style={{ width: 44, height: 26, borderRadius: 13, background: form.conGarantia ? "#10B981" : "#D1D5DB", padding: 2, flexShrink: 0, transition: "background 0.2s" }}>
+                <div style={{ width: 22, height: 22, borderRadius: "50%", background: "#fff", boxShadow: "0 1px 3px rgba(0,0,0,0.2)", transform: form.conGarantia ? "translateX(18px)" : "translateX(0)", transition: "transform 0.2s" }} />
+              </div>
+              <input type="checkbox" checked={form.conGarantia} onChange={(e) => setForm(f => ({ ...f, conGarantia: e.target.checked }))} style={{ display: "none" }} />
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: form.conGarantia ? "#059669" : "#1A1D2E" }}>🛡️ Trabajo con garantía</div>
+                <div style={{ fontSize: 11, color: "#9CA3AF", marginTop: 2 }}>Mostrá confianza a tus clientes con un badge verificado</div>
               </div>
             </label>
 
