@@ -20,7 +20,7 @@ export default function Error({
       name === "ChunkLoadError";
 
     if (!isChunkError) {
-      console.error("[root error]", error);
+      console.error("[app error]", error);
       return;
     }
 
@@ -47,7 +47,7 @@ export default function Error({
           Algo no anduvo bien
         </h2>
         <p className="text-[13px] text-gray-500 mb-6">
-          Tuvimos un problema. Probá de nuevo.
+          Tuvimos un problema cargando esta sección. Probá de nuevo.
         </p>
         <div className="flex flex-col gap-2">
           <button
