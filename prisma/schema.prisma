@@ -267,3 +267,17 @@ model BudgetResponse {
   @@index([profileId])
   @@index([budgetRequestId])
 }
+
+model PlatformEvent {
+  id        String   @id @default(cuid())
+  eventType String
+  page      String?
+  referrer  String?
+  userAgent String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([eventType])
+  @@index([createdAt])
+  @@index([eventType, createdAt])
+}

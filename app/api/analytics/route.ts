@@ -1,24 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/db/client";
+
+export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
   try {
-    const { page, referrer } = await request.json();
+    const body = await request.json().catch(() => ({}));
+    const { page, referrer } = body;
 
-    await db.profileEvent.create({
-      data: {
-        profileId: "platform",
-        eventType: "page_view",
-        metadata: {
-          page: page || "/",
-          referrer: referrer || null,
-          timestamp: new Date().toISOString(),
-        },
-      },
-    });
+    // TEMPORARY: log only, no DB write.
+    // TODO: replace with PlatformEvent model after migration.
+    if (process.env.NODE_ENV === "development") {
+      console.log("[analytics]", {
+        page: typeof page === "string" ? page.slice(0, 200) : "/",
+        referrer: typeof referrer === "string" ? referrer.slice(0, 200) : null,
+        ua: request.headers.get("user-agent")?.slice(0, 100),
+      });
+    }
 
     return NextResponse.json({ ok: true });
-  } catch {
-    return NextResponse.json({ ok: false }, { status: 500 });
+  } catch (error) {
+    console.error("[/api/analytics]", error);
+    return NextResponse.json({ ok: true });
   }
 }

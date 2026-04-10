@@ -52,21 +52,14 @@ export const professionalRepository = {
     });
   },
 
-  /**
-   * Search with optional geolocation.
-   * When lat/lng provided, calculates distance using Haversine in PostgreSQL
-   * and returns results sorted by: tier (premium first) → distance.
-   */
   async search(filters: ProfessionalFilters) {
     const { category, city, query, lat, lng, radius = 50, page = 1, limit = 20 } = filters;
     const hasGeo = lat != null && lng != null;
 
-    // ── GEO SEARCH: raw SQL with Haversine ──
     if (hasGeo) {
       return this.searchWithGeo({ category, city, query, lat: lat!, lng: lng!, radius, page, limit });
     }
 
-    // ── STANDARD SEARCH: Prisma query ──
     const where: Prisma.ProfileWhereInput = {
       status: "APPROVED",
       user: { isActive: true },
@@ -106,10 +99,6 @@ export const professionalRepository = {
     };
   },
 
-  /**
-   * Geo search using raw SQL Haversine formula.
-   * PostgreSQL calculates distance in km, filters by radius, sorts by tier then distance.
-   */
   async searchWithGeo(params: {
     category?: string | null;
     city?: string | null;
@@ -123,7 +112,6 @@ export const professionalRepository = {
     const { category, city, query, lat, lng, radius, page, limit } = params;
     const offset = (page - 1) * limit;
 
-    // Build WHERE clauses dynamically
     const conditions: string[] = [
       `p."status" = 'APPROVED'`,
       `u."isActive" = true`,
@@ -131,7 +119,7 @@ export const professionalRepository = {
       `p."longitude" IS NOT NULL`,
     ];
     const values: (string | number)[] = [lat, lng, radius, limit, offset];
-    let paramIdx = 6; // $1=lat, $2=lng, $3=radius, $4=limit, $5=offset
+    let paramIdx = 6;
 
     if (category) {
       conditions.push(`sc."slug" = $${paramIdx}`);
@@ -156,7 +144,6 @@ export const professionalRepository = {
 
     const whereClause = conditions.join(" AND ");
 
-    // Haversine formula in PostgreSQL
     const distanceExpr = `
       6371 * acos(
         LEAST(1, GREATEST(-1,
@@ -167,7 +154,6 @@ export const professionalRepository = {
       )
     `;
 
-    // Count query
     const countResult = await db.$queryRawUnsafe<[{ count: bigint }]>(`
       SELECT COUNT(*)::bigint as count
       FROM "Profile" p
@@ -178,35 +164,15 @@ export const professionalRepository = {
     `, ...values);
     const total = Number(countResult[0]?.count ?? 0);
 
-    // Main query with distance
     const rows = await db.$queryRawUnsafe<Array<{
-      id: string;
-      slug: string;
-      headline: string | null;
-      bio: string | null;
-      city: string;
-      province: string;
-      latitude: number;
-      longitude: number;
-      whatsapp: string | null;
-      yearsExperience: number | null;
-      tier: string;
-      averageRating: number;
-      totalReviews: number;
-      totalViews: number;
-      totalContacts: number;
-      matricula: string | null;
-      availability: string | null;
-      status: string;
-      userId: string;
-      categoryId: string;
-      user_name: string;
-      user_phone: string | null;
-      cat_id: string;
-      cat_name: string;
-      cat_slug: string;
-      cat_icon: string | null;
-      distance_km: number;
+      id: string; slug: string; headline: string | null; bio: string | null;
+      city: string; province: string; latitude: number; longitude: number;
+      whatsapp: string | null; yearsExperience: number | null; tier: string;
+      averageRating: number; totalReviews: number; totalViews: number;
+      totalContacts: number; matricula: string | null; availability: string | null;
+      status: string; userId: string; categoryId: string; user_name: string;
+      user_phone: string | null; cat_id: string; cat_name: string;
+      cat_slug: string; cat_icon: string | null; distance_km: number;
     }>>(`
       SELECT
         p."id", p."slug", p."headline", p."bio", p."city", p."province",
@@ -232,41 +198,29 @@ export const professionalRepository = {
       LIMIT $4 OFFSET $5
     `, ...values);
 
-    // Map raw rows to the same shape as Prisma results
     const data = rows.map((row) => ({
-      id: row.id,
-      slug: row.slug,
-      headline: row.headline,
-      bio: row.bio,
-      city: row.city,
-      province: row.province,
-      latitude: row.latitude,
-      longitude: row.longitude,
-      whatsapp: row.whatsapp,
+      id: row.id, slug: row.slug, headline: row.headline, bio: row.bio,
+      city: row.city, province: row.province, latitude: row.latitude,
+      longitude: row.longitude, whatsapp: row.whatsapp,
       yearsExperience: row.yearsExperience,
       tier: row.tier as "FREE" | "STANDARD" | "PREMIUM",
       averageRating: Number(row.averageRating),
-      totalReviews: row.totalReviews,
-      totalViews: row.totalViews,
-      totalContacts: row.totalContacts,
-      matricula: row.matricula,
-      availability: row.availability,
-      status: row.status,
-      userId: row.userId,
-      categoryId: row.categoryId,
+      totalReviews: row.totalReviews, totalViews: row.totalViews,
+      totalContacts: row.totalContacts, matricula: row.matricula,
+      availability: row.availability, status: row.status,
+      userId: row.userId, categoryId: row.categoryId,
       user: { id: row.userId, name: row.user_name, phone: row.user_phone },
       category: { id: row.cat_id, name: row.cat_name, slug: row.cat_slug, icon: row.cat_icon },
-      photos: [] as { url: string }[], // Fetched separately below
+      photos: [] as { url: string }[],
       distance: Math.round(Number(row.distance_km) * 10) / 10,
     }));
 
-    // Batch fetch photos for all results (1 query instead of N)
     if (data.length > 0) {
       const profileIds = data.map((d) => d.id);
       const photos = await db.workPhoto.findMany({
         where: { profileId: { in: profileIds } },
         orderBy: { sortOrder: "asc" },
-        take: 3 * data.length, // max 3 per profile
+        take: 3 * data.length,
       });
       const photoMap = new Map<string, { url: string }[]>();
       for (const photo of photos) {
@@ -281,13 +235,7 @@ export const professionalRepository = {
       }
     }
 
-    return {
-      data,
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit),
-    };
+    return { data, total, page, limit, totalPages: Math.ceil(total / limit) };
   },
 
   async getByStatus(status: ProfileStatus, page = 1, limit = 20) {
@@ -319,6 +267,27 @@ export const professionalRepository = {
       },
       include: profileCard,
       orderBy: [{ tier: "asc" }, { averageRating: "desc" }],
+      take: limit,
+    });
+  },
+
+  /**
+   * Get recent professionals excluding a list of IDs.
+   * Used in home "Todos los profesionales" to avoid duplicates with featured section.
+   */
+  async getRecent(limit = 8, excludeIds: string[] = []) {
+    return db.profile.findMany({
+      where: {
+        status: "APPROVED",
+        user: { isActive: true },
+        ...(excludeIds.length > 0 && { id: { notIn: excludeIds } }),
+      },
+      include: profileCard,
+      orderBy: [
+        { tier: "asc" },
+        { averageRating: "desc" },
+        { createdAt: "desc" },
+      ],
       take: limit,
     });
   },
