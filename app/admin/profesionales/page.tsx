@@ -5,9 +5,10 @@ import { professionalRepository } from "@/server/repositories/professional.repos
 import { db } from "@/db/client";
 import { ApproveButton } from "./approve-button";
 import { SuspendButton } from "./suspend-button";
-import { AddSponsorForm, DeleteSponsorButton, TierSelect, DeleteProfessionalButton } from "./admin-forms";
+import { AddSponsorForm, DeleteSponsorButton, DeleteProfessionalButton } from "./admin-forms";
 import { AnalyticsPanel } from "./analytics-panel";
 import { ChangePasswordForm } from "./change-password-form";
+import { ProfessionalsActive } from "./professionals-active";
 
 export const metadata = { title: "Admin - OficiosGo" };
 
@@ -15,11 +16,16 @@ export default async function AdminPage() {
   const user = await getCurrentUser();
   if (!user || user.role !== "ADMIN") redirect("/login");
 
-  const [pending, approved, suspended, sponsors] = await Promise.all([
+  const [pending, approved, suspended, sponsors, categories] = await Promise.all([
     professionalRepository.getByStatus("PENDING", 1, 100),
     professionalRepository.getByStatus("APPROVED", 1, 100),
     professionalRepository.getByStatus("SUSPENDED", 1, 100),
     db.sponsor.findMany({ orderBy: [{ tier: "asc" }, { createdAt: "desc" }] }),
+    db.serviceCategory.findMany({
+      where: { isActive: true },
+      orderBy: { sortOrder: "asc" },
+      select: { id: true, name: true, slug: true, icon: true },
+    }),
   ]);
 
   const [totalUsers, totalClients, totalReviews, totalBudgets, totalEvents] = await Promise.all([
@@ -188,33 +194,7 @@ export default async function AdminPage() {
           )}
         </section>
 
-        <section>
-          <div className="flex items-center gap-2 mb-3">
-            <h2 className="text-[15px] font-extrabold text-[#1A1D2E]">Profesionales activos</h2>
-            <span className="px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-[10px] font-extrabold">{approved.total}</span>
-          </div>
-          <div className="bg-white rounded-2xl border border-gray-100 divide-y divide-gray-100 overflow-hidden">
-            {approved.data.map((p: any) => (
-              <div key={p.id} className="p-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#5C80BC] to-[#7A9263] flex items-center justify-center text-white text-sm font-black shrink-0">
-                    {p.user.name.split(" ").map((n: string) => n[0]).join("").slice(0, 2)}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-[14px] font-bold text-[#1A1D2E] truncate">{p.user.name}</div>
-                    <div className="text-[11px] text-gray-400 truncate">{p.category.icon} {p.category.name} · {p.user.email}</div>
-                  </div>
-                  <TierSelect profileId={p.id} currentTier={p.tier || "FREE"} />
-                </div>
-                <div className="flex gap-2 mt-3">
-                  <Link href={`/app/profesional/${p.slug}`} className="flex-1 py-2 rounded-lg bg-gray-50 border border-gray-200 text-center text-[11px] font-bold text-[#1A1D2E]">Ver perfil</Link>
-                  <SuspendButton profileId={p.id} />
-                  <DeleteProfessionalButton profileId={p.id} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+        <ProfessionalsActive professionals={approved.data as any} categories={categories} />
 
         {suspended.data.length > 0 && (
           <section>
