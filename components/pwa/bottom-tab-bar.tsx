@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState, useTransition, useCallback } from "react";
+import { useState, useTransition, useCallback, useEffect } from "react";
 
 const tabs = [
   {
@@ -10,16 +10,7 @@ const tabs = [
     match: (p: string) => p === "/app",
     label: "Inicio",
     icon: (a: boolean) => (
-      <svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill={a ? "#F8C927" : "none"}
-        stroke={a ? "#F8C927" : "#9CA3AF"}
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill={a ? "#F8C927" : "none"} stroke={a ? "#F8C927" : "#9CA3AF"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z" />
       </svg>
     ),
@@ -29,15 +20,7 @@ const tabs = [
     match: (p: string) => p === "/app/buscar" || p.startsWith("/app/buscar/") || p.startsWith("/app/buscar?"),
     label: "Servicios",
     icon: (a: boolean) => (
-      <svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke={a ? "#F8C927" : "#9CA3AF"}
-        strokeWidth={a ? "2.2" : "1.8"}
-        strokeLinecap="round"
-      >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={a ? "#F8C927" : "#9CA3AF"} strokeWidth={a ? "2.2" : "1.8"} strokeLinecap="round">
         <circle cx="11" cy="11" r="7" />
         <path d="m20 20-3.5-3.5" />
       </svg>
@@ -48,16 +31,7 @@ const tabs = [
     match: (p: string) => p === "/app/pedidos" || p.startsWith("/app/pedidos/"),
     label: "Pedidos",
     icon: (a: boolean) => (
-      <svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke={a ? "#F8C927" : "#9CA3AF"}
-        strokeWidth={a ? "2.2" : "1.8"}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={a ? "#F8C927" : "#9CA3AF"} strokeWidth={a ? "2.2" : "1.8"} strokeLinecap="round" strokeLinejoin="round">
         <rect x="3" y="3" width="18" height="18" rx="2" />
         <path d="m9 12 2 2 4-4" />
       </svg>
@@ -68,15 +42,7 @@ const tabs = [
     match: (p: string) => p === "/app/cuenta" || p.startsWith("/app/cuenta/"),
     label: "Cuenta",
     icon: (a: boolean) => (
-      <svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke={a ? "#F8C927" : "#9CA3AF"}
-        strokeWidth={a ? "2.2" : "1.8"}
-        strokeLinecap="round"
-      >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={a ? "#F8C927" : "#9CA3AF"} strokeWidth={a ? "2.2" : "1.8"} strokeLinecap="round">
         <circle cx="12" cy="8" r="4" />
         <path d="M5.5 21a7.5 7.5 0 0 1 13 0" />
       </svg>
@@ -90,17 +56,11 @@ export function BottomTabBar() {
   const [isPending, startTransition] = useTransition();
   const [pendingHref, setPendingHref] = useState<string | null>(null);
 
-  // Defensive: pathname can be null in Next 15 edge cases
-  if (!pathname) return null;
-
-  // Hide on profile detail pages
-  const hidden = pathname.startsWith("/app/profesional/");
-  if (hidden) return null;
-
+  // ✅ All hooks declared BEFORE any early return
   const handleNavigate = useCallback(
     (href: string, e: React.MouseEvent) => {
       e.preventDefault();
-      if (pathname === href) return; // already there
+      if (pathname === href) return;
       setPendingHref(href);
       startTransition(() => {
         router.push(href);
@@ -109,17 +69,23 @@ export function BottomTabBar() {
     [pathname, router]
   );
 
-  // Clear pending state when navigation completes
-  if (!isPending && pendingHref) {
-    setPendingHref(null);
-  }
-
   const handlePrefetch = useCallback(
     (href: string) => {
       router.prefetch(href);
     },
     [router]
   );
+
+  // Clear pending when navigation completes
+  useEffect(() => {
+    if (!isPending && pendingHref) {
+      setPendingHref(null);
+    }
+  }, [isPending, pendingHref]);
+
+  // ✅ Early returns AFTER hooks
+  if (!pathname) return null;
+  if (pathname.startsWith("/app/profesional/")) return null;
 
   return (
     <nav
@@ -131,7 +97,6 @@ export function BottomTabBar() {
           {tabs.map((t) => {
             const isCurrentRoute = t.match(pathname);
             const isPendingThis = pendingHref === t.href && isPending;
-            // Optimistic active state: show as active if pending OR current route
             const active = isPendingThis || (isCurrentRoute && !pendingHref);
 
             return (
@@ -150,11 +115,7 @@ export function BottomTabBar() {
                   <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-[3px] rounded-full bg-[#F8C927]" />
                 )}
                 <span className="transition-transform">{t.icon(active)}</span>
-                <span
-                  className={`text-[10px] mt-0.5 ${
-                    active ? "font-extrabold text-[#1A1D2E]" : "font-medium text-gray-400"
-                  }`}
-                >
+                <span className={`text-[10px] mt-0.5 ${active ? "font-extrabold text-[#1A1D2E]" : "font-medium text-gray-400"}`}>
                   {t.label}
                 </span>
                 {isPendingThis && (
