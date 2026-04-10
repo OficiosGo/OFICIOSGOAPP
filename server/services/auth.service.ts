@@ -1,6 +1,5 @@
 import bcrypt from "bcryptjs";
 import { userRepository } from "@/server/repositories/user.repository";
-import { professionalRepository } from "@/server/repositories/professional.repository";
 import { signToken } from "@/server/auth/jwt";
 import { AppError } from "@/lib/errors";
 import { slugify } from "@/lib/utils";
@@ -49,22 +48,14 @@ export const authService = {
       throw AppError.conflict("Ya existe una cuenta con ese DNI");
     }
 
-    const passwordHash = await bcrypt.hash(input.password, 12);
-
-    const user = await userRepository.create({
-      email: input.email,
-      passwordHash,
-      name: input.name,
-      phone: input.phone,
-      dni: input.dni,
-      birthDate: new Date(input.birthDate),
-      role: "PROFESSIONAL",
+    const category = await db.serviceCategory.findUnique({
+      where: { id: input.categoryId },
+      select: { id: true },
     });
+    if (!category) {
+      throw AppError.conflict("La categoría seleccionada no existe");
+    }
 
-    const baseSlug = slugify(`${input.name}`);
-    const slug = `${baseSlug}-${user.id.slice(-6)}`;
-
-    // Get additional category slugs from IDs
     let additionalCategories: string[] = [];
     if (input.additionalCategoryIds && input.additionalCategoryIds.length > 0) {
       const cats = await db.serviceCategory.findMany({
@@ -74,16 +65,38 @@ export const authService = {
       additionalCategories = cats.map((c) => c.slug);
     }
 
-    await professionalRepository.create({
-      userId: user.id,
-      slug,
-      categoryId: input.categoryId,
-      city: input.city,
-      province: "Córdoba",
-      whatsapp: input.phone,
-      urgencias24hs: input.urgencias24hs ?? false,
-      conGarantia: input.conGarantia ?? false,
-      additionalCategories,
+    const passwordHash = await bcrypt.hash(input.password, 12);
+    const baseSlug = slugify(input.name);
+
+    const user = await db.$transaction(async (tx) => {
+      const newUser = await tx.user.create({
+        data: {
+          email: input.email,
+          passwordHash,
+          name: input.name,
+          phone: input.phone,
+          dni: input.dni,
+          birthDate: new Date(input.birthDate),
+          role: "PROFESSIONAL",
+        },
+      });
+
+      await tx.profile.create({
+        data: {
+          userId: newUser.id,
+          slug: `${baseSlug}-${newUser.id.slice(-6)}`,
+          categoryId: input.categoryId,
+          city: input.city,
+          province: "Córdoba",
+          whatsapp: input.phone,
+          urgencias24hs: input.urgencias24hs ?? false,
+          conGarantia: input.conGarantia ?? false,
+          additionalCategoryIds: additionalCategories,
+          status: "PENDING",
+        },
+      });
+
+      return newUser;
     });
 
     const token = await signToken({
@@ -93,6 +106,9 @@ export const authService = {
       role: user.role,
     });
 
-    return { token, user: { id: user.id, email: user.email, name: user.name, role: user.role } };
+    return {
+      token,
+      user: { id: user.id, email: user.email, name: user.name, role: user.role },
+    };
   },
 };
