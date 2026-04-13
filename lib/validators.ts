@@ -20,7 +20,7 @@ export const registerSchema = z.object({
 });
 
 export const updateProfileSchema = z.object({
-  headline: z.string().min(10, "Mínimo 10 caracteres").max(120).optional(),
+  headline: z.string().min(10).max(120).optional(),
   bio: z.string().max(2000).optional(),
   whatsapp: z.string().regex(/^\d{10,13}$/, "WhatsApp inválido").optional(),
   yearsExperience: z.coerce.number().int().min(0).max(60).optional(),
@@ -31,6 +31,7 @@ export const updateProfileSchema = z.object({
   matricula: z.string().max(50).optional(),
   urgencias24hs: z.coerce.boolean().optional(),
   conGarantia: z.coerce.boolean().optional(),
+  profileImage: z.string().url().optional(), // ← AGREGAR
 });
 
 export const reviewSchema = z.object({
