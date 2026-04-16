@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 type Props = {
   profileId: string;
@@ -20,25 +20,47 @@ export function ReviewForm({ profileId, professionalName }: Props) {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    fetch("/api/auth/me").then(r => r.json()).then(d => {
-      if (d.data) {
-        setIsLoggedIn(true);
-        setName(d.data.name || "");
-      }
-    }).catch(() => {});
+    const controller = new AbortController();
+    fetch("/api/auth/me", { signal: controller.signal })
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.data) {
+          setIsLoggedIn(true);
+          setName(d.data.name || "");
+        }
+      })
+      .catch(() => {});
+    return () => controller.abort();
   }, []);
 
-  const handleSubmit = async () => {
+  const handleSubmit = useCallback(async () => {
     setError("");
-    if (rating === 0) { setError("Selecciona una puntuacion"); return; }
-    if (!isLoggedIn && (!name || !phone)) { setError("Completa tu nombre y teléfono"); return; }
+
+    if (rating === 0) {
+      setError("Seleccioná una puntuación");
+      return;
+    }
+    if (!isLoggedIn && !name.trim()) {
+      setError("Ingresá tu nombre");
+      return;
+    }
+    if (!isLoggedIn && !phone.trim()) {
+      setError("Ingresá tu teléfono");
+      return;
+    }
 
     setLoading(true);
     try {
       const endpoint = isLoggedIn ? "/api/reviews" : "/api/reviews/public";
       const body = isLoggedIn
-        ? { profileId, rating, comment: comment || undefined }
-        : { profileId, rating, comment: comment || undefined, authorName: name, authorPhone: phone };
+        ? { profileId, rating, comment: comment.trim() || undefined }
+        : {
+            profileId,
+            rating,
+            comment: comment.trim() || undefined,
+            authorName: name.trim(),
+            authorPhone: phone.trim(),
+          };
 
       const res = await fetch(endpoint, {
         method: "POST",
@@ -47,25 +69,32 @@ export function ReviewForm({ profileId, professionalName }: Props) {
       });
       const data = await res.json();
 
-      if (!res.ok) { setError(data.error || "Error al enviar"); return; }
+      if (!res.ok) {
+        setError(data.error || "Error al enviar la opinión");
+        return;
+      }
       setSuccess(true);
     } catch {
-      setError("Error de conexión");
+      setError("Error de conexión. Intentá de nuevo.");
     } finally {
       setLoading(false);
     }
-  };
+  }, [rating, comment, name, phone, isLoggedIn, profileId]);
 
+  /* ── Success state ───────────────────────────────────────── */
   if (success) {
     return (
       <div className="p-5 rounded-2xl bg-green-50 border border-green-100 text-center">
         <div className="text-3xl mb-2">✅</div>
-        <p className="text-sm font-bold text-green-700">Gracias por tu opinión</p>
-        <p className="text-xs text-green-600 mt-1">Tu opinion ayuda a otros vecinos de Villa Maria</p>
+        <p className="text-sm font-bold text-green-700">¡Gracias por tu opinión!</p>
+        <p className="text-xs text-green-600 mt-1">
+          Tu opinión ayuda a otros vecinos de Villa María
+        </p>
       </div>
     );
   }
 
+  /* ── Collapsed CTA ───────────────────────────────────────── */
   if (!open) {
     return (
       <button
@@ -78,47 +107,85 @@ export function ReviewForm({ profileId, professionalName }: Props) {
     );
   }
 
+  /* ── Expanded form ───────────────────────────────────────── */
+  const ratingLabel =
+    rating === 0
+      ? "Tocá una estrella"
+      : rating <= 2
+        ? "Puede mejorar"
+        : rating === 3
+          ? "Bueno"
+          : rating === 4
+            ? "Muy bueno"
+            : "Excelente";
+
   return (
     <div className="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-[15px] font-black text-[#1A1D2E]">Tu opinión</h3>
-        <button onClick={() => setOpen(false)} className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        <button
+          onClick={() => setOpen(false)}
+          aria-label="Cerrar formulario"
+          className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
+        >
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#666"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          >
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
         </button>
       </div>
 
-      {error && <div className="p-3 rounded-xl bg-red-50 text-red-600 text-sm font-medium border border-red-100 mb-4">{error}</div>}
+      {error && (
+        <div className="p-3 rounded-xl bg-red-50 text-red-600 text-sm font-medium border border-red-100 mb-4">
+          {error}
+        </div>
+      )}
 
       {/* Stars */}
-      <div className="flex items-center justify-center gap-2 mb-4">
+      <div className="flex items-center justify-center gap-2 mb-1" role="radiogroup" aria-label="Puntuación">
         {[1, 2, 3, 4, 5].map((s) => (
           <button
             key={s}
             onClick={() => setRating(s)}
             onMouseEnter={() => setHoverRating(s)}
             onMouseLeave={() => setHoverRating(0)}
+            aria-label={`${s} estrella${s > 1 ? "s" : ""}`}
+            aria-checked={rating === s}
+            role="radio"
             className="p-1 transition-transform active:scale-110"
           >
-            <svg width="32" height="32" viewBox="0 0 24 24" fill={s <= (hoverRating || rating) ? "#F8C927" : "#E5E7EB"} className="transition-colors">
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill={s <= (hoverRating || rating) ? "#F8C927" : "#E5E7EB"}
+              className="transition-colors"
+            >
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
             </svg>
           </button>
         ))}
       </div>
-      <p className="text-center text-xs text-gray-400 mb-4">
-        {rating === 0 ? "Toca una estrella" : rating <= 2 ? "Puede mejorar" : rating <= 3 ? "Bueno" : rating === 4 ? "Muy bueno" : "Excelente"}
-      </p>
+      <p className="text-center text-xs text-gray-400 mb-4">{ratingLabel}</p>
 
       {/* Comment */}
       <textarea
         value={comment}
         onChange={(e) => setComment(e.target.value)}
         rows={3}
-        placeholder="Conta tu experiencia con este profesional... (opcional)"
+        placeholder="Contá tu experiencia con este profesional... (opcional)"
         className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm outline-none focus:border-[#F8C927] focus:ring-2 focus:ring-[#F8C927]/20 resize-none mb-3"
       />
 
-      {/* Name/Phone for non-logged-in users */}
+      {/* Name/Phone for guests */}
       {!isLoggedIn && (
         <div className="space-y-3 mb-4">
           <div className="p-3 rounded-xl bg-gray-50 border border-gray-100">
@@ -127,6 +194,7 @@ export function ReviewForm({ profileId, professionalName }: Props) {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Tu nombre"
+              autoComplete="name"
               className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm outline-none focus:border-[#F8C927] mb-2"
             />
             <input
@@ -134,6 +202,8 @@ export function ReviewForm({ profileId, professionalName }: Props) {
               onChange={(e) => setPhone(e.target.value)}
               placeholder="Tu teléfono"
               type="tel"
+              inputMode="tel"
+              autoComplete="tel"
               className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm outline-none focus:border-[#F8C927]"
             />
           </div>

@@ -26,3 +26,18 @@ export function formatDate(date: Date | string): string {
     year: "numeric",
   }).format(new Date(date));
 }
+
+/**
+ * Sanitize an Argentine phone number to international format.
+ * Input:  "3534123456" | "543534123456" | "5493534123456" | "+5493534123456"
+ * Output: "5493534123456"
+ */
+export function normalizeArgPhone(raw: string): string {
+  const digits = raw.replace(/\D/g, "");
+
+  if (digits.startsWith("549") && digits.length === 13) return digits;
+  if (digits.startsWith("54") && digits.length === 12) return "549" + digits.slice(2);
+  if (digits.length === 10) return "549" + digits;
+
+  return digits.startsWith("54") ? digits : "54" + digits;
+}

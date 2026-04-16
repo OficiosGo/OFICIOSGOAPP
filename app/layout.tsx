@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { ServiceWorkerRegister } from "@/components/pwa/sw-register";
 import "./globals.css";
 
@@ -67,9 +68,7 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: "black-translucent",
     title: "OficiosGo!",
-    startupImage: [
-      { url: "/icons/apple-touch-icon.png" },
-    ],
+    startupImage: [{ url: "/icons/apple-touch-icon.png" }],
   },
   formatDetection: {
     telephone: false,
@@ -174,6 +173,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       >
         {children}
         <ServiceWorkerRegister />
+        <Analytics />
       </body>
     </html>
   );
