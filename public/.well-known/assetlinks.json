@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.oficiosgo.twa",
+      "sha256_cert_fingerprints": [
+        "44:C6:C8:FB:C2:80:64:94:42:68:DE:DD:3C:C8:93:C1:F1:16:44:52:19:66:64:4F:F3:DF:58:A4:A6:F2:60:47"
+      ]
+    }
+  }
+]
