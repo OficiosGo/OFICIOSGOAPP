@@ -7,7 +7,13 @@ import { ResultsList } from "./_components/results-list";
 import { CategoryGrid } from "./_components/category-grid";
 
 type Props = {
-  searchParams: Promise<{ category?: string; q?: string }>;
+  searchParams: Promise<{
+    category?: string;
+    q?: string;
+    urgencias?: string;
+    garantia?: string;
+    matriculado?: string;
+  }>;
 };
 
 // Cache categories for 5 minutes — they barely change
@@ -40,12 +46,18 @@ export default async function SearchPage({ searchParams }: Props) {
   const params = await searchParams;
   const category = params.category || null;
   const query = params.q || null;
-  const hasSearch = !!(category || query);
+  const filters = {
+    urgencias: params.urgencias === "1",
+    garantia: params.garantia === "1",
+    matriculado: params.matriculado === "1",
+  };
+  const hasFilters = filters.urgencias || filters.garantia || filters.matriculado;
+  const hasSearch = !!(category || query || hasFilters);
 
   const [categories, result] = await Promise.all([
     getCachedCategories(),
     hasSearch
-      ? searchService.search({ category, query, page: 1, limit: 20 })
+      ? searchService.search({ category, query, page: 1, limit: 20, ...filters })
       : Promise.resolve(null),
   ]);
 
@@ -62,6 +74,7 @@ export default async function SearchPage({ searchParams }: Props) {
         selectedCategory={selectedCategory}
         totalResults={result?.total ?? null}
         hasSearch={hasSearch}
+        initialFilters={filters}
       />
 
       {!hasSearch && <CategoryGrid categories={categories} />}
@@ -72,6 +85,7 @@ export default async function SearchPage({ searchParams }: Props) {
             initialResult={result}
             category={category}
             query={query}
+            filters={filters}
           />
         </div>
       )}

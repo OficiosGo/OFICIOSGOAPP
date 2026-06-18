@@ -38,6 +38,8 @@ type RecentSearch = {
   timestamp: number;
 };
 
+type ActiveFilters = { urgencias: boolean; garantia: boolean; matriculado: boolean };
+
 type Props = {
   categories: Category[];
   initialQuery: string | null;
@@ -45,16 +47,26 @@ type Props = {
   selectedCategory: Category | null;
   totalResults: number | null;
   hasSearch: boolean;
+  initialFilters: ActiveFilters;
 };
 
 const RECENT_KEY = "oficiosgo:recent-searches";
 const MAX_RECENT = 5;
 const DEBOUNCE_MS = 250;
 
-function buildUrl(params: { category?: string | null; q?: string | null }): string {
+type UrlFilters = { urgencias?: boolean; garantia?: boolean; matriculado?: boolean };
+
+function buildUrl(params: {
+  category?: string | null;
+  q?: string | null;
+  filters?: UrlFilters;
+}): string {
   const sp = new URLSearchParams();
   if (params.category) sp.set("category", params.category);
   if (params.q) sp.set("q", params.q);
+  if (params.filters?.urgencias) sp.set("urgencias", "1");
+  if (params.filters?.garantia) sp.set("garantia", "1");
+  if (params.filters?.matriculado) sp.set("matriculado", "1");
   const qs = sp.toString();
   return `/app/buscar${qs ? `?${qs}` : ""}`;
 }
@@ -91,8 +103,10 @@ export function SearchBar({
   selectedCategory,
   totalResults,
   hasSearch,
+  initialFilters,
 }: Props) {
   const router = useRouter();
+  const activeFilters = initialFilters;
   const [isPending, startTransition] = useTransition();
   const [pendingCategory, setPendingCategory] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState(initialQuery ?? "");
@@ -230,9 +244,17 @@ export function SearchBar({
       const trimmed = inputValue.trim();
       setIsFocused(false);
       inputRef.current?.blur();
-      navigate(buildUrl({ category: initialCategory, q: trimmed || null }));
+      navigate(buildUrl({ category: initialCategory, q: trimmed || null, filters: activeFilters }));
     },
-    [inputValue, initialCategory, navigate]
+    [inputValue, initialCategory, navigate, activeFilters]
+  );
+
+  const toggleFilter = useCallback(
+    (key: keyof ActiveFilters) => {
+      const next = { ...activeFilters, [key]: !activeFilters[key] };
+      navigate(buildUrl({ category: initialCategory, q: initialQuery, filters: next }));
+    },
+    [activeFilters, initialCategory, initialQuery, navigate]
   );
 
   const handleClear = useCallback(() => {
@@ -296,7 +318,7 @@ export function SearchBar({
         {selectedCategory && (
           <button
             type="button"
-            onClick={() => navigate(buildUrl({ q: initialQuery }), null)}
+            onClick={() => navigate(buildUrl({ q: initialQuery, filters: activeFilters }), null)}
             className="shrink-0 text-[11px] font-bold text-white/60 bg-white/10 px-3 py-1.5 rounded-full whitespace-nowrap active:scale-[0.97] transition-transform"
             aria-label="Quitar filtro de categoría"
           >
@@ -491,10 +513,10 @@ export function SearchBar({
                           type="button"
                           onClick={() => {
                             setIsFocused(false);
-                            navigate(buildUrl({ category: c.slug }), c.slug);
+                            navigate(buildUrl({ category: c.slug, filters: activeFilters }), c.slug);
                           }}
-                          onMouseEnter={() => handlePrefetch(buildUrl({ category: c.slug }))}
-                          onTouchStart={() => handlePrefetch(buildUrl({ category: c.slug }))}
+                          onMouseEnter={() => handlePrefetch(buildUrl({ category: c.slug, filters: activeFilters }))}
+                          onTouchStart={() => handlePrefetch(buildUrl({ category: c.slug, filters: activeFilters }))}
                           className="flex items-center gap-3 px-3 py-2.5 rounded-xl active:bg-gray-50 text-left"
                         >
                           <span className="text-xl shrink-0" aria-hidden="true">
@@ -603,9 +625,9 @@ export function SearchBar({
       >
         <button
           type="button"
-          onClick={() => navigate(buildUrl({ q: initialQuery }), null)}
-          onMouseEnter={() => handlePrefetch(buildUrl({ q: initialQuery }))}
-          onTouchStart={() => handlePrefetch(buildUrl({ q: initialQuery }))}
+          onClick={() => navigate(buildUrl({ q: initialQuery, filters: activeFilters }), null)}
+          onMouseEnter={() => handlePrefetch(buildUrl({ q: initialQuery, filters: activeFilters }))}
+          onTouchStart={() => handlePrefetch(buildUrl({ q: initialQuery, filters: activeFilters }))}
           aria-pressed={!effectiveCategory}
           className={`shrink-0 px-3.5 py-2.5 min-h-[40px] rounded-full text-[12px] font-bold whitespace-nowrap transition-colors flex items-center gap-1.5 ${
             !effectiveCategory
@@ -621,7 +643,7 @@ export function SearchBar({
         {categories.map((cat) => {
           const isActive = effectiveCategory === cat.slug;
           const isThisPending = pendingCategory === cat.slug && isPending;
-          const url = buildUrl({ category: cat.slug, q: initialQuery });
+          const url = buildUrl({ category: cat.slug, q: initialQuery, filters: activeFilters });
           return (
             <button
               key={cat.id}
@@ -653,6 +675,39 @@ export function SearchBar({
                 >
                   {cat._count.profiles}
                 </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Filtros de confianza (toggles) */}
+      <div
+        className="flex gap-2 mt-2.5 overflow-x-auto pb-0.5"
+        style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch", touchAction: "pan-x" }}
+      >
+        {([
+          { key: "urgencias", label: "Urgencias 24hs", icon: "⚡" },
+          { key: "garantia", label: "Con garantía", icon: "🛡️" },
+          { key: "matriculado", label: "Matriculado", icon: "🪪" },
+        ] as const).map((f) => {
+          const isActive = activeFilters[f.key];
+          return (
+            <button
+              key={f.key}
+              type="button"
+              onClick={() => toggleFilter(f.key)}
+              aria-pressed={isActive}
+              style={{ touchAction: "manipulation" }}
+              className={`shrink-0 px-3.5 py-2 min-h-[38px] rounded-full text-[12px] font-bold whitespace-nowrap transition-colors flex items-center gap-1.5 ${
+                isActive
+                  ? "bg-[#F8C927] text-[#0F1120] shadow-md"
+                  : "bg-white/10 text-white/80 border border-white/15"
+              }`}
+            >
+              <span>{f.icon} {f.label}</span>
+              {isActive && (
+                <span className="text-[13px] leading-none" aria-hidden="true">✕</span>
               )}
             </button>
           );

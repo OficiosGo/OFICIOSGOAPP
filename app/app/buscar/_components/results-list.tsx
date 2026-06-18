@@ -27,10 +27,13 @@ type SearchResult = {
   totalPages: number;
 };
 
+type Filters = { urgencias: boolean; garantia: boolean; matriculado: boolean };
+
 type Props = {
   initialResult: SearchResult;
   category: string | null;
   query: string | null;
+  filters: Filters;
 };
 
 const AVATAR_GRADIENTS = [
@@ -46,7 +49,8 @@ function getProImage(pro: Professional): string | null {
   return pro.profileImage || pro.photos?.[0]?.url || null;
 }
 
-export function ResultsList({ initialResult, category, query }: Props) {
+export function ResultsList({ initialResult, category, query, filters }: Props) {
+  const filterKey = `${filters.urgencias ? 1 : 0}-${filters.garantia ? 1 : 0}-${filters.matriculado ? 1 : 0}`;
   const [items, setItems] = useState<Professional[]>(initialResult.data);
   const [page, setPage] = useState(initialResult.page);
   const [totalPages, setTotalPages] = useState(initialResult.totalPages);
@@ -73,7 +77,7 @@ export function ResultsList({ initialResult, category, query }: Props) {
     setError(false);
     loadingRef.current = false;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [category, query]);
+  }, [category, query, filterKey]);
 
   const loadMore = useCallback(async () => {
     if (loadingRef.current || page >= totalPages) return;
@@ -85,6 +89,9 @@ export function ResultsList({ initialResult, category, query }: Props) {
       const sp = new URLSearchParams();
       if (category) sp.set("category", category);
       if (query) sp.set("q", query);
+      if (filters.urgencias) sp.set("urgencias", "1");
+      if (filters.garantia) sp.set("garantia", "1");
+      if (filters.matriculado) sp.set("matriculado", "1");
       sp.set("page", String(page + 1));
       sp.set("limit", "20");
 
@@ -103,7 +110,7 @@ export function ResultsList({ initialResult, category, query }: Props) {
       if (isMountedRef.current) setIsLoadingMore(false);
       loadingRef.current = false;
     }
-  }, [page, totalPages, category, query]);
+  }, [page, totalPages, category, query, filterKey, filters]);
 
   // IntersectionObserver for infinite scroll
   useEffect(() => {

@@ -72,4 +72,8 @@ export type ProfessionalFilters = {
   radius?: number; // km, default 50
   page?: number;
   limit?: number;
+  // Filtros de confianza (opcionales)
+  urgencias?: boolean;
+  garantia?: boolean;
+  matriculado?: boolean;
 };

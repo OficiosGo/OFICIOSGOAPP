@@ -53,11 +53,12 @@ export const professionalRepository = {
   },
 
   async search(filters: ProfessionalFilters) {
-    const { category, city, query, lat, lng, radius = 50, page = 1, limit = 20 } = filters;
+    const { category, city, query, lat, lng, radius = 50, page = 1, limit = 20,
+      urgencias, garantia, matriculado } = filters;
     const hasGeo = lat != null && lng != null;
 
     if (hasGeo) {
-      return this.searchWithGeo({ category, city, query, lat: lat!, lng: lng!, radius, page, limit });
+      return this.searchWithGeo({ category, city, query, lat: lat!, lng: lng!, radius, page, limit, urgencias, garantia, matriculado });
     }
 
     const where: Prisma.ProfileWhereInput = {
@@ -65,6 +66,9 @@ export const professionalRepository = {
       user: { isActive: true },
       ...(category && { category: { slug: category } }),
       ...(city && { city: { equals: city, mode: "insensitive" } }),
+      ...(urgencias && { urgencias24hs: true }),
+      ...(garantia && { conGarantia: true }),
+      ...(matriculado && { matricula: { not: null } }),
       ...(query && {
         OR: [
           { user: { name: { contains: query, mode: "insensitive" } } },
@@ -108,8 +112,11 @@ export const professionalRepository = {
     radius: number;
     page: number;
     limit: number;
+    urgencias?: boolean;
+    garantia?: boolean;
+    matriculado?: boolean;
   }) {
-    const { category, city, query, lat, lng, radius, page, limit } = params;
+    const { category, city, query, lat, lng, radius, page, limit, urgencias, garantia, matriculado } = params;
     const offset = (page - 1) * limit;
 
     const conditions: string[] = [
@@ -141,6 +148,11 @@ export const professionalRepository = {
       values.push(`%${query}%`);
       paramIdx++;
     }
+
+    // Filtros de confianza (constantes, sin input del usuario)
+    if (urgencias) conditions.push(`p."urgencias24hs" = true`);
+    if (garantia) conditions.push(`p."conGarantia" = true`);
+    if (matriculado) conditions.push(`p."matricula" IS NOT NULL`);
 
     const whereClause = conditions.join(" AND ");
 

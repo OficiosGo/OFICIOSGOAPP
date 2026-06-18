@@ -9,6 +9,7 @@ export async function GET(request: Request) {
   const query = searchParams.get("q");
   const page = Number(searchParams.get("page") ?? 1);
   const limit = Number(searchParams.get("limit") ?? 20);
+  const isOn = (v: string | null) => v === "1" || v === "true";
 
   try {
     const result = await searchService.search({
@@ -16,6 +17,9 @@ export async function GET(request: Request) {
       query: query || null,
       page: Number.isFinite(page) && page > 0 ? page : 1,
       limit: Number.isFinite(limit) && limit > 0 && limit <= 50 ? limit : 20,
+      urgencias: isOn(searchParams.get("urgencias")),
+      garantia: isOn(searchParams.get("garantia")),
+      matriculado: isOn(searchParams.get("matriculado")),
     });
 
     return NextResponse.json(result);
