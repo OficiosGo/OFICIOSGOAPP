@@ -2,12 +2,17 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/server/auth/session";
 import { professionalRepository } from "@/server/repositories/professional.repository";
+import { WorkPhotosManager } from "@/components/features/work-photos-manager";
+
+export const dynamic = "force-dynamic";
 
 export default async function FotosPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
   const profile = await professionalRepository.getByUserId(user.id);
   if (!profile) redirect("/login");
+
+  const photos = profile.photos.map((p) => ({ id: p.id, url: p.url }));
 
   return (
     <>
@@ -18,29 +23,11 @@ export default async function FotosPage() {
           </Link>
           <h1 className="text-lg font-black text-[#F8C927]">Mis fotos de trabajo</h1>
         </div>
+        <p className="text-[13px] text-white/50 mt-1.5 ml-12">Mostrá tus mejores trabajos. Hasta 12 fotos.</p>
       </div>
 
       <div className="px-4 py-5 pb-24">
-        {profile.photos.length === 0 ? (
-          <div className="text-center py-16">
-            <div className="text-5xl mb-4">📸</div>
-            <h3 className="text-lg font-bold text-[#1A1D2E] mb-2">Todavía no subiste fotos</h3>
-            <p className="text-sm text-gray-400 max-w-[260px] mx-auto mb-6">Las fotos de tus trabajos generan confianza y te ayudan a conseguir mas clientes</p>
-            <p className="text-xs text-gray-400 bg-gray-50 rounded-xl p-4 border border-gray-100">Proximamente vas a poder subir fotos de tus trabajos directamente desde aca. Por ahora, contacta al administrador.</p>
-          </div>
-        ) : (
-          <>
-            <p className="text-sm text-gray-500 mb-4">{profile.photos.length} foto{profile.photos.length !== 1 ? "s" : ""} de trabajos</p>
-            <div className="grid grid-cols-2 gap-2">
-              {profile.photos.map((photo, i) => (
-                <div key={photo.url} className="rounded-xl overflow-hidden bg-gray-100 aspect-square">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={photo.url} alt={`Trabajo ${i + 1}`} className="w-full h-full object-cover" />
-                </div>
-              ))}
-            </div>
-          </>
-        )}
+        <WorkPhotosManager initialPhotos={photos} />
       </div>
     </>
   );
