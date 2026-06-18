@@ -80,7 +80,7 @@ export const professionalRepository = {
         where,
         include: profileCard,
         orderBy: [
-          { tier: "asc" },
+          { tier: "desc" },
           { averageRating: "desc" },
           { totalReviews: "desc" },
         ],
@@ -194,7 +194,8 @@ export const professionalRepository = {
           WHEN 'STANDARD' THEN 1
           ELSE 2
         END ASC,
-        distance_km ASC
+        distance_km ASC,
+        p."averageRating" DESC
       LIMIT $4 OFFSET $5
     `, ...values);
 
@@ -266,7 +267,7 @@ export const professionalRepository = {
         tier: { in: ["PREMIUM", "STANDARD"] },
       },
       include: profileCard,
-      orderBy: [{ tier: "asc" }, { averageRating: "desc" }],
+      orderBy: [{ tier: "desc" }, { averageRating: "desc" }],
       take: limit,
     });
   },
@@ -284,7 +285,7 @@ export const professionalRepository = {
       },
       include: profileCard,
       orderBy: [
-        { tier: "asc" },
+        { tier: "desc" },
         { averageRating: "desc" },
         { createdAt: "desc" },
       ],
@@ -338,5 +339,31 @@ export const professionalRepository = {
 
   async countAll() {
     return db.profile.count({ where: { status: "APPROVED", user: { isActive: true } } });
+  },
+
+  /**
+   * Promedio real de la plataforma (solo lectura).
+   * Pondera por cantidad de reseñas para que un perfil con 1 reseña 5★
+   * no infle el número. Devuelve null si todavía no hay reseñas reales.
+   */
+  async getPlatformRating() {
+    const agg = await db.profile.aggregate({
+      where: { status: "APPROVED", user: { isActive: true }, totalReviews: { gt: 0 } },
+      _sum: { totalReviews: true },
+      _count: { _all: true },
+    });
+
+    const totalReviews = agg._sum.totalReviews ?? 0;
+    if (!totalReviews || !agg._count._all) return null;
+
+    // Suma ponderada: Σ(averageRating × totalReviews) / Σ(totalReviews)
+    const rated = await db.profile.findMany({
+      where: { status: "APPROVED", user: { isActive: true }, totalReviews: { gt: 0 } },
+      select: { averageRating: true, totalReviews: true },
+    });
+    const weighted = rated.reduce((acc, p) => acc + p.averageRating * p.totalReviews, 0);
+    const avg = weighted / totalReviews;
+
+    return { average: Math.round(avg * 10) / 10, totalReviews };
   },
 };

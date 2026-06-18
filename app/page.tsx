@@ -28,15 +28,13 @@ const INITIALS = (name: string) =>
   name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase();
 
 export default async function LandingPage() {
-  const [categories, featured, sponsors, totalPros] = await Promise.all([
+  const [categories, featured, sponsors, totalPros, platformRating] = await Promise.all([
     categoryRepository.getAll(),
     searchService.getFeatured(4),
     sponsorRepository.getActive("Villa María"),
     professionalRepository.countAll(),
+    professionalRepository.getPlatformRating(),
   ]);
-
-  // Rating fijo como social proof creíble (no depende de featured variable)
-  const avgRating = "4.9";
 
   return (
     <div className="bg-white font-sans antialiased">
@@ -164,9 +162,17 @@ export default async function LandingPage() {
             <div className="flex gap-8 sm:gap-10 mt-10 justify-center lg:justify-start">
               {[
                 { v: `${totalPros}+`, l: "Profesionales activos" },
-                { v: avgRating + " ★", l: "Rating promedio" },
+                // Solo mostramos el rating si hay reseñas reales detrás
+                platformRating
+                  ? {
+                      v: `${platformRating.average.toFixed(1)} ★`,
+                      l: `Rating promedio · ${platformRating.totalReviews} opiniones`,
+                    }
+                  : null,
                 { v: `${categories.length}`, l: "Categorías de servicio" },
-              ].map((s) => (
+              ]
+                .filter((s): s is { v: string; l: string } => s !== null)
+                .map((s) => (
                 <div key={s.l} className="flex flex-col items-center lg:items-start">
                   <div className="text-2xl sm:text-3xl font-black text-white tabular-nums">
                     {s.v}
