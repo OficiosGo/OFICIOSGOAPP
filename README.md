@@ -45,13 +45,16 @@ Abrir [http://localhost:3000](http://localhost:3000)
 
 ## Credenciales (post-seed)
 
-| Rol | Email | Password |
-|-----|-------|----------|
-| **Admin** | admin@oficiosgo.com | admin123 |
-| **Profesional** | sebastian.vera@test.com | pro123 |
-| **Cliente** | cliente@test.com | cliente123 |
+Las credenciales de los usuarios demo se definen mediante variables de entorno
+en el seed (`db/seed.ts`). Configurá en tu `.env` local:
 
-> **IMPORTANTE:** Cambiar la password del admin antes de lanzar en produccion.
+```bash
+SEED_ADMIN_EMAIL=...
+SEED_ADMIN_PASSWORD=...
+```
+
+> **IMPORTANTE:** Nunca commitear passwords reales. En producción usá credenciales
+> únicas y fuertes, y rotá cualquier password que haya estado en el control de versiones.
 
 ---
 

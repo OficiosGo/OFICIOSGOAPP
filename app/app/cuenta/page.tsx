@@ -464,7 +464,7 @@ export default async function CuentaPage() {
               Mis fotos
             </Link>
             <Link
-              href="/app/cuenta/opiniones"
+              href="/app/cuenta/resenas"
               className="flex items-center gap-2.5 px-4 py-3.5 rounded-xl bg-white border border-gray-100 text-[13px] font-bold text-[#1A1D2E] active:scale-[0.97] transition-transform"
             >
               <span className="text-base">💬</span>
