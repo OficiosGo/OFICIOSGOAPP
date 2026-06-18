@@ -607,7 +607,7 @@ export function SearchBar({
           onMouseEnter={() => handlePrefetch(buildUrl({ q: initialQuery }))}
           onTouchStart={() => handlePrefetch(buildUrl({ q: initialQuery }))}
           aria-pressed={!effectiveCategory}
-          className={`shrink-0 px-3.5 py-1.5 rounded-full text-[12px] font-bold whitespace-nowrap transition-colors flex items-center gap-1.5 ${
+          className={`shrink-0 px-3.5 py-2.5 min-h-[40px] rounded-full text-[12px] font-bold whitespace-nowrap transition-colors flex items-center gap-1.5 ${
             !effectiveCategory
               ? "bg-white text-[#0F1120] shadow-md"
               : "bg-white/10 text-white/80 border border-white/15"
@@ -631,7 +631,7 @@ export function SearchBar({
               onTouchStart={() => handlePrefetch(url)}
               aria-pressed={isActive}
               aria-label={`Filtrar por ${cat.name}, ${cat._count.profiles} profesionales`}
-              className={`shrink-0 px-3.5 py-1.5 rounded-full text-[12px] font-bold whitespace-nowrap transition-colors flex items-center gap-1.5 ${
+              className={`shrink-0 px-3.5 py-2.5 min-h-[40px] rounded-full text-[12px] font-bold whitespace-nowrap transition-colors flex items-center gap-1.5 ${
                 isActive
                   ? "bg-white text-[#0F1120] shadow-md"
                   : "bg-white/10 text-white/80 border border-white/15"

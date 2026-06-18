@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { ContactButtons } from "@/components/features/contact-buttons";
 import { ReviewForm } from "@/components/features/review-form";
+import { ShareButton } from "@/components/features/share-button";
 import { professionalRepository } from "@/server/repositories/professional.repository";
 import { formatDate } from "@/lib/utils";
 
@@ -211,9 +212,12 @@ export default async function ProfilePage({ params }: Props) {
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <h1 className="text-[19px] font-black text-[#1A1D2E] leading-tight">
-                {profile.user.name}
-              </h1>
+              <div className="flex items-start justify-between gap-2">
+                <h1 className="text-[19px] font-black text-[#1A1D2E] leading-tight">
+                  {profile.user.name}
+                </h1>
+                <ShareButton name={profile.user.name} title={profile.headline ?? undefined} />
+              </div>
               <p className="text-[12px] text-[#5C80BC] font-bold mt-0.5 uppercase tracking-wide">
                 {profile.category.icon} {profile.category.name}
                 {profile.city ? ` · ${profile.city}` : ""}
