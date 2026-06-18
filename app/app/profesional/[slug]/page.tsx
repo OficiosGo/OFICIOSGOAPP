@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { ContactButtons } from "@/components/features/contact-buttons";
 import { ReviewForm } from "@/components/features/review-form";
 import { ShareButton } from "@/components/features/share-button";
+import { PhotoGallery } from "@/components/features/photo-gallery";
 import { professionalRepository } from "@/server/repositories/professional.repository";
 import { formatDate } from "@/lib/utils";
 
@@ -301,24 +302,10 @@ export default async function ProfilePage({ params }: Props) {
           <h2 className="text-[14px] font-extrabold text-[#1A1D2E] mb-2 px-0.5">
             Trabajos realizados
           </h2>
-          <div className="grid grid-cols-3 gap-1.5">
-            {profile.photos.slice(0, 6).map((photo, i) => (
-              <div
-                key={photo.url}
-                className={`rounded-xl overflow-hidden bg-gray-100 ${
-                  i === 0 ? "col-span-2 row-span-2" : ""
-                }`}
-                style={{ aspectRatio: i === 0 ? "auto" : "1/1" }}
-              >
-                <img
-                  src={photo.url}
-                  alt={`Trabajo ${i + 1} de ${profile.user.name}`}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-            ))}
-          </div>
+          <PhotoGallery
+            photos={profile.photos.map((p) => ({ url: p.url }))}
+            name={profile.user.name}
+          />
         </section>
       )}
 
