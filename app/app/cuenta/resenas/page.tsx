@@ -43,7 +43,7 @@ export default async function OpinionesPage() {
           </div>
           <div className="flex-1">
             <div className="text-sm font-bold text-[#1A1D2E]">{reviews.length} opinión{reviews.length !== 1 ? "s" : ""}</div>
-            <div className="text-xs text-gray-400">de clientes verificados</div>
+            <div className="text-xs text-gray-400">de clientes</div>
           </div>
         </div>
 

@@ -336,7 +336,7 @@ export function SearchBar({
       {showSubtitle ? (
         <p className="text-[11px] text-white/50 font-medium mb-3">
           {totalResults} {totalResults !== 1 ? "profesionales" : "profesional"}
-          {selectedCategory ? " verificados" : ""} en Villa María y Villa Nueva
+          {selectedCategory ? " revisados" : ""} en Villa María y Villa Nueva
         </p>
       ) : (
         <div className="mb-3" />

@@ -39,7 +39,7 @@ const TrustStrip = () => (
   <div className="flex items-center justify-center gap-4 py-3 px-4 bg-amber-50 rounded-xl border border-amber-100">
     {[
       { icon: "⚡", text: "Respuesta en minutos" },
-      { icon: "✅", text: "Profesionales verificados" },
+      { icon: "✅", text: "Profesionales revisados" },
       { icon: "🆓", text: "Sin costo para vos" },
     ].map(({ icon, text }) => (
       <div key={text} className="flex flex-col items-center gap-0.5 text-center">

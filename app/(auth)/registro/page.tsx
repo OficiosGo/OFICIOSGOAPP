@@ -261,7 +261,7 @@ export default function RegisterPage() {
               <input type="checkbox" checked={form.conGarantia} onChange={(e) => setForm(f => ({ ...f, conGarantia: e.target.checked }))} style={{ display: "none" }} />
               <div>
                 <div style={{ fontSize: 14, fontWeight: 700, color: form.conGarantia ? "#059669" : "#1A1D2E" }}>🛡️ Trabajo con garantía</div>
-                <div style={{ fontSize: 11, color: "#9CA3AF", marginTop: 2 }}>Mostrá confianza a tus clientes con un badge verificado</div>
+                <div style={{ fontSize: 11, color: "#9CA3AF", marginTop: 2 }}>Mostrá confianza a tus clientes con tu perfil completo</div>
               </div>
             </label>
 

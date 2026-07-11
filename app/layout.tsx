@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     template: "%s | OficiosGo! Villa María",
   },
   description:
-    "Encontrá electricistas, plomeros, pintores, carpinteros y más profesionales verificados en Villa María y Villa Nueva, Córdoba. Opiniones reales. Contacto directo por WhatsApp.",
+    "Encontrá electricistas, plomeros, pintores, carpinteros y más profesionales revisados en Villa María y Villa Nueva, Córdoba. Opiniones reales. Contacto directo por WhatsApp.",
   applicationName: "OficiosGo!",
   keywords: [
     "plomero villa maría",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     locale: "es_AR",
     url: APP_URL,
     siteName: "OficiosGo!",
-    title: "OficiosGo! — Profesionales de oficios verificados en Villa María y Villa Nueva",
+    title: "OficiosGo! — Profesionales de oficios revisados en Villa María y Villa Nueva",
     description:
       "Electricistas, plomeros, pintores y más. Verificados, con opiniones reales. App gratis para Villa María y Villa Nueva, Córdoba.",
     images: [
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "OficiosGo! — Profesionales de oficios en Villa María y Villa Nueva",
-    description: "Encontrá profesionales verificados en Villa María y Villa Nueva, Córdoba.",
+    description: "Encontrá profesionales revisados en Villa María y Villa Nueva, Córdoba.",
     images: [`${APP_URL}/icons/web-app-manifest-512x512.png`],
   },
   manifest: "/manifest.json",
@@ -113,7 +113,7 @@ const jsonLd = {
   "@type": "LocalBusiness",
   name: "OficiosGo!",
   description:
-    "Plataforma de profesionales de oficios verificados en Villa María y Villa Nueva, Córdoba, Argentina.",
+    "Plataforma de profesionales de oficios revisados en Villa María y Villa Nueva, Córdoba, Argentina.",
   url: APP_URL,
   logo: `${APP_URL}/icons/web-app-manifest-512x512.png`,
   image: `${APP_URL}/icons/web-app-manifest-512x512.png`,

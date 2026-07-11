@@ -32,7 +32,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   if (selected) {
     return {
       title: `${selected.name} en Villa María y Villa Nueva | OficiosGo`,
-      description: `Encontrá ${selected.name.toLowerCase()} verificados en Villa María y Villa Nueva, Córdoba. Opiniones reales, contacto directo.`,
+      description: `Encontrá ${selected.name.toLowerCase()} revisados en Villa María y Villa Nueva, Córdoba. Opiniones reales, contacto directo.`,
     };
   }
   return {

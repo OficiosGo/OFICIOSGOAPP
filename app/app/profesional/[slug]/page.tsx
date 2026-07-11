@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const reviewCount = profile.totalReviews;
 
   const title = `${name} — ${cat} en ${city} | OficiosGo`;
-  const description = `${name}, ${cat.toLowerCase()} verificado en ${city}. ${rating} de rating con ${reviewCount} opiniones. Contactalo hoy por WhatsApp.`;
+  const description = `${name}, ${cat.toLowerCase()} revisado en ${city}. ${rating} de rating con ${reviewCount} opiniones. Contactalo hoy por WhatsApp.`;
 
   return {
     title,

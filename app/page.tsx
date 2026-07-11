@@ -4,7 +4,7 @@
 // export const metadata = {
 //   title: "OficiosGo! – Plomeros, Electricistas y Más en Villa María y Villa Nueva, Córdoba",
 //   description:
-//     "Encontrá profesionales de oficios verificados en Villa María y Villa Nueva: plomeros, electricistas, pintores, carpinteros. Descargá la app gratis y contactalos hoy.",
+//     "Encontrá profesionales de oficios revisados en Villa María y Villa Nueva: plomeros, electricistas, pintores, carpinteros. Descargá la app gratis y contactalos hoy.",
 //   keywords: [
 //     "plomero villa maría", "electricista villa maría córdoba",
 //     "servicios del hogar villa maría", "profesionales oficios córdoba",
@@ -100,7 +100,7 @@ export default async function LandingPage() {
               Terminá con las recomendaciones de dudosa reputación.
               Encontrá plomeros, electricistas, pintores y más —{" "}
               <strong className="text-gray-300 font-semibold">
-                verificados, con opiniones reales y disponibles ahora.
+                revisados, con opiniones reales y disponibles ahora.
               </strong>
             </p>
 
@@ -369,7 +369,7 @@ export default async function LandingPage() {
               n: "2",
               icon: "⭐",
               title: "Leé opiniones reales",
-              desc: "Calificaciones verificadas de vecinos. Ves fotos de trabajos anteriores antes de llamar.",
+              desc: "Calificaciones reales de vecinos. Ves fotos de trabajos anteriores antes de llamar.",
             },
             {
               n: "3",
@@ -420,7 +420,7 @@ export default async function LandingPage() {
               Servicios disponibles en Villa María y Villa Nueva
             </h2>
             <p className="text-gray-500 mt-2 text-sm sm:text-base">
-              {categories.length} categorías con profesionales verificados
+              {categories.length} categorías con profesionales revisados
             </p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">

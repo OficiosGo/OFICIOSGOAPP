@@ -170,7 +170,7 @@ export function Navbar() {
 
           {/* Trust signal mobile */}
           <p className="text-center text-xs text-gray-400 mt-3 pb-6">
-            Profesionales verificados en Villa María y Villa Nueva, Córdoba
+            Profesionales revisados en Villa María y Villa Nueva, Córdoba
           </p>
         </div>
       </div>
