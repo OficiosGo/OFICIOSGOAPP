@@ -257,6 +257,12 @@ export function SearchBar({
     [activeFilters, initialCategory, initialQuery, navigate]
   );
 
+  const hasActiveFilter = activeFilters.urgencias || activeFilters.garantia || activeFilters.matriculado;
+
+  const clearFilters = useCallback(() => {
+    navigate(buildUrl({ category: initialCategory, q: initialQuery }));
+  }, [initialCategory, initialQuery, navigate]);
+
   const handleClear = useCallback(() => {
     setInputValue("");
     setSuggestions({ categories: [], professionals: [] });
@@ -712,6 +718,16 @@ export function SearchBar({
             </button>
           );
         })}
+        {hasActiveFilter && (
+          <button
+            type="button"
+            onClick={clearFilters}
+            style={{ touchAction: "manipulation" }}
+            className="shrink-0 px-3 py-2 min-h-[38px] rounded-full text-[12px] font-bold whitespace-nowrap text-white/60 underline underline-offset-2 active:text-white transition-colors"
+          >
+            Limpiar
+          </button>
+        )}
       </div>
     </div>
   );

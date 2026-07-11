@@ -152,11 +152,25 @@ export function ResultsList({ initialResult, category, query, filters }: Props) 
 
   return (
     <>
-      <p className="text-[12px] text-gray-500 font-medium mb-3">
+      <p className="text-[12px] text-gray-500 font-medium mb-2">
         <span className="font-extrabold text-[#0F1120]">{initialResult.total}</span>{" "}
         {initialResult.total !== 1 ? "profesionales" : "profesional"}
         {query ? ` para "${query}"` : ""}
       </p>
+
+      {filterKey !== "0-0-0" && (
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          {filters.urgencias && (
+            <span className="text-[11px] font-semibold text-[#F5A623] bg-[#FFF7E6] border border-[#F8C927]/30 px-2 py-0.5 rounded-full">⚡ Urgencias</span>
+          )}
+          {filters.garantia && (
+            <span className="text-[11px] font-semibold text-green-700 bg-green-50 border border-green-100 px-2 py-0.5 rounded-full">🛡️ Garantía</span>
+          )}
+          {filters.matriculado && (
+            <span className="text-[11px] font-semibold text-[#5C80BC] bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-full">🪪 Matriculado</span>
+          )}
+        </div>
+      )}
 
       <div className="flex flex-col gap-2.5">
         {items.map((pro, i) => {
