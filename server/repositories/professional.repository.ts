@@ -14,6 +14,23 @@ const profileCard = {
   photos: { take: 3, orderBy: { sortOrder: "asc" as const } },
 } satisfies Prisma.ProfileInclude;
 
+/**
+ * Descarta imágenes embebidas como data URI (base64). Algunas fotos viejas
+ * pesan >2MB inline, rompen el límite de unstable_cache y disparan el payload
+ * de la home. Se muestran con avatar de iniciales hasta migrarlas a Blob.
+ * TODO: migrar las imágenes base64 restantes a almacenamiento externo (Blob).
+ */
+function stripInlineImages<T extends { profileImage?: string | null; photos?: { url: string }[] }>(
+  list: T[]
+): T[] {
+  const isInline = (u?: string | null) => !!u && u.startsWith("data:");
+  return list.map((p) => ({
+    ...p,
+    profileImage: isInline(p.profileImage) ? null : p.profileImage,
+    photos: (p.photos ?? []).filter((ph) => !isInline(ph.url)),
+  }));
+}
+
 export const professionalRepository = {
   async getById(id: string) {
     return db.profile.findUnique({
@@ -271,17 +288,42 @@ export const professionalRepository = {
     return { data: results, total, page, limit, totalPages: Math.ceil(total / limit) };
   },
 
+  /**
+   * Profesionales para la home ("Destacados de hoy").
+   * Los pagos (PREMIUM/STANDARD) van siempre primero. El resto de los slots
+   * se rellena rotando el pool por día, de modo que todos los profesionales
+   * tengan visibilidad con el tiempo (la ventana avanza un grupo cada día).
+   */
   async getFeatured(limit = 6) {
-    return db.profile.findMany({
+    const paid = await db.profile.findMany({
       where: {
         status: "APPROVED",
         user: { isActive: true },
         tier: { in: ["PREMIUM", "STANDARD"] },
       },
       include: profileCard,
-      orderBy: [{ tier: "desc" }, { averageRating: "desc" }],
+      orderBy: [{ tier: "desc" }, { averageRating: "desc" }, { totalReviews: "desc" }],
       take: limit,
     });
+    if (paid.length >= limit) return paid;
+
+    const remaining = limit - paid.length;
+    const pool = await db.profile.findMany({
+      where: {
+        status: "APPROVED",
+        user: { isActive: true },
+        tier: "FREE",
+      },
+      include: profileCard,
+      orderBy: [{ averageRating: "desc" }, { totalReviews: "desc" }, { createdAt: "desc" }],
+    });
+    if (pool.length === 0) return stripInlineImages(paid);
+
+    // Rotación diaria: la ventana avanza un grupo (remaining) por día.
+    const day = Math.floor(Date.now() / 86_400_000);
+    const offset = (((day * remaining) % pool.length) + pool.length) % pool.length;
+    const rotated = [...pool.slice(offset), ...pool.slice(0, offset)];
+    return stripInlineImages([...paid, ...rotated.slice(0, remaining)]);
   },
 
   /**

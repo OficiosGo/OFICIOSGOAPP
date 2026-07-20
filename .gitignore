@@ -4,3 +4,9 @@ node_modules/
 .env.local
 *.tsbuildinfo
 next-env.d.ts
+
+# Backups de migraciones (pueden contener datos/imagenes pesadas)
+scripts/.backups/
+# Keystores / firmas de la app Android — nunca commitear
+*.keystore
+*.jks

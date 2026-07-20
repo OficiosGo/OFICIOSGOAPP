@@ -169,10 +169,10 @@ export default async function HomePage() {
         <div className="flex items-center justify-between px-5 mb-3">
           <div>
             <h2 className="text-[17px] font-black text-[#0F1120] leading-tight">
-              Mejor valorados
+              Destacados de hoy
             </h2>
             <p className="text-[11px] text-gray-400 mt-0.5 font-medium">
-              Calificados por vecinos de Villa María
+              Cambian cada día — conocé a más profesionales
             </p>
           </div>
           <Link
@@ -220,12 +220,14 @@ export default async function HomePage() {
                         {INITIALS(pro.user.name)}
                       </div>
                     )}
-                    <div className="absolute bottom-1.5 left-1.5 flex items-center gap-0.5 bg-black/65 backdrop-blur-sm rounded-md px-1.5 py-0.5">
-                      <span className="text-[#F8C927] text-[10px]">★</span>
-                      <span className="text-[11px] font-bold text-white">
-                        {pro.averageRating.toFixed(1)}
-                      </span>
-                    </div>
+                    {pro.totalReviews > 0 && (
+                      <div className="absolute bottom-1.5 left-1.5 flex items-center gap-0.5 bg-black/65 backdrop-blur-sm rounded-md px-1.5 py-0.5">
+                        <span className="text-[#F8C927] text-[10px]">★</span>
+                        <span className="text-[11px] font-bold text-white">
+                          {pro.averageRating.toFixed(1)}
+                        </span>
+                      </div>
+                    )}
                     {pro.tier === "PREMIUM" && (
                       <div className="absolute top-1.5 right-1.5 bg-gradient-to-r from-[#F5A623] to-[#F8C927] text-[#0F1120] text-[8px] font-extrabold px-1.5 py-0.5 rounded-md uppercase tracking-wide">
                         Premium
