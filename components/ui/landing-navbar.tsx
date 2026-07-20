@@ -39,12 +39,13 @@ export function LandingNavbar() {
         {/* CTAs — jerarquía: ghost > outlined > filled */}
         <div className="flex items-center gap-1 sm:gap-2">
 
-          {/* Menor prioridad — solo desktop */}
+          {/* Menor prioridad */}
           <Link
             href="/login"
-            className="hidden sm:inline-flex px-4 py-2 rounded-lg text-white/60 text-sm font-medium hover:text-white transition-colors"
+            className="inline-flex px-2 sm:px-4 py-2 rounded-lg text-white/60 text-xs sm:text-sm font-medium hover:text-white transition-colors"
           >
-            Ingresar
+            <span className="hidden sm:inline">Iniciar sesión</span>
+            <span className="sm:hidden">Ingresar</span>
           </Link>
 
           {/* Media prioridad */}
@@ -52,7 +53,7 @@ export function LandingNavbar() {
             href="/app"
             className="px-3 sm:px-5 py-2 rounded-lg bg-white/8 border border-white/12 text-white text-xs sm:text-sm font-semibold hover:bg-white/15 transition-all"
           >
-            Explorar
+            Ir a la app
           </Link>
 
           {/* CTA primario — máxima atención */}
