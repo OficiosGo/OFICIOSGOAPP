@@ -2,7 +2,7 @@
   "id": "/app",
   "name": "OficiosGo! - Profesionales de oficios en Villa María",
   "short_name": "OficiosGo!",
-  "description": "Encontrá electricistas, plomeros, carpinteros, pintores y más profesionales verificados en Villa María y Villa Nueva, Córdoba.",
+  "description": "Encontrá electricistas, plomeros, carpinteros, pintores y más profesionales en Villa María y Villa Nueva, Córdoba.",
   "start_url": "/app?source=pwa",
   "scope": "/",
   "display": "standalone",
