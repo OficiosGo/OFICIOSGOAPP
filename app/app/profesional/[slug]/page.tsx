@@ -5,6 +5,7 @@ import { ContactButtons } from "@/components/features/contact-buttons";
 import { ReviewForm } from "@/components/features/review-form";
 import { ShareButton } from "@/components/features/share-button";
 import { PhotoGallery } from "@/components/features/photo-gallery";
+import { BoltIcon, ShieldCheckIcon, StarIcon, WrenchIcon, ClockIcon, UsersIcon, BadgeCheckIcon } from "@/components/ui/icons";
 import { professionalRepository } from "@/server/repositories/professional.repository";
 import { formatDate } from "@/lib/utils";
 
@@ -159,22 +160,22 @@ export default async function ProfilePage({ params }: Props) {
         {/* Badges top-right */}
         <div className="absolute top-4 right-4 flex items-center gap-2 flex-wrap justify-end max-w-[70%]">
           {hasUrgencias && (
-            <div className="px-2.5 py-1.5 rounded-xl bg-red-500 text-white text-[10px] font-extrabold uppercase tracking-wide flex items-center gap-1 animate-pulse">
-              🚨 Urgencias 24hs
+            <div className="px-2.5 py-1.5 rounded-lg bg-red-500 text-white text-[10px] font-bold uppercase tracking-wide flex items-center gap-1.5">
+              <BoltIcon size={12} strokeWidth={2.5} /> Urgencias 24hs
             </div>
           )}
           {hasGarantia && (
-            <div className="px-2.5 py-1.5 rounded-xl bg-green-500 text-white text-[10px] font-extrabold uppercase tracking-wide flex items-center gap-1">
-              🛡️ Con Garantía
+            <div className="px-2.5 py-1.5 rounded-lg bg-green-600 text-white text-[10px] font-bold uppercase tracking-wide flex items-center gap-1.5">
+              <ShieldCheckIcon size={12} strokeWidth={2.5} /> Con garantía
             </div>
           )}
           {isPremium && (
-            <div className="px-2.5 py-1.5 rounded-xl bg-[#F8C927] text-[#1A1D2E] text-[10px] font-extrabold uppercase tracking-wide">
-              ★ Premium
+            <div className="px-2.5 py-1.5 rounded-lg bg-[#F8C927] text-[#1A1D2E] text-[10px] font-bold uppercase tracking-wide flex items-center gap-1.5">
+              <StarIcon size={12} strokeWidth={2.5} /> Premium
             </div>
           )}
           {isStandard && (
-            <div className="px-2.5 py-1.5 rounded-xl bg-[#5C80BC] text-white text-[10px] font-extrabold uppercase tracking-wide">
+            <div className="px-2.5 py-1.5 rounded-lg bg-[#5C80BC] text-white text-[10px] font-bold uppercase tracking-wide">
               Standard
             </div>
           )}
@@ -227,11 +228,9 @@ export default async function ProfilePage({ params }: Props) {
                 <Stars rating={profile.averageRating} count={profile.totalReviews} />
               </div>
               {profile.matricula && (
-                <div className="flex items-center gap-1 mt-1">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="#7A9263">
-                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5L12 1z" />
-                  </svg>
-                  <span className="text-[11px] text-[#7A9263] font-semibold">Matriculado</span>
+                <div className="flex items-center gap-1 mt-1 text-[#7A9263]">
+                  <BadgeCheckIcon size={13} strokeWidth={2} />
+                  <span className="text-[11px] font-semibold">Matriculado</span>
                 </div>
               )}
             </div>
@@ -244,30 +243,30 @@ export default async function ProfilePage({ params }: Props) {
           )}
 
           {/* Tags */}
-          <div className="flex flex-wrap gap-2 mt-3">
+          <div className="flex flex-wrap gap-1.5 mt-3">
             {hasUrgencias && (
-              <span className="flex items-center gap-1 text-[11px] text-red-600 bg-red-50 px-2.5 py-1.5 rounded-lg font-bold border border-red-100">
-                🚨 Urgencias 24hs
+              <span className="flex items-center gap-1.5 text-[11px] text-red-600 bg-red-50 px-2.5 py-1.5 rounded-lg font-semibold border border-red-100">
+                <BoltIcon size={13} /> Urgencias 24hs
               </span>
             )}
             {hasGarantia && (
-              <span className="flex items-center gap-1 text-[11px] text-green-700 bg-green-50 px-2.5 py-1.5 rounded-lg font-bold border border-green-100">
-                🛡️ Trabajo con garantía
+              <span className="flex items-center gap-1.5 text-[11px] text-green-700 bg-green-50 px-2.5 py-1.5 rounded-lg font-semibold border border-green-100">
+                <ShieldCheckIcon size={13} /> Trabajo con garantía
               </span>
             )}
             {profile.yearsExperience && (
-              <span className="flex items-center gap-1 text-[11px] text-gray-500 bg-gray-50 px-2.5 py-1.5 rounded-lg">
-                🔨 {profile.yearsExperience} años exp.
+              <span className="flex items-center gap-1.5 text-[11px] text-gray-600 bg-gray-50 px-2.5 py-1.5 rounded-lg font-medium border border-gray-100">
+                <WrenchIcon size={13} /> {profile.yearsExperience} años exp.
               </span>
             )}
             {profile.availability && (
-              <span className="flex items-center gap-1 text-[11px] text-gray-500 bg-gray-50 px-2.5 py-1.5 rounded-lg">
-                🕐 {profile.availability}
+              <span className="flex items-center gap-1.5 text-[11px] text-gray-600 bg-gray-50 px-2.5 py-1.5 rounded-lg font-medium border border-gray-100">
+                <ClockIcon size={13} /> {profile.availability}
               </span>
             )}
             {profile.totalContacts > 0 && (
-              <span className="flex items-center gap-1 text-[11px] text-[#5C80BC] bg-blue-50 px-2.5 py-1.5 rounded-lg font-semibold">
-                👥 {profile.totalContacts} contactos
+              <span className="flex items-center gap-1.5 text-[11px] text-[#5C80BC] bg-blue-50 px-2.5 py-1.5 rounded-lg font-semibold border border-blue-100">
+                <UsersIcon size={13} /> {profile.totalContacts} contactos
               </span>
             )}
           </div>
