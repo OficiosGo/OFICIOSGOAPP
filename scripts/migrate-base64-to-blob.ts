@@ -24,7 +24,7 @@ const isInline = (u?: string | null): u is string => !!u && u.startsWith("data:"
 
 // data:image/jpeg;base64,XXXX  →  { ext, buffer }
 function decodeDataUri(uri: string) {
-  const match = uri.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.*)$/s);
+  const match = uri.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,([\s\S]*)$/);
   if (!match) return null;
   const mime = match[1];
   const ext = mime.split("/")[1].replace("jpeg", "jpg").replace("svg+xml", "svg");
